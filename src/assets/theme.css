@@ -1,0 +1,114 @@
+@font-face {
+  font-family: 'Geist Sans';
+  src: url('/fonts/geist/geist-sans/Geist-Variable.woff2') format('woff2');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 100 900;
+}
+
+@font-face {
+  font-family: 'Geist Sans';
+  src: url('/fonts/geist/geist-sans/Geist-Italic-Variable.woff2') format('woff2');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 100 900;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/geist/geist-mono/GeistMono-Variable.woff2') format('woff2');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 100 900;
+}
+
+@layer base {
+  :root,
+  [data-theme='light'] {
+    color-scheme: light;
+    --site-primary: #8894a9;
+    --site-primary-dark: #484647;
+    --site-secondary: #b68370;
+    --site-background: #f8f8f5;
+    --site-surface: #ffffff;
+    --site-text: var(--site-primary-dark);
+    --site-heading: var(--site-primary-dark);
+    --site-muted: #696966;
+    --site-border: #deded8;
+    --site-link: var(--site-primary);
+    --site-link-hover: var(--site-secondary);
+    --site-selection: #d8ddd9;
+  }
+
+  @supports (color: color-mix(in oklab, black, white)) {
+    :root,
+    [data-theme='light'] {
+      --site-background: color-mix(in oklab, var(--site-primary) 8%, white);
+      --site-surface: color-mix(in oklab, var(--site-secondary) 6%, white);
+      --site-text: color-mix(in oklab, var(--site-primary-dark) 92%, white);
+      --site-heading: color-mix(in oklab, var(--site-primary-dark) 92%, black);
+      --site-muted: color-mix(in oklab, var(--site-text) 62%, var(--site-surface));
+      --site-border: color-mix(in oklab, var(--site-primary) 34%, transparent);
+      --site-link: color-mix(in oklab, var(--site-primary) 62%, var(--site-primary-dark));
+      --site-link-hover: color-mix(in oklab, var(--site-secondary) 78%, black);
+      --site-selection: color-mix(in oklab, var(--site-primary) 35%, transparent);
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      color-scheme: dark;
+      --site-background: #121111;
+      --site-surface: #1d1c1c;
+      --site-text: #e8e4d7;
+      --site-heading: #f7f5e2;
+      --site-muted: #a8a39a;
+      --site-border: #383737;
+      --site-link: #b7c1d2;
+      --site-link-hover: #d2a08e;
+      --site-selection: #394155;
+    }
+
+    @supports (color: color-mix(in oklab, black, white)) {
+      :root:not([data-theme='light']) {
+        --site-background: color-mix(in oklab, var(--site-primary-dark) 34%, black);
+        --site-surface: color-mix(in oklab, var(--site-primary-dark) 48%, black);
+        --site-text: color-mix(in oklab, #f7f5e2 82%, var(--site-primary));
+        --site-heading: color-mix(in oklab, #f7f5e2 94%, white);
+        --site-muted: color-mix(in oklab, var(--site-text) 58%, transparent);
+        --site-border: color-mix(in oklab, var(--site-primary) 24%, transparent);
+        --site-link: color-mix(in oklab, var(--site-primary) 72%, white);
+        --site-link-hover: color-mix(in oklab, var(--site-secondary) 84%, white);
+        --site-selection: color-mix(in oklab, var(--site-primary) 32%, transparent);
+      }
+    }
+  }
+
+  :root[data-theme='dark'],
+  [data-theme='dark'],
+  .dark {
+    color-scheme: dark;
+    --site-background: #121111;
+    --site-surface: #1d1c1c;
+    --site-text: #e8e4d7;
+    --site-heading: #f7f5e2;
+    --site-muted: #a8a39a;
+    --site-border: #383737;
+    --site-link: #b7c1d2;
+    --site-link-hover: #d2a08e;
+    --site-selection: #394155;
+  }
+
+  body {
+    min-width: 320px;
+    margin: 0;
+    background: var(--site-background);
+    color: var(--site-text);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--site-selection);
+  }
+}

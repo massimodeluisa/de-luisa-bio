@@ -1,0 +1,34 @@
+@import 'tailwindcss';
+
+@custom-variant dark {
+  @media (prefers-color-scheme: dark) {
+    &:where(:not([data-theme='light']) *, :not([data-theme='light'])) {
+      @slot;
+    }
+  }
+  &:where(.dark, .dark *, [data-theme='dark'], [data-theme='dark'] *) {
+    @slot;
+  }
+}
+
+@theme {
+  --font-sans:
+    'Geist Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-mono:
+    'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+
+  --color-site-primary: #8894a9;
+  --color-site-primary-dark: #484647;
+  --color-site-secondary: #b68370;
+  --color-site-background: var(--site-background);
+  --color-site-surface: var(--site-surface);
+  --color-site-text: var(--site-text);
+  --color-site-heading: var(--site-heading);
+  --color-site-muted: var(--site-muted);
+  --color-site-border: var(--site-border);
+  --color-site-link: var(--site-link);
+  --color-site-link-hover: var(--site-link-hover);
+  --color-site-selection: var(--site-selection);
+}
