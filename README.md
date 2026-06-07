@@ -81,7 +81,7 @@ bun lint
 Two GitHub Actions workflows:
 
 - **`.github/workflows/deploy-site.yml`** — builds and deploys `dist/` to GitHub Pages on push to
-  `main`. Public values come from repo **Variables** (`VITE_POSTHOG_KEY`, `VITE_POSTHOG_HOST`,
+  `master`. Public values come from repo **Variables** (`VITE_POSTHOG_KEY`, `VITE_POSTHOG_HOST`,
   `VITE_ADMIN_API`). `public/CNAME` pins `deluisa.bio`; a `404.html` SPA fallback is added.
 - **`.github/workflows/deploy-worker.yml`** — `wrangler deploy` for `worker/` on changes, pushing
   secrets from repo **Secrets**: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `SESSION_SECRET`,
