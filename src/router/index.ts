@@ -1,8 +1,12 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [],
-})
+import HomeView from '@/views/HomeView.vue'
+import BioView from '@/views/BioView.vue'
 
-export default router
+const AdminView = () => import('@/views/AdminView.vue')
+
+export const routes: RouteRecordRaw[] = [
+  { path: '/', name: 'home', component: HomeView },
+  { path: '/admin', name: 'admin', component: AdminView },
+  { path: '/:slug', name: 'bio', component: BioView },
+]

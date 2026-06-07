@@ -7,7 +7,6 @@ import { it } from './locales/it'
 
 export type TLocaleCode = 'en' | 'it'
 
-/* First supported language from the browser's preference list, else 'en'. */
 function detectLocale(): TLocaleCode {
   if (typeof navigator === 'undefined') {
     return 'en'
@@ -22,10 +21,8 @@ function detectLocale(): TLocaleCode {
   return 'en'
 }
 
-const initial = detectLocale()
-
 void i18next.init({
-  lng: initial,
+  lng: 'en',
   fallbackLng: 'en',
   supportedLngs: ['en', 'it'],
   resources: {
@@ -37,10 +34,14 @@ void i18next.init({
   initAsync: false,
 })
 
-const currentLocale = ref<TLocaleCode>(initial)
+const currentLocale = ref<TLocaleCode>('en')
 
-if (typeof document !== 'undefined') {
-  document.documentElement.lang = initial
+export function syncBrowserLocale(): void {
+  const detected = detectLocale()
+  currentLocale.value = detected
+  if (typeof document !== 'undefined') {
+    document.documentElement.lang = detected
+  }
 }
 
 function t(key: string, fallback?: string): string {

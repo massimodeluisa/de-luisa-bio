@@ -33,7 +33,7 @@
     --site-surface: #ffffff;
     --site-text: var(--site-primary-dark);
     --site-heading: var(--site-primary-dark);
-    --site-muted: #696966;
+    --site-muted: #585855;
     --site-border: #deded8;
     --site-link: var(--site-primary);
     --site-link-hover: var(--site-secondary);
@@ -47,7 +47,7 @@
       --site-surface: color-mix(in oklab, var(--site-secondary) 6%, white);
       --site-text: color-mix(in oklab, var(--site-primary-dark) 92%, white);
       --site-heading: color-mix(in oklab, var(--site-primary-dark) 92%, black);
-      --site-muted: color-mix(in oklab, var(--site-text) 62%, var(--site-surface));
+      --site-muted: color-mix(in oklab, var(--site-text) 80%, var(--site-surface));
       --site-border: color-mix(in oklab, var(--site-primary) 34%, transparent);
       --site-link: color-mix(in oklab, var(--site-primary) 62%, var(--site-primary-dark));
       --site-link-hover: color-mix(in oklab, var(--site-secondary) 78%, black);

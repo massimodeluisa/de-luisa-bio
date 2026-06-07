@@ -1,0 +1,15 @@
+# Copy to `worker/.dev.vars` (gitignored) for `wrangler dev`.
+# In production these are set as Worker secrets via `wrangler secret put` or GitHub Actions.
+
+# A long random string for signing session JWTs.
+SESSION_SECRET="change-me-to-a-long-random-string"
+
+# Fine-grained GitHub PAT (or GitHub App token) with Contents: read+write on the repo.
+GITHUB_TOKEN="github_pat_xxx"
+
+# PostHog personal API key (read) — used for the per-person stats dashboard.
+POSTHOG_READ_KEY="phx_xxx"
+
+# JSON array of admin users. Generate entries with:
+#   bun worker/hash-password.ts <user> <slug> <password>
+ADMIN_USERS='[{"user":"massimo","slug":"massimo","salt":"<hex>","passHash":"<hex>"}]'

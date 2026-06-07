@@ -1,0 +1,12 @@
+name = "de-luisa-bio-admin"
+main = "src/index.ts"
+compatibility_date = "2026-06-01"
+
+# Non-secret config. Secrets (ADMIN_USERS, SESSION_SECRET, GITHUB_TOKEN,
+# POSTHOG_READ_KEY) are set via `wrangler secret put` / GitHub Actions / .dev.vars.
+[vars]
+GITHUB_REPO = "massimodeluisa/de-luisa-bio"
+GITHUB_BRANCH = "master"
+POSTHOG_HOST = "https://eu.posthog.com"
+POSTHOG_PROJECT_ID = "195605"
+ALLOWED_ORIGIN = "https://deluisa.bio"

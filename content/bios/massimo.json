@@ -1,0 +1,174 @@
+{
+  "slug": "massimo",
+  "name": "Massimo De Luisa",
+  "avatar": "/media/massimo",
+  "site": "https://deluisa.me",
+  "siteCard": {
+    "url": "https://deluisa.me",
+    "image": "https://deluisa.me/og/home.png"
+  },
+  "theme": {
+    "primary": "#8894a9",
+    "secondary": "#b68370",
+    "glyphColor": "#b68370",
+    "font": "geist-sans",
+    "cardRadius": 14,
+    "avatarRadius": 9999,
+    "avatarBorderWidth": 1,
+    "avatarBorderColor": "#b68370"
+  },
+  "content": {
+    "en": {
+      "eyebrow": "CTO & Product Engineer",
+      "tagline": "Platforms, mobile apps and AI-assisted workflows that stay simple under pressure."
+    },
+    "it": {
+      "eyebrow": "CTO & Product Engineer",
+      "tagline": "Piattaforme, app mobile e flussi con AI che restano semplici sotto pressione."
+    },
+    "ja": {
+      "eyebrow": "CTO・プロダクトエンジニア",
+      "tagline": "プレッシャーのかかる状況でもシンプルさを保つ、プラットフォーム、モバイルアプリ、AI支援ワークフロー。"
+    },
+    "ru": {
+      "eyebrow": "CTO и продуктовый инженер",
+      "tagline": "Платформы, мобильные приложения и рабочие процессы с поддержкой ИИ, которые остаются простыми даже под нагрузкой."
+    },
+    "uk": {
+      "eyebrow": "CTO та продуктовий інженер",
+      "tagline": "Платформи, мобільні застосунки та робочі процеси з підтримкою ШІ, які залишаються простими навіть під навантаженням."
+    }
+  },
+  "links": [
+    {
+      "id": "book",
+      "label": {
+        "en": "Book a 30-min call",
+        "it": "Prenota una call di 30 min",
+        "ja": "30分の通話を予約",
+        "ru": "Записаться на 30-минутный звонок",
+        "uk": "Записатися на 30-хвилинний дзвінок"
+      },
+      "href": "https://www.cal.eu/massimodeluisa/30min",
+      "icon": "mdi:calendar-check-outline",
+      "primary": true,
+      "external": true
+    },
+    {
+      "id": "email",
+      "label": {
+        "en": "Email me",
+        "it": "Scrivimi",
+        "ja": "メールを送る",
+        "ru": "Написать мне",
+        "uk": "Написати мені"
+      },
+      "href": "mailto:massimodeluisa@me.com",
+      "icon": "mdi:email-outline"
+    },
+    {
+      "id": "cv",
+      "label": {
+        "en": "Download CV",
+        "it": "Scarica il CV",
+        "ja": "CVをダウンロード",
+        "ru": "Скачать резюме",
+        "uk": "Завантажити резюме"
+      },
+      "href": "https://deluisa.me/cv.pdf",
+      "icon": "mdi:file-document-outline",
+      "external": true
+    }
+  ],
+  "socials": [
+    {
+      "id": "github",
+      "label": { "en": "GitHub", "it": "GitHub", "ja": "GitHub", "ru": "GitHub", "uk": "GitHub" },
+      "href": "https://github.com/massimodeluisa",
+      "icon": "mdi:github",
+      "color": "#181717",
+      "mono": true,
+      "external": true,
+      "iconSize": "2rem"
+    },
+    {
+      "id": "linkedin",
+      "label": {
+        "en": "LinkedIn",
+        "it": "LinkedIn",
+        "ja": "LinkedIn",
+        "ru": "LinkedIn",
+        "uk": "LinkedIn"
+      },
+      "href": "https://www.linkedin.com/in/massimodeluisa",
+      "icon": "mdi:linkedin",
+      "color": "#0A66C2",
+      "external": true,
+      "iconSize": "2rem"
+    },
+    {
+      "id": "x",
+      "label": { "en": "X", "it": "X", "ja": "X", "ru": "X", "uk": "X" },
+      "href": "https://x.com/massimodeluisa",
+      "icon": "simple-icons:x",
+      "color": "#000000",
+      "mono": true,
+      "external": true,
+      "iconSize": "1.5rem"
+    },
+    {
+      "id": "telegram",
+      "label": {
+        "en": "Telegram",
+        "it": "Telegram",
+        "ja": "Telegram",
+        "ru": "Telegram",
+        "uk": "Telegram"
+      },
+      "href": "https://t.me/massimodeluisa",
+      "icon": "fa-brands:telegram",
+      "color": "#26A5E4",
+      "external": true,
+      "iconSize": "2rem"
+    },
+    {
+      "id": "line",
+      "label": { "en": "Line", "it": "Line", "ja": "LINE", "ru": "LINE", "uk": "LINE" },
+      "href": "https://line.me/ti/p/KrsSKLsYE9",
+      "icon": "fa-brands:line",
+      "color": "#06C755",
+      "external": true,
+      "iconSize": "2rem"
+    },
+    {
+      "id": "instagram",
+      "label": {
+        "en": "Instagram",
+        "it": "Instagram",
+        "ja": "Instagram",
+        "ru": "Instagram",
+        "uk": "Instagram"
+      },
+      "href": "https://www.instagram.com/massimodeluisa",
+      "icon": "mdi:instagram",
+      "color": "#E4405F",
+      "external": true,
+      "iconSize": "2rem"
+    },
+    {
+      "id": "facebook",
+      "label": {
+        "en": "Facebook",
+        "it": "Facebook",
+        "ja": "Facebook",
+        "ru": "Facebook",
+        "uk": "Facebook"
+      },
+      "href": "https://facebook.com/massimodeluisa",
+      "icon": "mdi:facebook",
+      "color": "#1877F2",
+      "external": true,
+      "iconSize": "2rem"
+    }
+  ]
+}

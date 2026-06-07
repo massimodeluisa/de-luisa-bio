@@ -1,0 +1,64 @@
+{
+  "slug": "pasticceria",
+  "name": "Pasticceria De Luisa",
+  "avatar": "/media/pasticceria",
+  "site": "https://www.pasticceriadeluisa.it",
+  "siteCard": {
+    "url": "https://www.pasticceriadeluisa.it",
+    "image": "https://cms-01-enbilab.s3.amazonaws.com/system/images/image_files/000/011/086/original/Pane_soleo_De_Luisa_6.jpeg?1587972169"
+  },
+  "theme": {
+    "primary": "#c9925e",
+    "secondary": "#8a5a3c",
+    "glyphColor": "#8a5a3c",
+    "font": "geist-sans",
+    "cardRadius": 14,
+    "avatarRadius": 9999,
+    "avatarBorderWidth": 1,
+    "avatarBorderColor": "#8a5a3c"
+  },
+  "content": {
+    "en": {
+      "eyebrow": "Artisan Bakery & Pastry Shop",
+      "tagline": ""
+    },
+    "it": {
+      "eyebrow": "Panificio & Pasticceria artigianale",
+      "tagline": ""
+    }
+  },
+  "links": [
+    {
+      "id": "email",
+      "label": { "en": "Email us", "it": "Scrivici" },
+      "href": "mailto:info@pasticceriadeluisa.it",
+      "icon": "mdi:email-outline"
+    },
+    {
+      "id": "phone",
+      "label": { "en": "Call us", "it": "Chiamaci" },
+      "href": "tel:+390432521429",
+      "icon": "mdi:phone-outline"
+    }
+  ],
+  "socials": [
+    {
+      "id": "instagram",
+      "label": { "en": "Instagram", "it": "Instagram" },
+      "href": "https://www.instagram.com/pasticceria_deluisa",
+      "icon": "mdi:instagram",
+      "color": "#E4405F",
+      "external": true,
+      "iconSize": "2rem"
+    },
+    {
+      "id": "facebook",
+      "label": { "en": "Facebook", "it": "Facebook" },
+      "href": "https://www.facebook.com/DeLuisaPanificioPasticceria",
+      "icon": "mdi:facebook",
+      "color": "#1877F2",
+      "external": true,
+      "iconSize": "2rem"
+    }
+  ]
+}

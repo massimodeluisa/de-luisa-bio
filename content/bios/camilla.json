@@ -1,0 +1,42 @@
+{
+  "slug": "camilla",
+  "name": "Camilla De Luisa",
+  "avatar": "/media/camilla",
+  "site": "https://www.pasticceriadeluisa.it",
+  "siteCard": {
+    "url": "https://www.pasticceriadeluisa.it",
+    "image": "https://cms-01-enbilab.s3.amazonaws.com/system/images/image_files/000/011/086/original/Pane_soleo_De_Luisa_6.jpeg?1587972169"
+  },
+  "theme": {
+    "primary": "#e7a9a0",
+    "secondary": "#c47a6d",
+    "glyphColor": "#c47a6d",
+    "font": "geist-sans",
+    "cardRadius": 14,
+    "avatarRadius": 9999,
+    "avatarBorderWidth": 1,
+    "avatarBorderColor": "#c47a6d"
+  },
+  "content": {
+    "en": {
+      "eyebrow": "",
+      "tagline": ""
+    },
+    "it": {
+      "eyebrow": "",
+      "tagline": ""
+    }
+  },
+  "links": [],
+  "socials": [
+    {
+      "id": "instagram",
+      "label": { "en": "Instagram", "it": "Instagram" },
+      "href": "https://www.instagram.com/camilladeluisa/",
+      "icon": "mdi:instagram",
+      "color": "#E4405F",
+      "external": true,
+      "iconSize": "2rem"
+    }
+  ]
+}

@@ -1,4 +1,9 @@
+import type { PostHog } from 'posthog-js'
+
 const GTM_ID = 'GTM-MCT4XSDM'
+const POSTHOG_KEY = import.meta.env.VITE_POSTHOG_KEY as string | undefined
+const POSTHOG_HOST =
+  (import.meta.env.VITE_POSTHOG_HOST as string | undefined) ?? 'https://eu.i.posthog.com'
 
 declare global {
   interface Window {
@@ -11,13 +16,12 @@ function ensureDataLayer(): Record<string, unknown>[] {
   return window.dataLayer
 }
 
-let scriptLoaded = false
-
+let gtmLoaded = false
 function loadGtm() {
-  if (scriptLoaded || typeof document === 'undefined') {
+  if (gtmLoaded || typeof document === 'undefined') {
     return
   }
-  scriptLoaded = true
+  gtmLoaded = true
   ensureDataLayer().push({ 'gtm.start': Date.now(), event: 'gtm.js' })
   const script = document.createElement('script')
   script.async = true
@@ -25,23 +29,45 @@ function loadGtm() {
   document.head.appendChild(script)
 }
 
-/** Push a custom event to the GTM dataLayer. */
+let posthog: PostHog | null = null
+async function loadPosthog() {
+  if (posthog || typeof window === 'undefined' || !POSTHOG_KEY) {
+    return
+  }
+  const { default: ph } = await import('posthog-js')
+  ph.init(POSTHOG_KEY, {
+    api_host: POSTHOG_HOST,
+    capture_pageview: true,
+    autocapture: true,
+    person_profiles: 'identified_only',
+  })
+  posthog = ph
+}
+
 export function track(event: string, payload: Record<string, unknown> = {}) {
   if (typeof window === 'undefined') {
     return
   }
   ensureDataLayer().push({ event, ...payload })
+  posthog?.capture(event, payload, { send_instantly: true })
 }
 
-/** Load GTM and report the initial page view. */
 export function initAnalytics() {
   if (typeof window === 'undefined') {
     return
   }
-  loadGtm()
-  track('page_view', {
-    page_path: window.location.pathname,
-    page_title: document.title,
-    page_location: window.location.href,
-  })
+  const start = () => {
+    loadGtm()
+    void loadPosthog()
+    track('page_view', {
+      page_path: window.location.pathname,
+      page_title: document.title,
+      page_location: window.location.href,
+    })
+  }
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(start, { timeout: 2500 })
+  } else {
+    setTimeout(start, 1)
+  }
 }

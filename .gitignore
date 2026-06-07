@@ -14,6 +14,16 @@ dist-ssr
 coverage
 *.local
 
+# Local env files (public VITE_* live here; keep them out of the repo).
+# Production values are set as GitHub repo Variables. Only the template is tracked.
+.env
+.env.*
+!.env.example
+
+# Cloudflare Worker local secrets / build
+worker/.dev.vars
+.wrangler
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

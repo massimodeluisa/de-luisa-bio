@@ -1,0 +1,37 @@
+{
+  "slug": "giovanni",
+  "name": "Giovanni De Luisa",
+  "avatar": "/media/giovanni",
+  "theme": {
+    "primary": "#7a93b8",
+    "secondary": "#4f6b8a",
+    "glyphColor": "#4f6b8a",
+    "font": "geist-sans",
+    "cardRadius": 14,
+    "avatarRadius": 9999,
+    "avatarBorderWidth": 1,
+    "avatarBorderColor": "#4f6b8a"
+  },
+  "content": {
+    "en": {
+      "eyebrow": "",
+      "tagline": ""
+    },
+    "it": {
+      "eyebrow": "",
+      "tagline": ""
+    }
+  },
+  "links": [],
+  "socials": [
+    {
+      "id": "instagram",
+      "label": { "en": "Instagram", "it": "Instagram" },
+      "href": "https://www.instagram.com/giovannideluisa/",
+      "icon": "mdi:instagram",
+      "color": "#E4405F",
+      "external": true,
+      "iconSize": "2rem"
+    }
+  ]
+}
