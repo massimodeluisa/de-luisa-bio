@@ -30,6 +30,24 @@ function loadGtm() {
 }
 
 let posthog: PostHog | null = null
+// Consenso "analytics" deciso dal cookie banner. PostHog parte in opt-out
+// (vedi opt_out_capturing_by_default), quindi finché questo resta false non
+// viene catturato nulla. Memorizziamo lo stato perché il consenso può arrivare
+// prima che il modulo posthog-js sia stato caricato (lazy import su idle).
+let analyticsConsentGranted = false
+
+export function setAnalyticsConsent(granted: boolean): void {
+  analyticsConsentGranted = granted
+  if (!posthog) {
+    return
+  }
+  if (granted) {
+    posthog.opt_in_capturing()
+  } else {
+    posthog.opt_out_capturing()
+  }
+}
+
 async function loadPosthog() {
   if (posthog || typeof window === 'undefined' || !POSTHOG_KEY) {
     return
@@ -40,8 +58,15 @@ async function loadPosthog() {
     capture_pageview: true,
     autocapture: true,
     person_profiles: 'identified_only',
+    // GDPR: nessuna cattura finché l'utente non acconsente nel banner.
+    opt_out_capturing_by_default: true,
+    opt_out_capturing_persistence_type: 'localStorage',
   })
   posthog = ph
+  // Applica il consenso eventualmente già concesso prima del load.
+  if (analyticsConsentGranted) {
+    posthog.opt_in_capturing()
+  }
 }
 
 export function track(event: string, payload: Record<string, unknown> = {}) {

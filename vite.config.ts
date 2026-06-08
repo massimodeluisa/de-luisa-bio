@@ -13,7 +13,7 @@ function bioRoutes(): string[] {
     .readdirSync(dir)
     .filter((file) => file.endsWith('.json'))
     .map((file) => file.replace(/\.json$/, ''))
-  return ['/', ...slugs.map((slug) => `/${slug}`)]
+  return ['/', '/privacy', '/cookie-policy', ...slugs.map((slug) => `/${slug}`)]
 }
 
 const config: UserConfig & { ssgOptions?: ViteSSGOptions } = {
