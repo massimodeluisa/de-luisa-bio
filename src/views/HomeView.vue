@@ -33,13 +33,28 @@ const tileAvatar = (b: IBio) =>
 const firstName = (name: string) => name.replace(/ De Luisa$/, '')
 const onOpen = (slug: string) => track('home_open_bio', { bio: slug })
 
+const homeDescription = 'La famiglia De Luisa — i nostri link, in un posto solo.'
+const homeOgImage = 'https://deluisa.bio/og/home.jpg'
+
 useSeoMeta({
   title: 'De Luisa',
-  description: 'La famiglia De Luisa — i nostri link, in un posto solo.',
+  description: homeDescription,
   ogTitle: 'De Luisa',
-  ogDescription: 'La famiglia De Luisa — i nostri link, in un posto solo.',
+  ogDescription: homeDescription,
   ogType: 'website',
+  ogSiteName: 'De Luisa',
   ogUrl: 'https://deluisa.bio/',
+  ogImage: homeOgImage,
+  ogImageWidth: '1200',
+  ogImageHeight: '630',
+  ogImageAlt: 'La famiglia De Luisa',
+  ogImageType: 'image/jpeg',
+  twitterCard: 'summary_large_image',
+  twitterTitle: 'De Luisa',
+  twitterDescription: homeDescription,
+  twitterImage: homeOgImage,
+  twitterImageAlt: 'La famiglia De Luisa',
+  robots: 'index, follow, max-image-preview:large',
 })
 
 const jsonLd = {

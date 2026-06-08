@@ -92,6 +92,15 @@ async function photoDataUri(avatar: string): Promise<string | null> {
   return `data:image/jpeg;base64,${jpeg.toString('base64')}`
 }
 
+async function tileDataUri(avatar: string, w: number, h: number): Promise<string | null> {
+  const file = resolveAvatarFile(avatar)
+  if (!file) {
+    return null
+  }
+  const jpeg = await sharp(file).resize(w, h, { fit: 'cover' }).jpeg({ quality: 82 }).toBuffer()
+  return `data:image/jpeg;base64,${jpeg.toString('base64')}`
+}
+
 function nameLines(name: string): string[] {
   const parts = name.trim().split(/\s+/)
   if (parts.length <= 1) {
@@ -186,13 +195,136 @@ async function buildCard(bio: IBio): Promise<ISatoriNode> {
   }
 }
 
-async function writeCard(node: ISatoriNode, slug: string): Promise<void> {
+async function buildHomeCard(allBios: IBio[]): Promise<ISatoriNode> {
+  const people = [...allBios].sort((a, b) => a.slug.localeCompare(b.slug))
+  const cols = 4
+  const rows = Math.max(1, Math.ceil(people.length / cols))
+  const tileW = Math.ceil(WIDTH / cols)
+  const tileH = Math.ceil(HEIGHT / rows)
+
+  const grid: ISatoriNode[] = []
+  for (let i = 0; i < cols * rows; i++) {
+    const bio = people[i % people.length]!
+    const photo = await tileDataUri(bio.avatar, tileW, tileH)
+    grid.push(
+      photo
+        ? { type: 'img', props: { src: photo, width: tileW, height: tileH, style: { objectFit: 'cover' } } }
+        : {
+            type: 'div',
+            props: {
+              style: {
+                display: 'flex',
+                width: `${tileW}px`,
+                height: `${tileH}px`,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: bio.theme.secondary,
+                color: readableOn(bio.theme.secondary),
+                fontSize: Math.round(tileH * 0.5),
+                fontWeight: 700,
+              },
+              children: (bio.name[0] ?? '?').toUpperCase(),
+            },
+          },
+    )
+  }
+
+  const band: ISatoriNode = {
+    type: 'div',
+    props: {
+      style: {
+        position: 'absolute',
+        top: '185px',
+        left: '0px',
+        width: `${WIDTH}px`,
+        height: '260px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(18,17,17,0.62)',
+        borderTop: '2px solid #b68370',
+        borderBottom: '2px solid #b68370',
+      },
+      children: [
+        text('DELUISA.BIO', {
+          fontFamily: 'JetBrains Mono',
+          fontSize: 24,
+          color: '#b68370',
+          letterSpacing: '6px',
+          marginBottom: '14px',
+        }),
+        text('De Luisa', {
+          fontFamily: 'Inter',
+          fontSize: 120,
+          fontWeight: 700,
+          color: '#ffffff',
+          letterSpacing: '-3px',
+          lineHeight: 1,
+        }),
+        text('I nostri link, in un posto solo.', {
+          fontFamily: 'JetBrains Mono',
+          fontSize: 26,
+          color: 'rgba(255,255,255,0.82)',
+          marginTop: '18px',
+        }),
+      ],
+    },
+  }
+
+  return {
+    type: 'div',
+    props: {
+      style: { position: 'relative', display: 'flex', width: '100%', height: '100%', backgroundColor: '#121111' },
+      children: [
+        {
+          type: 'div',
+          props: {
+            style: { display: 'flex', flexWrap: 'wrap', width: `${WIDTH}px`, height: `${HEIGHT}px` },
+            children: grid,
+          },
+        },
+        {
+          type: 'div',
+          props: {
+            style: {
+              position: 'absolute',
+              top: '0px',
+              left: '0px',
+              display: 'flex',
+              width: `${WIDTH}px`,
+              height: `${HEIGHT}px`,
+              backgroundColor: 'rgba(18,17,17,0.20)',
+            },
+          },
+        },
+        band,
+      ],
+    },
+  }
+}
+
+function renderPng(node: ISatoriNode): Promise<Buffer> {
   const element = node as unknown as Parameters<typeof satori>[0]
-  const svg = await satori(element, { width: WIDTH, height: HEIGHT, fonts: FONTS })
-  const png = new Resvg(svg, { fitTo: { mode: 'width', value: WIDTH } }).render().asPng()
+  return satori(element, { width: WIDTH, height: HEIGHT, fonts: FONTS }).then((svg) =>
+    Buffer.from(new Resvg(svg, { fitTo: { mode: 'width', value: WIDTH } }).render().asPng()),
+  )
+}
+
+async function writeCard(node: ISatoriNode, slug: string): Promise<void> {
   const file = join(OG_DIR, `${slug}.png`)
   mkdirSync(dirname(file), { recursive: true })
-  writeFileSync(file, png)
+  writeFileSync(file, await renderPng(node))
+}
+
+async function writeHomeCard(node: ISatoriNode): Promise<void> {
+  const jpeg = await sharp(await renderPng(node))
+    .flatten({ background: '#121111' })
+    .jpeg({ quality: 85, mozjpeg: true })
+    .toBuffer()
+  const file = join(OG_DIR, 'home.jpg')
+  mkdirSync(dirname(file), { recursive: true })
+  writeFileSync(file, jpeg)
 }
 
 if (!existsSync(DIST)) {
@@ -202,9 +334,10 @@ if (!existsSync(DIST)) {
 mkdirSync(OG_DIR, { recursive: true })
 
 const files = readdirSync(BIOS_DIR).filter((f) => f.endsWith('.json'))
-for (const file of files) {
-  const bio = JSON.parse(readFileSync(join(BIOS_DIR, file), 'utf8')) as IBio
+const allBios = files.map((file) => JSON.parse(readFileSync(join(BIOS_DIR, file), 'utf8')) as IBio)
+for (const bio of allBios) {
   await writeCard(await buildCard(bio), bio.slug)
 }
+await writeHomeCard(await buildHomeCard(allBios))
 
-console.log(`[og] generated ${files.length} OG card(s) in dist/og/`)
+console.log(`[og] generated ${allBios.length} OG card(s) + home mosaic in dist/og/`)
