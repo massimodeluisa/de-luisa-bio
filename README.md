@@ -23,7 +23,10 @@ Vue 3 + Vite 8 + Tailwind v4 + Pug + SCSS + i18next, prerendered with **vite-ssg
 ## Admin
 
 `deluisa.bio/admin` is a custom, client-only SPA (`src/views/AdminView.vue`). It talks only to the
-Cloudflare Worker (`worker/`), which is the trust boundary holding every secret:
+Cloudflare Worker (`worker/`, served at `https://api.deluisa.bio`), which is the trust boundary
+holding every secret. The Worker **must** be a subdomain of `deluisa.bio` (not its `*.workers.dev`
+URL): the SPA and API then share a registrable domain, so the httpOnly session cookie is first-party
+and Safari sends it — a cross-site `*.workers.dev` API gets its cookie blocked and every call 401s.
 
 - **Custom basic auth** — users are defined in the Worker's `ADMIN_USERS` secret. Each person logs
   in and is scoped to their own bio.
@@ -82,7 +85,8 @@ Two GitHub Actions workflows:
 
 - **`.github/workflows/deploy-site.yml`** — builds and deploys `dist/` to GitHub Pages on push to
   `master`. Public values come from repo **Variables** (`VITE_POSTHOG_KEY`, `VITE_POSTHOG_HOST`,
-  `VITE_ADMIN_API`). `public/CNAME` pins `deluisa.bio`; a `404.html` SPA fallback is added.
+  `VITE_ADMIN_API` = `https://api.deluisa.bio`). `public/CNAME` pins `deluisa.bio`; a `404.html` SPA
+  fallback is added.
 - **`.github/workflows/deploy-worker.yml`** — `wrangler deploy` for `worker/` on changes, pushing
   secrets from repo **Secrets**: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `SESSION_SECRET`,
   `ADMIN_GITHUB_TOKEN` (→ Worker `GITHUB_TOKEN`), `POSTHOG_READ_KEY`, `ADMIN_USERS`. Non-secret
@@ -94,10 +98,19 @@ Two GitHub Actions workflows:
 - **Apex `deluisa.bio` → GitHub Pages** (DNS-only / grey cloud, so GitHub issues the Let's Encrypt
   cert): `A` → `185.199.108.153`, `.109.153`, `.110.153`, `.111.153`; `CAA 0 issue "letsencrypt.org"`.
   Set + verify the custom domain in the repo's Pages settings.
-- **Wildcard `*.deluisa.bio` → redirect** (proxied / orange cloud, so a redirect rule fires and
-  Universal SSL covers it): `*.deluisa.bio` CNAME → `deluisa.bio`, plus a Cloudflare **Single/Dynamic
-  Redirect**: when `http.host matches "^([a-z0-9-]+)\.deluisa\.bio$"` → 301
-  `concat("https://deluisa.bio/", ${1})`, preserving path/query. One rule covers every person.
+- **Wildcard `*.deluisa.bio` → redirect** (proxied / orange cloud, so the redirect rule fires and
+  Universal SSL covers it): `*.deluisa.bio` CNAME → `deluisa.bio`, plus one Cloudflare **Dynamic
+  Redirect** rule using a **Wildcard pattern** (the Free plan can't use `regex_replace`):
+  - **When** → custom expression: `(http.request.full_uri wildcard "https://*.deluisa.bio/*" and http.host ne "api.deluisa.bio")`
+  - **Then** → Dynamic → `https://deluisa.bio/${1}`, status **301**, preserve query string.
+
+  `${1}` is the subdomain; **do not** append `${2}`/the path or a trailing `/` — vite-ssg emits flat
+  `dist/<slug>.html`, so GitHub Pages serves `/massimo` (200) but `/massimo/` 404s. The
+  `http.host ne "api.deluisa.bio"` guard stops the admin API host from being redirected (redirect
+  rules run before Worker routes). One rule covers every person.
+- **Admin API `api.deluisa.bio` → the Worker** — add it as a **Custom Domain** on the Worker
+  (Workers & Pages → `de-luisa-bio-admin` → Settings → Domains & Routes), which creates the proxied
+  DNS record + route. Same registrable domain as the site, so the session cookie is first-party.
 
 ## Adding a person
 
