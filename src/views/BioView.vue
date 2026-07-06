@@ -70,7 +70,9 @@ const seoTitle = computed(() => {
   return content.value?.eyebrow ? `${name} — ${content.value.eyebrow}` : name
 })
 const seoDescription = computed(
-  () => content.value?.tagline || `${bio.value?.name ?? 'De Luisa'} — links`,
+  () =>
+    content.value?.tagline ||
+    `Official websites, contact links and public social profiles for ${bio.value?.name ?? 'the De Luisa family'}.`,
 )
 const imageAlt = computed(() => `${bio.value?.name ?? 'De Luisa'} — De Luisa`)
 const siteCardDomain = computed(() => bio.value?.siteCard?.url.replace(/^https?:\/\//, '') ?? '')
@@ -106,13 +108,33 @@ const jsonLd = computed(() => {
   }
   return {
     '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: b.name,
-    url: canonical.value,
-    image: ogImage.value,
-    ...(content.value?.tagline ? { description: content.value.tagline } : {}),
-    ...(content.value?.eyebrow ? { jobTitle: content.value.eyebrow } : {}),
-    sameAs: b.socials.map((s) => s.href),
+    '@graph': [
+      {
+        '@type': 'ProfilePage',
+        '@id': `${canonical.value}#webpage`,
+        url: canonical.value,
+        name: seoTitle.value,
+        description: seoDescription.value,
+        dateModified: __BUILD_DATE__,
+        isPartOf: { '@id': `${SITE_ORIGIN}/#website` },
+        mainEntity: { '@id': `${canonical.value}#identity` },
+      },
+      {
+        '@type': b.slug === 'pasticceria' ? 'Organization' : 'Person',
+        '@id': `${canonical.value}#identity`,
+        name: b.name,
+        url: canonical.value,
+        image: ogImage.value,
+        ...(content.value?.tagline ? { description: content.value.tagline } : {}),
+        ...(content.value?.eyebrow && b.slug !== 'pasticceria'
+          ? { jobTitle: content.value.eyebrow }
+          : {}),
+        sameAs:
+          b.slug === 'pasticceria'
+            ? [b.site, ...b.socials.map((s) => s.href)].filter(Boolean)
+            : b.socials.map((s) => s.href),
+      },
+    ],
   }
 })
 
@@ -283,24 +305,30 @@ main.social-page.relative.flex.min-h-dvh.flex-col.items-center.overflow-x-clip.b
           p.font-mono.font-semibold.uppercase.text-site-secondary(class="text-[11px] tracking-[0.22em]") {{ content.eyebrow }}
         p.text-sm.leading-relaxed.text-pretty.text-site-muted(class="max-w-[19rem]") {{ content.tagline }}
 
-      ul.social-rise.m-0.flex.list-none.flex-wrap.items-center.justify-center.gap-2.p-0(
-        class="[animation-delay:0.08s]"
-      )
-        li(v-for="s in bio.socials" :key="s.id")
-          a.flex.size-11.items-center.justify-center.rounded-full.bg-white.shadow-sm.ring-1.transition-all(
-            :href="s.href"
-            :target="s.external ? '_blank' : undefined"
-            rel="me noopener noreferrer"
-            :aria-label="label(s)"
-            class="ring-black/5 active:scale-90 hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-site-secondary"
-            @click="onClick(s)"
-          )
-            span.social-icon(
-              :style="{ maskImage: `url(${iconUrl(s.icon)})`, WebkitMaskImage: `url(${iconUrl(s.icon)})`, backgroundColor: s.color, width: s.iconSize, height: s.iconSize }"
-              aria-hidden="true"
+      nav(aria-label="Social profiles")
+        h2.sr-only Social profiles
+        ul.social-rise.m-0.flex.list-none.flex-wrap.items-center.justify-center.gap-2.p-0(
+          class="[animation-delay:0.08s]"
+        )
+          li(v-for="s in bio.socials" :key="s.id")
+            a.flex.size-11.items-center.justify-center.rounded-full.bg-white.shadow-sm.ring-1.transition-all(
+              :href="s.href"
+              :target="s.external ? '_blank' : undefined"
+              rel="me noopener noreferrer"
+              :aria-label="label(s)"
+              class="ring-black/5 active:scale-90 hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-site-secondary"
+              @click="onClick(s)"
             )
+              span.social-icon(
+                :style="{ maskImage: `url(${iconUrl(s.icon)})`, WebkitMaskImage: `url(${iconUrl(s.icon)})`, backgroundColor: s.color, width: s.iconSize, height: s.iconSize }"
+                aria-hidden="true"
+              )
 
-    .social-rise.flex.w-full.flex-col.gap-3(class="[animation-delay:0.16s]")
+    nav.social-rise.flex.w-full.flex-col.gap-3(
+      aria-label="Profile links"
+      class="[animation-delay:0.16s]"
+    )
+      h2.sr-only Links and contact details
       a.group.block.w-full.overflow-hidden.border.border-site-border.no-underline.transition-all(
         v-if="bio.siteCard"
         :href="bio.siteCard.url"
@@ -364,14 +392,17 @@ main.social-page.relative.flex.min-h-dvh.flex-col.items-center.overflow-x-clip.b
         span.flex-1.text-center.text-sm.font-medium {{ label(s) }}
         span.text-base.opacity-40.transition-transform(aria-hidden="true" class="group-hover:translate-x-0.5") →
 
-  a.social-rise.pt-8.font-mono.no-underline.text-site-muted.transition-colors(
-    :href="LICENSE_URL"
-    target="_blank"
-    rel="noopener noreferrer"
-    :aria-label="t('footer.licenseAriaLabel')"
-    class="text-[10px] tracking-[0.2em] hover:text-site-heading [animation-delay:0.28s]"
-    @click="onClick({ id: 'license', href: LICENSE_URL })"
-  ) © {{ year }} {{ bio.name }}
+  footer.social-rise.pt-8.font-mono.text-site-muted(
+    class="text-[10px] tracking-[0.2em] [animation-delay:0.28s]"
+  )
+    a.no-underline.text-inherit.transition-colors(
+      :href="LICENSE_URL"
+      target="_blank"
+      rel="noopener noreferrer"
+      :aria-label="t('footer.licenseAriaLabel')"
+      class="hover:text-site-heading"
+      @click="onClick({ id: 'license', href: LICENSE_URL })"
+    ) © {{ year }} {{ bio.name }}
 
   transition(name="share")
     .fixed.inset-0.z-50.flex.items-center.justify-center.p-4(v-if="shareOpen")

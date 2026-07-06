@@ -1,0 +1,19 @@
+name: IsReady.AI Fix
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+      - name: AI readiness fix PR
+        uses: isreadyai/fix-action@v1
+        with:
+          url: https://deluisa.bio
+          api-key: ${{ secrets.ISREADYAI_API_KEY }}

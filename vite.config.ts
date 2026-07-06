@@ -19,6 +19,9 @@ function bioRoutes(): string[] {
 const config: UserConfig & { ssgOptions?: ViteSSGOptions } = {
   base: '/',
   build: { target: 'es2022' },
+  define: {
+    __BUILD_DATE__: JSON.stringify(new Date().toISOString().slice(0, 10)),
+  },
   plugins: [tailwindcss(), vue(), vueDevTools()],
   resolve: {
     alias: {

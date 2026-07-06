@@ -98,6 +98,12 @@ Two GitHub Actions workflows:
 - **Apex `deluisa.bio` → GitHub Pages** (DNS-only / grey cloud, so GitHub issues the Let's Encrypt
   cert): `A` → `185.199.108.153`, `.109.153`, `.110.153`, `.111.153`; `CAA 0 issue "letsencrypt.org"`.
   Set + verify the custom domain in the repo's Pages settings.
+  GitHub Pages does not expose project-level response-header configuration, so the application
+  cannot add `Strict-Transport-Security` itself. To serve HSTS, proxy the apex through Cloudflare
+  and enable **SSL/TLS → Edge Certificates → HTTP Strict Transport Security** with at least
+  `max-age=31536000`; enable `includeSubDomains` only after confirming every subdomain is HTTPS.
+  Keep the apex DNS-only until that proxy migration is complete—an HTML `<meta>` tag or a
+  repository `_headers` file is not a valid HSTS substitute.
 - **Wildcard `*.deluisa.bio` → redirect** (proxied / orange cloud, so the redirect rule fires and
   Universal SSL covers it): `*.deluisa.bio` CNAME → `deluisa.bio`, plus one Cloudflare **Dynamic
   Redirect** rule using a **Wildcard pattern** (the Free plan can't use `regex_replace`):

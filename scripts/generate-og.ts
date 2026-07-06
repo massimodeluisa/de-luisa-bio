@@ -83,21 +83,29 @@ function resolveAvatarFile(avatar: string): string | null {
   return null
 }
 
-async function photoDataUri(avatar: string): Promise<string | null> {
+async function photoDataUri(avatar: string, background: string): Promise<string | null> {
   const file = resolveAvatarFile(avatar)
   if (!file) {
     return null
   }
-  const jpeg = await sharp(file).resize(HALF, HEIGHT, { fit: 'cover' }).jpeg({ quality: 90 }).toBuffer()
+  const jpeg = await sharp(file)
+    .resize(HALF, HEIGHT, { fit: 'cover' })
+    .flatten({ background })
+    .jpeg({ quality: 90 })
+    .toBuffer()
   return `data:image/jpeg;base64,${jpeg.toString('base64')}`
 }
 
-async function tileDataUri(avatar: string, w: number, h: number): Promise<string | null> {
+async function tileDataUri(avatar: string, w: number, h: number, background: string): Promise<string | null> {
   const file = resolveAvatarFile(avatar)
   if (!file) {
     return null
   }
-  const jpeg = await sharp(file).resize(w, h, { fit: 'cover' }).jpeg({ quality: 82 }).toBuffer()
+  const jpeg = await sharp(file)
+    .resize(w, h, { fit: 'cover' })
+    .flatten({ background })
+    .jpeg({ quality: 82 })
+    .toBuffer()
   return `data:image/jpeg;base64,${jpeg.toString('base64')}`
 }
 
@@ -112,7 +120,7 @@ function nameLines(name: string): string[] {
 async function buildCard(bio: IBio): Promise<ISatoriNode> {
   const { theme } = bio
   const ink = readableOn(theme.primary)
-  const photo = await photoDataUri(bio.avatar)
+  const photo = await photoDataUri(bio.avatar, theme.primary)
   const eyebrow = bio.content.en.eyebrow
   const tagline = bio.content.en.tagline
 
@@ -205,7 +213,7 @@ async function buildHomeCard(allBios: IBio[]): Promise<ISatoriNode> {
   const grid: ISatoriNode[] = []
   for (let i = 0; i < cols * rows; i++) {
     const bio = people[i % people.length]!
-    const photo = await tileDataUri(bio.avatar, tileW, tileH)
+    const photo = await tileDataUri(bio.avatar, tileW, tileH, bio.theme.primary)
     grid.push(
       photo
         ? { type: 'img', props: { src: photo, width: tileW, height: tileH, style: { objectFit: 'cover' } } }
