@@ -5,6 +5,7 @@ import BioView from '@/views/BioView.vue'
 import LegalView from '@/views/LegalView.vue'
 
 const AdminView = () => import('@/views/AdminView.vue')
+const ExportView = () => import('@/views/ExportView.vue')
 
 export const routes: RouteRecordRaw[] = [
   { path: '/', name: 'home', component: HomeView },
@@ -17,5 +18,7 @@ export const routes: RouteRecordRaw[] = [
     component: LegalView,
     props: { kind: 'cookie' },
   },
+  // "/:slug/export" must precede the "/:slug" catch-all, otherwise it resolves as a bio slug.
+  { path: '/:slug/export', name: 'bio-export', component: ExportView },
   { path: '/:slug', name: 'bio', component: BioView },
 ]

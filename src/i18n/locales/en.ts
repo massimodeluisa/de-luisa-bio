@@ -28,6 +28,26 @@ export const en = {
     copyright: '© 2026 Massimo De Luisa',
     licenseAriaLabel: 'License (opens in new tab)',
   },
+  export: {
+    title: 'Export avatar',
+    background: 'Background',
+    bgPrimary: 'Primary',
+    bgSecondary: 'Secondary',
+    bgTransparent: 'Transparent',
+    shape: 'Shape',
+    shapeCircle: 'Circle',
+    shapeRounded: 'Rounded',
+    shapeSquare: 'Square',
+    border: 'Border',
+    borderNone: 'None',
+    borderTheme: 'Theme',
+    size: 'Size',
+    format: 'Format',
+    download: 'Download',
+    share: 'Share',
+    jpgNoTransparency: 'JPG does not support transparency',
+    back: 'Back',
+  },
 } as const
 
 export type TMessages = typeof en
