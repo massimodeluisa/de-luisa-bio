@@ -34,10 +34,7 @@ export const it = {
     bgPrimary: 'Primario',
     bgSecondary: 'Secondario',
     bgTransparent: 'Trasparente',
-    shape: 'Forma',
-    shapeCircle: 'Cerchio',
-    shapeRounded: 'Arrotondato',
-    shapeSquare: 'Quadrato',
+    cornerRadius: 'Raggio angoli',
     border: 'Bordo',
     borderNone: 'Nessuno',
     borderTheme: 'Tema',
@@ -46,6 +43,8 @@ export const it = {
     download: 'Scarica',
     share: 'Condividi',
     jpgNoTransparency: 'Il JPG non supporta la trasparenza',
+    upscaleHint:
+      'Le dimensioni oltre la risoluzione della foto sono disabilitate per evitare immagini sgranate.',
     back: 'Indietro',
   },
 } as const

@@ -10,7 +10,6 @@ import { FONT_STACK, loadFont } from '@/lib/load-font'
 import { useI18n } from '@/i18n'
 
 type TBackground = 'primary' | 'secondary' | 'transparent'
-type TShape = 'circle' | 'rounded' | 'square'
 type TBorder = 'none' | 'theme' | 'primary' | 'secondary'
 type TFormat = 'webp' | 'png' | 'jpg'
 
@@ -26,7 +25,7 @@ const { t } = useI18n()
 const { slug, bio, notFound } = useCurrentBio()
 
 const background = ref<TBackground>('primary')
-const shape = ref<TShape>('circle')
+const cornerRadius = ref(100)
 const border = ref<TBorder>('none')
 const size = ref<number>(1024)
 const format = ref<TFormat>('png')
@@ -94,22 +93,38 @@ const srcFull = computed(() => {
 const photoImg = ref<HTMLImageElement | null>(null)
 const previewCanvas = ref<HTMLCanvasElement | null>(null)
 
+const maxNative = computed(() => {
+  const img = photoImg.value
+  return img ? Math.min(img.naturalWidth, img.naturalHeight) : null
+})
+const anySizeDisabled = computed(() => {
+  const max = maxNative.value
+  return max !== null && SIZE_OPTIONS.some((opt) => opt > max)
+})
+
+// Clamp the selected export size down when the loaded photo can't fill it without upscaling.
+watch(maxNative, (max) => {
+  if (max === null || size.value <= max) {
+    return
+  }
+  const allowed = SIZE_OPTIONS.filter((opt) => opt <= max)
+  size.value = allowed[allowed.length - 1] ?? SIZE_OPTIONS[0]
+})
+
 function renderTo(canvas: HTMLCanvasElement, px: number): void {
+  canvas.width = px
+  canvas.height = px
   const b = bio.value
   const ctx = canvas.getContext('2d')
   if (!b || !ctx) {
     return
   }
+  ctx.imageSmoothingEnabled = true
+  ctx.imageSmoothingQuality = 'high'
   const theme = b.theme
   const REF = 240
   const scale = px / REF
-  const shapeValue = shape.value
-  const radius =
-    shapeValue === 'circle'
-      ? px / 2
-      : shapeValue === 'square'
-        ? 0
-        : Math.min(theme.avatarRadius, REF / 2) * scale
+  const radius = (cornerRadius.value / 100) * (px / 2)
 
   ctx.clearRect(0, 0, px, px)
   ctx.save()
@@ -193,7 +208,7 @@ const filename = computed(() => {
     return ''
   }
   const borderSuffix = border.value === 'none' ? '' : `-${border.value}-border`
-  return `${b.slug}-avatar-${size.value}px-${background.value}-${shape.value}${borderSuffix}.${format.value}`
+  return `${b.slug}-avatar-${size.value}px-${background.value}-r${cornerRadius.value}${borderSuffix}.${format.value}`
 })
 
 function makeBlob(): Promise<Blob | null> {
@@ -207,7 +222,7 @@ function makeBlob(): Promise<Blob | null> {
     canvas.height = size.value
     renderTo(canvas, size.value)
     const mime = mimeFor(format.value)
-    const quality = format.value === 'png' ? undefined : 0.92
+    const quality = format.value === 'png' ? undefined : 0.95
     canvas.toBlob((blob) => resolve(blob), mime, quality)
   })
 }
@@ -218,7 +233,7 @@ function trackPayload() {
     format: format.value,
     size: size.value,
     background: background.value,
-    shape: shape.value,
+    cornerRadius: cornerRadius.value,
     border: border.value,
   }
 }
@@ -272,11 +287,11 @@ main.export-page.relative.flex.min-h-dvh.flex-col.items-center.gap-8.overflow-x-
     ) ← {{ bio.name }}
     h1.text-2xl.font-semibold.text-site-heading {{ t('export.title', 'Export avatar') }}
 
-  .preview-frame.relative.mx-auto.flex.items-center.justify-center.overflow-hidden.rounded-2xl.border.border-site-border(
+  .preview-frame.relative.mx-auto.flex.items-center.justify-center(
     class="size-64 max-w-[20rem]"
     :class="{ checkerboard: background === 'transparent' }"
   )
-    canvas.size-full(ref="previewCanvas" width="512" height="512")
+    canvas.size-full(ref="previewCanvas")
 
   .flex.w-full.max-w-md.flex-col.gap-6
     section
@@ -313,29 +328,17 @@ main.export-page.relative.flex.min-h-dvh.flex-col.items-center.gap-8.overflow-x-
       p.mt-2.text-xs.text-site-muted(v-if="format === 'jpg'") {{ t('export.jpgNoTransparency', 'JPG does not support transparency') }}
 
     section
-      h2.mb-2.font-mono.text-site-muted(class="text-[11px] uppercase tracking-[0.18em]") {{ t('export.shape', 'Shape') }}
-      .flex.flex-wrap.gap-2
-        button.rounded-full.border.px-4.py-2.text-sm.font-medium(
-          type="button"
-          :aria-pressed="shape === 'circle'"
-          :class="optionClass(shape === 'circle')"
-          class="transition active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-site-secondary"
-          @click="shape = 'circle'"
-        ) {{ t('export.shapeCircle', 'Circle') }}
-        button.rounded-full.border.px-4.py-2.text-sm.font-medium(
-          type="button"
-          :aria-pressed="shape === 'rounded'"
-          :class="optionClass(shape === 'rounded')"
-          class="transition active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-site-secondary"
-          @click="shape = 'rounded'"
-        ) {{ t('export.shapeRounded', 'Rounded') }}
-        button.rounded-full.border.px-4.py-2.text-sm.font-medium(
-          type="button"
-          :aria-pressed="shape === 'square'"
-          :class="optionClass(shape === 'square')"
-          class="transition active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-site-secondary"
-          @click="shape = 'square'"
-        ) {{ t('export.shapeSquare', 'Square') }}
+      h2.mb-2.font-mono.text-site-muted(class="text-[11px] uppercase tracking-[0.18em]") {{ t('export.cornerRadius', 'Corner radius') }}
+      .flex.items-center.gap-3
+        input.w-full(
+          type="range"
+          min="0"
+          max="100"
+          step="1"
+          v-model.number="cornerRadius"
+          style="accent-color: var(--site-secondary)"
+        )
+        span.w-12.shrink-0.text-right.text-sm.text-site-muted {{ cornerRadius }}%
 
     section
       h2.mb-2.font-mono.text-site-muted(class="text-[11px] uppercase tracking-[0.18em]") {{ t('export.border', 'Border') }}
@@ -382,11 +385,13 @@ main.export-page.relative.flex.min-h-dvh.flex-col.items-center.gap-8.overflow-x-
           v-for="opt in SIZE_OPTIONS"
           :key="opt"
           type="button"
+          :disabled="maxNative !== null && opt > maxNative"
           :aria-pressed="size === opt"
           :class="optionClass(size === opt)"
-          class="transition active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-site-secondary"
+          class="transition active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-site-secondary"
           @click="size = opt"
         ) {{ opt }}px
+      p.mt-2.text-xs.text-site-muted(v-if="anySizeDisabled") {{ t('export.upscaleHint', 'Sizes above the photo resolution are disabled to avoid blurry upscaling.') }}
 
     section
       h2.mb-2.font-mono.text-site-muted(class="text-[11px] uppercase tracking-[0.18em]") {{ t('export.format', 'Format') }}
