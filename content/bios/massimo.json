@@ -83,7 +83,13 @@
   "socials": [
     {
       "id": "github",
-      "label": { "en": "GitHub", "it": "GitHub", "ja": "GitHub", "ru": "GitHub", "uk": "GitHub" },
+      "label": {
+        "en": "GitHub",
+        "it": "GitHub",
+        "ja": "GitHub",
+        "ru": "GitHub",
+        "uk": "GitHub"
+      },
       "href": "https://github.com/massimodeluisa",
       "icon": "mdi:github",
       "color": "#181717",
@@ -108,7 +114,13 @@
     },
     {
       "id": "x",
-      "label": { "en": "X", "it": "X", "ja": "X", "ru": "X", "uk": "X" },
+      "label": {
+        "en": "X",
+        "it": "X",
+        "ja": "X",
+        "ru": "X",
+        "uk": "X"
+      },
       "href": "https://x.com/massimodeluisa",
       "icon": "simple-icons:x",
       "color": "#000000",
@@ -133,7 +145,13 @@
     },
     {
       "id": "line",
-      "label": { "en": "Line", "it": "Line", "ja": "LINE", "ru": "LINE", "uk": "LINE" },
+      "label": {
+        "en": "Line",
+        "it": "Line",
+        "ja": "LINE",
+        "ru": "LINE",
+        "uk": "LINE"
+      },
       "href": "https://line.me/ti/p/KrsSKLsYE9",
       "icon": "fa-brands:line",
       "color": "#06C755",
@@ -169,6 +187,16 @@
       "color": "#1877F2",
       "external": true,
       "iconSize": "2rem"
+    },
+    {
+      "id": "whatsapp",
+      "label": {
+        "en": "WhatsApp",
+        "it": "WhatsApp"
+      },
+      "href": "https://wa.me/16286290656",
+      "icon": "mdi:whatsapp",
+      "color": "#25d366"
     }
   ]
 }
