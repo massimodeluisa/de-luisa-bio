@@ -104,6 +104,11 @@ git push origin master
 
 Or re-run workflows manually: **Actions → Deploy site / Deploy worker → Run workflow**.
 
+If `Deploy site` hangs on `deploy-pages` / times out after ~10 minutes, do **not** cancel and
+re-push repeatedly — cancelling an in-flight Pages deploy can leave the environment stuck. Wait
+for the run to finish (or cancel once), then **Re-run failed jobs**. The workflow uses
+`concurrency.cancel-in-progress: false` so a new push will not abort a deploy already running.
+
 Verify:
 
 - `https://YOUR_DOMAIN/` — home directory

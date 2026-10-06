@@ -105,8 +105,10 @@ bun lint
 
 Two GitHub Actions workflows:
 
+- **`.github/workflows/ci.yml`** — type-check, lint and build on PRs / pushes (does not deploy).
 - **`.github/workflows/deploy-site.yml`** — builds and deploys `dist/` to GitHub Pages on push to
-  `master`.
+  `master`. Uses a non-cancelling concurrency group so an in-flight Pages deploy is never aborted
+  mid-flight (that previously left Pages stuck until `deploy-pages` timed out).
 - **`.github/workflows/deploy-worker.yml`** — `wrangler deploy` for `worker/` on changes.
 
 Full DNS, Pages, Worker custom-domain and subdomain redirect steps: **[DEPLOY.md](./DEPLOY.md)**.
