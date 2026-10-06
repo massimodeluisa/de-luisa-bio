@@ -3,11 +3,13 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import type { IBio } from '../src/content/bio'
+import type { ISiteConfig } from '../src/content/site'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const DIST = join(ROOT, 'dist')
 const BIOS_DIR = join(ROOT, 'content/bios')
-const ORIGIN = 'https://deluisa.bio'
+const site = JSON.parse(readFileSync(join(ROOT, 'content/site.json'), 'utf8')) as ISiteConfig
+const ORIGIN = site.origin.replace(/\/$/, '')
 
 if (!existsSync(DIST)) {
   console.error('[seo] dist/ not found — run after `vite-ssg build`.')
@@ -31,9 +33,9 @@ const sitemap =
 writeFileSync(join(DIST, 'sitemap.xml'), sitemap)
 
 const indexLines = [
-  '# De Luisa',
+  `# ${site.seo.llmsTitle}`,
   '',
-  '> The De Luisa family link-in-bio. One page per person with their links and social profiles. Canonical URLs are https://deluisa.bio/<slug>.',
+  `> ${site.seo.llmsBlurb} Canonical URLs are ${ORIGIN}/<slug>.`,
   '',
   '## People',
   ...bios.map((b) => {
@@ -77,9 +79,9 @@ const fullSections = bios.map((b) => {
 })
 
 const full = [
-  '# De Luisa — full content for LLMs',
+  `# ${site.seo.llmsTitle} — full content for LLMs`,
   '',
-  '> One section per family member with their role, tagline, links and social profiles.',
+  '> One section per profile with role, tagline, links and social profiles.',
   '',
   fullSections.join('\n\n'),
   '',

@@ -4,10 +4,11 @@ import { useHead, useSeoMeta } from '@unhead/vue'
 import { useFavicon } from '@vueuse/core'
 
 import type { IBio } from '@/content/bio'
+import { site, siteOrigin } from '@/content/site'
 import { bios } from '@/composables/use-bios'
 import { track } from '@/composables/use-analytics'
 import { avatarSources } from '@/lib/avatar'
-import { DEFAULT_FAVICON, letterGlyphDataUri } from '@/lib/letter-glyph'
+import { FAVICON_RADIUS, letterGlyphDataUri } from '@/lib/letter-glyph'
 
 function shuffle(input: IBio[]): IBio[] {
   const a = input.slice()
@@ -30,7 +31,8 @@ const tileAvatar = (b: IBio) =>
     src: letterGlyphDataUri(b.name[0], b.theme.glyphColor ?? b.theme.primary),
   }
 
-const firstName = (name: string) => name.replace(/ De Luisa$/, '')
+const firstName = (name: string) =>
+  site.nameSuffix ? name.replace(new RegExp(`${site.nameSuffix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`), '') : name.split(' ')[0] || name
 const onOpen = (slug: string) => track('home_open_bio', { bio: slug })
 
 const sortedBios = Object.values(bios).sort((a, b) => a.name.localeCompare(b.name))
@@ -61,30 +63,29 @@ const profileDescription = (bio: IBio) => {
   return `${bio.name}'s directory page brings together ${destinations}.${role}${website} The entry is generated from the same repository data used by the visible cards, metadata and machine-readable profile information.`
 }
 
-const homeTitle = 'De Luisa Family — Official Links'
-const homeDescription =
-  'Official De Luisa family directory with profile pages, websites, contact links and published public social destinations.'
-const homeOgImage = 'https://deluisa.bio/og/home.jpg'
+const homeTitle = site.home.title
+const homeDescription = site.home.description
+const homeOgImage = `${siteOrigin}/og/home.jpg`
 
 useSeoMeta({
   title: homeTitle,
   description: homeDescription,
-  author: 'De Luisa family',
+  author: site.home.author,
   ogTitle: homeTitle,
   ogDescription: homeDescription,
   ogType: 'website',
-  ogSiteName: 'De Luisa',
-  ogUrl: 'https://deluisa.bio/',
+  ogSiteName: site.brand,
+  ogUrl: `${siteOrigin}/`,
   ogImage: homeOgImage,
   ogImageWidth: '1200',
   ogImageHeight: '630',
-  ogImageAlt: 'La famiglia De Luisa',
+  ogImageAlt: site.home.ogImageAlt,
   ogImageType: 'image/jpeg',
   twitterCard: 'summary_large_image',
   twitterTitle: homeTitle,
   twitterDescription: homeDescription,
   twitterImage: homeOgImage,
-  twitterImageAlt: 'La famiglia De Luisa',
+  twitterImageAlt: site.home.ogImageAlt,
   robots: 'index, follow, max-image-preview:large',
 })
 
@@ -93,30 +94,30 @@ const jsonLd = {
   '@graph': [
     {
       '@type': 'WebSite',
-      '@id': 'https://deluisa.bio/#website',
-      url: 'https://deluisa.bio/',
-      name: 'De Luisa family directory',
+      '@id': `${siteOrigin}/#website`,
+      url: `${siteOrigin}/`,
+      name: site.home.collectionName,
       description: homeDescription,
       inLanguage: ['en', 'it'],
     },
     {
       '@type': 'CollectionPage',
-      '@id': 'https://deluisa.bio/#webpage',
+      '@id': `${siteOrigin}/#webpage`,
       name: homeTitle,
       description: homeDescription,
-      url: 'https://deluisa.bio/',
+      url: `${siteOrigin}/`,
       dateModified: __BUILD_DATE__,
-      isPartOf: { '@id': 'https://deluisa.bio/#website' },
-      about: sortedBios.map((b) => ({ '@id': `https://deluisa.bio/#${b.slug}` })),
+      isPartOf: { '@id': `${siteOrigin}/#website` },
+      about: sortedBios.map((b) => ({ '@id': `${siteOrigin}/#${b.slug}` })),
       mainEntity: {
         '@type': 'ItemList',
         numberOfItems: profileCount,
         itemListElement: sortedBios.map((b, i) => ({
           '@type': 'ListItem',
           position: i + 1,
-          url: `https://deluisa.bio/${b.slug}`,
+          url: `${siteOrigin}/${b.slug}`,
           name: b.name,
-          item: { '@id': `https://deluisa.bio/#${b.slug}` },
+          item: { '@id': `${siteOrigin}/#${b.slug}` },
         })),
       },
     },
@@ -124,24 +125,24 @@ const jsonLd = {
       b.slug === 'pasticceria'
         ? {
             '@type': 'Organization',
-            '@id': 'https://deluisa.bio/#pasticceria',
+            '@id': `${siteOrigin}/#pasticceria`,
             name: b.name,
             url: b.site,
-            mainEntityOfPage: `https://deluisa.bio/${b.slug}`,
+            mainEntityOfPage: `${siteOrigin}/${b.slug}`,
             logo: {
               '@type': 'ImageObject',
-              url: 'https://deluisa.bio/media/pasticceria-600.webp',
+              url: `${siteOrigin}/media/pasticceria-600.webp`,
             },
-            image: 'https://deluisa.bio/media/pasticceria-2000.webp',
+            image: `${siteOrigin}/media/pasticceria-2000.webp`,
             description: b.content.en.eyebrow,
             sameAs: [b.site, ...b.socials.map((s) => s.href)].filter(Boolean),
           }
         : {
             '@type': 'Person',
-            '@id': `https://deluisa.bio/#${b.slug}`,
+            '@id': `${siteOrigin}/#${b.slug}`,
             name: b.name,
-            url: `https://deluisa.bio/${b.slug}`,
-            image: `https://deluisa.bio/media/${b.slug}-600.webp`,
+            url: `${siteOrigin}/${b.slug}`,
+            image: `${siteOrigin}/media/${b.slug}-600.webp`,
             ...(b.content.en.eyebrow ? { jobTitle: b.content.en.eyebrow } : {}),
             ...(b.content.en.tagline ? { description: b.content.en.tagline } : {}),
             sameAs: b.socials.map((s) => s.href),
@@ -151,11 +152,11 @@ const jsonLd = {
 }
 useHead({
   htmlAttrs: { lang: 'en' },
-  link: [{ rel: 'canonical', href: 'https://deluisa.bio/' }],
+  link: [{ rel: 'canonical', href: `${siteOrigin}/` }],
   script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(jsonLd) }],
 })
 
-useFavicon(DEFAULT_FAVICON)
+useFavicon(letterGlyphDataUri(site.brand[0] || 'B', '#b68370', FAVICON_RADIUS))
 </script>
 
 <template lang="pug">
@@ -165,12 +166,12 @@ main.relative.w-full.bg-site-background.text-site-text
   )
     h1.rounded-full.border.px-3.py-2.font-sans.text-xs.font-semibold.tracking-tight.text-white.backdrop-blur-xl(
       class="border-white/15 bg-black/45 shadow-lg shadow-black/15 sm:px-4 sm:text-sm"
-    ) De Luisa family
+    ) {{ site.home.author }}
 
   section#profiles.scroll-mt-24.flex.min-h-dvh.flex-wrap.content-stretch(
     aria-labelledby="profiles-heading"
   )
-    h2#profiles-heading.sr-only De Luisa family profiles
+    h2#profiles-heading.sr-only {{ site.brand }} profiles
     router-link.tile.group.relative.grow.overflow-hidden.no-underline(
       v-for="p in people"
       :key="p.slug"
@@ -199,9 +200,9 @@ main.relative.w-full.bg-site-background.text-site-text
   article#about.machine-readable-only(data-machine-readable="true")
     div
       p.font-mono.text-xs.font-semibold.uppercase.tracking-widest.text-site-secondary Family directory
-      h2.mt-3.text-3xl.font-semibold.tracking-tight.text-site-heading(class="sm:text-4xl") About deluisa.bio
+      h2.mt-3.text-3xl.font-semibold.tracking-tight.text-site-heading(class="sm:text-4xl") About {{ site.domain }}
       p.mt-6
-        | deluisa.bio is the shared link directory for the De Luisa family. It gives each listed
+        | {{ site.domain }} is the shared link directory for {{ site.home.author }}. It gives each listed
         | person a stable page for the public websites, contact methods and social profiles they
         | have chosen to publish. The home page is an index: select a portrait to open that
         | profile, or continue through this guide for a text description of the directory. The
@@ -215,7 +216,7 @@ main.relative.w-full.bg-site-background.text-site-text
         | destinations. These figures are calculated from the public profile data during the site
         | build; they are inventory counts, not audience or performance claims.
       p
-        | Every portrait links to a canonical address under deluisa.bio. A profile may include a
+        | Every portrait links to a canonical address under {{ site.domain }}. A profile may include a
         | personal or business website, email or telephone details, a downloadable resource, a
         | booking link, and public accounts on services such as Instagram, Facebook, LinkedIn,
         | GitHub, X, Telegram or LINE. Not every person uses every service. An omitted field means
@@ -224,7 +225,7 @@ main.relative.w-full.bg-site-background.text-site-text
       .machine-readable-only(data-machine-readable="true")
         h3 Directory at a glance
         table
-          caption Counts calculated from the public De Luisa profile records
+          caption Counts calculated from the public {{ site.brand }} profile records
           thead
             tr
               th(scope="col") Public record type
@@ -273,7 +274,7 @@ main.relative.w-full.bg-site-background.text-site-text
         | Start with the profile whose name or portrait you recognize. Each profile page places
         | the person's or business's chosen identity at the top, followed by the destinations
         | available for that record. Buttons use descriptive labels, and external destinations
-        | open at their published URLs. The share control copies the canonical deluisa.bio address
+        | open at their published URLs. The share control copies the canonical {{ site.domain }} address
         | rather than a temporary browser state, making the profile suitable for messages,
         | contact cards and printed material.
       p
@@ -337,7 +338,7 @@ main.relative.w-full.bg-site-background.text-site-text
         | The public profile owner is the source of each editable record. Because destinations can
         | change, the canonical profile page should be treated as the current directory entry.
         | External services control their own pages, availability and privacy practices. A link
-        | from deluisa.bio indicates that the destination is published in the relevant profile
+        | from {{ site.domain }} indicates that the destination is published in the relevant profile
         | record; it does not imply ownership of the external platform or verification by that
         | platform.
 
@@ -362,20 +363,20 @@ main.relative.w-full.bg-site-background.text-site-text
           dt
             h3.text-lg.font-semibold.text-site-heading Which URL should be shared?
           dd.mt-2.ml-0.text-site-muted
-            | Share the canonical path shown on the profile, such as deluisa.bio/massimo. Canonical
+            | Share the canonical path shown on the profile, such as {{ site.domain }}/massimo. Canonical
             | metadata and the sitemap use the same path-based addresses for consistent discovery.
 
   noscript
     section.mx-auto.max-w-4xl.px-6.pb-12(aria-label="No JavaScript notice")
       h2.text-xl.font-semibold.text-site-heading JavaScript is optional
       p.mt-3.text-site-muted
-        | The De Luisa directory and all profile links are included in this HTML document. You can
+        | The {{ site.brand }} directory and all profile links are included in this HTML document. You can
         | browse the portraits, directory entries, source notes and legal pages without enabling
         | JavaScript.
 
 footer.border-t.border-site-border.bg-site-background.px-6.py-8.text-sm.text-site-muted
   .mx-auto.flex.max-w-4xl.flex-col.justify-between.gap-4(class="sm:flex-row sm:items-center")
-    p.m-0 © {{ new Date().getFullYear() }} De Luisa
+    p.m-0 © {{ new Date().getFullYear() }} {{ site.copyrightOwner }}
     nav(aria-label="Legal and technical links")
       ul.m-0.flex.list-none.flex-wrap.gap-x-5.gap-y-2.p-0
         li

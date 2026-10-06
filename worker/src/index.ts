@@ -81,7 +81,7 @@ function ghHeaders(env: Env): Record<string, string> {
   return {
     Authorization: `Bearer ${env.GITHUB_TOKEN}`,
     Accept: 'application/vnd.github+json',
-    'User-Agent': 'de-luisa-bio-admin',
+    'User-Agent': 'agnostic-bio-admin',
     'X-GitHub-Api-Version': '2022-11-28',
   }
 }
@@ -222,6 +222,37 @@ async function handleLogin(request: Request, env: Env): Promise<Response> {
   })
 }
 
+async function handleGetBio(env: Env, session: ISessionPayload): Promise<Response> {
+  if (!SLUG_RE.test(session.slug)) {
+    return json({ error: 'invalid session' }, env, 400)
+  }
+  try {
+    const bio = (await ghGetJson(env, `content/bios/${session.slug}.json`)) as { slug?: string }
+    // Defense in depth: never return another slug even if the file were wrong.
+    if (bio?.slug && bio.slug !== session.slug) {
+      return json({ error: 'forbidden: bio slug mismatch' }, env, 403)
+    }
+    return json({ ...bio, slug: session.slug }, env)
+  } catch (err) {
+    return json({ error: String(err) }, env, 502)
+  }
+}
+
+async function ghGetJson(env: Env, path: string): Promise<unknown> {
+  const url = `https://api.github.com/repos/${env.GITHUB_REPO}/contents/${path}?ref=${env.GITHUB_BRANCH}`
+  const res = await fetch(url, { headers: ghHeaders(env) })
+  if (!res.ok) {
+    throw new Error(`GitHub GET ${path} failed: ${res.status}`)
+  }
+  const body = (await res.json()) as { content?: string; encoding?: string }
+  if (!body.content) {
+    throw new Error(`GitHub GET ${path} returned no content`)
+  }
+  const bin = atob(body.content.replace(/\n/g, ''))
+  const text = new TextDecoder().decode(Uint8Array.from(bin, (c) => c.charCodeAt(0)))
+  return JSON.parse(text)
+}
+
 async function handleBio(request: Request, env: Env, session: ISessionPayload): Promise<Response> {
   const bio = (await request.json().catch(() => null)) as { slug?: string } | null
   if (!bio || typeof bio.slug !== 'string') {
@@ -233,11 +264,13 @@ async function handleBio(request: Request, env: Env, session: ISessionPayload): 
   if (!SLUG_RE.test(bio.slug)) {
     return json({ error: 'invalid slug' }, env, 400)
   }
-  const content = `${JSON.stringify(bio, null, 2)}\n`
+  // Force the path from the session — never from the request body alone.
+  const scopedSlug = session.slug
+  const content = `${JSON.stringify({ ...bio, slug: scopedSlug }, null, 2)}\n`
   await storage(env).putFile(
-    `content/bios/${bio.slug}.json`,
+    `content/bios/${scopedSlug}.json`,
     toBase64(new TextEncoder().encode(content)),
-    `chore(bio): update ${bio.slug} via admin`,
+    `chore(bio): update ${scopedSlug} via admin`,
   )
   return json({ ok: true }, env)
 }
@@ -309,6 +342,9 @@ async function route(request: Request, env: Env): Promise<Response> {
     }
     if (pathname === '/stats' && request.method === 'GET') {
       return await handleStats(request, env, session)
+    }
+    if (pathname === '/bio' && request.method === 'GET') {
+      return await handleGetBio(env, session)
     }
     if (pathname === '/bio' && request.method === 'POST') {
       return await handleBio(request, env, session)
