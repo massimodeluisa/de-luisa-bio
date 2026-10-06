@@ -197,6 +197,16 @@
       "href": "https://wa.me/16286290656",
       "icon": "mdi:whatsapp",
       "color": "#25d366"
+    },
+    {
+      "id": "discord",
+      "label": {
+        "en": "Discord",
+        "it": "Discord"
+      },
+      "href": "https://discord.com/users/566241728542146590",
+      "icon": "mdi:discord",
+      "color": "#5865f2"
     }
   ]
 }
