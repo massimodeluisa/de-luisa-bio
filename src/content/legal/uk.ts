@@ -30,7 +30,7 @@ export const uk: LegalContent = {
       {
         heading: 'Контролер даних',
         body: [
-          'Цей вебсайт (deluisa.bio) керується родиною De Luisa, яка є контролером даних щодо описаної тут обробки. З будь-яким запитом щодо конфіденційності ви можете звернутися на massimodeluisa@me.com.',
+          'Цей вебсайт ({{domain}}) керується {{brand}}, яка є контролером даних щодо описаної тут обробки. З будь-яким запитом щодо конфіденційності ви можете звернутися на {{email}}.',
         ],
       },
       {
@@ -107,7 +107,7 @@ export const uk: LegalContent = {
         rows: [
           {
             name: 'cc_cookie',
-            provider: 'deluisa.bio',
+            provider: '{{domain}}',
             purpose: 'Зберігає ваш вибір згоди на файли cookie.',
             duration: '6 місяців',
           },

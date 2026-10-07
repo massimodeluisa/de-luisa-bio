@@ -15,5 +15,5 @@ export function letterGlyphDataUri(letter: string | undefined, color: string, ra
 
 export const FAVICON_RADIUS = 22
 
-/** Site-default favicon — the family "D" glyph on the shared secondary colour. */
-export const DEFAULT_FAVICON = letterGlyphDataUri('D', '#b68370', FAVICON_RADIUS)
+/** Site-default favicon — Open Bio "O" glyph (instances can override via site brand). */
+export const DEFAULT_FAVICON = letterGlyphDataUri('O', '#3d7a5c', FAVICON_RADIUS)

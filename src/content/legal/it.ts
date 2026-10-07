@@ -30,7 +30,7 @@ export const it: LegalContent = {
       {
         heading: 'Titolare del trattamento',
         body: [
-          'Questo sito (deluisa.bio) è gestito dalla famiglia De Luisa, titolare del trattamento dei dati qui descritto. Per qualsiasi richiesta in materia di privacy puoi scrivere a massimodeluisa@me.com.',
+          'Questo sito ({{domain}}) è gestito da {{brand}}, titolare del trattamento dei dati qui descritto. Per qualsiasi richiesta in materia di privacy puoi scrivere a {{email}}.',
         ],
       },
       {
@@ -107,7 +107,7 @@ export const it: LegalContent = {
         rows: [
           {
             name: 'cc_cookie',
-            provider: 'deluisa.bio',
+            provider: '{{domain}}',
             purpose: 'Memorizza le tue scelte di consenso ai cookie.',
             duration: '6 mesi',
           },
