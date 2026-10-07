@@ -11,22 +11,21 @@ permissions:
   pages: write
   id-token: write
 
+# Do not cancel an in-flight Pages deploy — cancel-in-progress:true can leave
+# GitHub Pages stuck in deployment_in_progress until deploy-pages times out.
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
-  build-deploy:
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v6
 
       - uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.3.6
+          bun-version: 1.3.14
 
       - run: bun install --frozen-lockfile
 
@@ -38,12 +37,25 @@ jobs:
           VITE_POSTHOG_HOST: ${{ vars.VITE_POSTHOG_HOST }}
           VITE_ADMIN_API: ${{ vars.VITE_ADMIN_API }}
 
-      # SPA fallback so a hard refresh on /massimo boots the app.
+      - name: Build docs (VitePress → dist/docs)
+        run: |
+          bun run docs:build
+          mkdir -p dist/docs
+          cp -R .docs-dist/. dist/docs/
+
+      # SPA fallback so a hard refresh on /<slug> boots the app.
       - run: cp dist/index.html dist/404.html
 
       - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
       - id: deploy
         uses: actions/deploy-pages@v5

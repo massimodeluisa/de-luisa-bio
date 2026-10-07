@@ -1,154 +1,85 @@
-<p align="center">
-  <a href="https://deluisa.bio">
-    <img src="https://deluisa.bio/favicons/massimo.svg" alt="deluisa.bio" width="96" />
-  </a>
-</p>
+# Open Bio
 
-<h1 align="center">deluisa.bio</h1>
+White-label **link-in-bio** platform — one page per person, content in the repo as JSON, edited
+through a scoped admin, with per-person SEO, OpenGraph images and favicons.
 
-<p align="center">
-  <strong>Family link-in-bio</strong><br />
-  One page per person, JSON in the repo, a small custom admin, per-person SEO, Open Graph and favicons
-</p>
+This repository is the **Open Bio** template (`openbio.page`). Ship your own brand by
+**GitHub Fork** (the Fork button — not a manual copy), then edit `content/site.json` plus
+`content/bios/`.
 
-<p align="center">
-  <a href="https://deluisa.bio"><img src="https://img.shields.io/badge/Live-deluisa.bio-3B82F6?style=flat-square" alt="Live site" /></a>
-  <a href="LICENSE.md"><img src="https://img.shields.io/badge/License-MIT_code-green?style=flat-square" alt="Source MIT, content reserved" /></a>
-  <a href="https://vuejs.org/"><img src="https://img.shields.io/badge/Vue-3-42B883?style=flat-square&logo=vuedotjs&logoColor=white" alt="Vue 3" /></a>
-  <a href="https://pages.github.com/"><img src="https://img.shields.io/badge/GitHub_Pages-222222?style=flat-square&logo=githubpages&logoColor=white" alt="GitHub Pages" /></a>
-</p>
+Vue 3 + Vite 8 + Tailwind v4 + Pug + SCSS + i18next, prerendered with **vite-ssg**, deployed to
+**GitHub Pages**, with a serverless admin API (Cloudflare Workers by default; also Vercel,
+Netlify, AWS Lambda, Azure).
 
-<p align="center">
-  <a href="#how-it-works">How it works</a> ·
-  <a href="#admin">Admin</a> ·
-  <a href="#project-setup">Setup</a> ·
-  <a href="#deploy">Deploy</a> ·
-  <a href="#adding-a-person">Add a person</a>
-</p>
-
-<p align="center">
-  <img src="https://deluisa.bio/og/home.jpg" alt="deluisa.bio family link-in-bio" width="800" />
-</p>
-
----
-
-Vue 3 + Vite 8 + Tailwind v4 + Pug + SCSS + i18next, prerendered with **vite-ssg**, deployed to **GitHub Pages**, with a **Cloudflare Worker** admin API.
+> Docs: `bun run docs:dev` · Publish: **[DEPLOY.md](./DEPLOY.md)** · Self-serve: **[docs/create.md](./docs/create.md)**
 
 ## How it works
 
-- **Content** lives in `content/bios/<slug>.json` (one per person), typed by `src/content/bio.ts` (`IBio`). It is loaded at build time (`src/composables/use-bios.ts`).
-- **Routing** — each bio is `deluisa.bio/<slug>` (canonical). `BioView.vue` renders the resolved `IBio`; the subdomain `<slug>.deluisa.bio` 301-redirects to the path (Cloudflare, see DNS below).
-- **Prerendering** — `vite-ssg` emits one static HTML per bio (`vite.config.ts` `includedRoutes`) so each `/<slug>` ships its own `<title>`/OG/`<meta>` (via `@unhead/vue`) for social scrapers.
-- **OG images + favicons** — generated post-build into `dist/og/<slug>.png` and `dist/favicons/<slug>.svg` (`scripts/generate-og.ts`, `scripts/generate-favicons.ts`). The OG card is a split layout: the person's photo on the left, a panel in their primary colour on the right.
-- **Theme per bio** — `IBio.theme` (primary/secondary colours, font, card radius, avatar radius/border) is applied via CSS variables in `BioView.vue` and configurable in the admin.
+- **Site config** — `content/site.json` is the white-label control plane (`src/content/site.ts`).
+  Brand, domain, origin, admin title, OG home card copy and copyright all come from there.
+- **Content** lives in `content/bios/<slug>.json` (one per person), typed by `src/content/bio.ts`
+  (`IBio`). It is loaded at build time (`src/composables/use-bios.ts`).
+- **Routing** — each bio is `<origin>/<slug>` (canonical). Optional subdomains
+  `<slug>.<domain>` can redirect or proxy to the path (see [DEPLOY.md](./DEPLOY.md)).
+- **Prerendering** — `vite-ssg` emits one static HTML per bio so each `/<slug>` ships its own
+  `<title>`/OG/`<meta>` for social scrapers.
+- **OG images + favicons** — generated post-build into `dist/og/<slug>.png` and
+  `dist/favicons/<slug>.svg`.
+- **Admin API** — shared core in `server/core/` with adapters under `server/adapters/`
+  (Cloudflare, Vercel, Netlify, AWS, Azure). Cloudflare entry remains `worker/`.
 
-## Admin
+## Admin (scoped auth)
 
-`deluisa.bio/admin` is a custom, client-only SPA (`src/views/AdminView.vue`). It talks only to the Cloudflare Worker (`worker/`, served at `https://api.deluisa.bio`), which is the trust boundary holding every secret. The Worker **must** be a subdomain of `deluisa.bio` (not its `*.workers.dev` URL): the SPA and API then share a registrable domain, so the httpOnly session cookie is first-party and Safari sends it — a cross-site `*.workers.dev` API gets its cookie blocked and every call 401s.
+`/<origin>/admin` talks to the serverless admin API, which is the trust boundary holding every
+secret. The API **must** be a same-site subdomain of your public domain (e.g. `api.openbio.page`),
+not a `*.workers.dev` / `*.vercel.app` URL — otherwise Safari blocks the httpOnly session cookie.
 
-- **Custom basic auth** — users are defined in the Worker's `ADMIN_USERS` secret. Each person logs in and is scoped to their own bio.
-- **Stats home** — the Worker proxies the **PostHog** query API, scoped to that person's path, so the admin home shows their visits, unique visitors, views-per-day and clicks-by-link.
-- **Editor** — edit your own bio (profile, appearance/theme, content, links, socials) with a live preview. Saving commits `content/bios/<slug>.json` to GitHub via the Worker, which triggers a rebuild. A person can only ever save their own slug (enforced server-side).
+Each admin user is bound to **one slug**. People cannot read or overwrite each other’s profiles.
 
-Generate an `ADMIN_USERS` entry:
-
-```bash
+```sh
 bun worker/hash-password.ts <user> <slug> <password>
 # -> {"user":"…","slug":"…","salt":"…","passHash":"…"}
 ```
 
-## Analytics
-
-Both run, behind one `track()` in `src/composables/use-analytics.ts`:
-
-- **Google Tag Manager** — container `GTM-MCT4XSDM`, lazy-loaded; `<noscript>` fallback in `index.html`. Events: `page_view`, `link_click` (`{ link_id, link_url, location, bio }`), `share_open`, `share_native`.
-- **PostHog** — `VITE_POSTHOG_KEY` (public). Autocapture + the same custom events. Powers the admin's per-person dashboard via the Worker (which holds the secret read key).
-
 ## Project setup
 
-```bash
+```sh
 bun install
-cp .env.example .env.local                 # public VITE_* values for local dev
-cp worker/.dev.vars.example worker/.dev.vars # Worker secrets for local dev
+cp .env.example .env.local
+cp worker/.dev.vars.example worker/.dev.vars
+cp secrets.local.example secrets.local   # local dump only; never commit
+bun dev                  # site :5173 + admin API :8787
+bun run docs:dev         # VitePress docs
 ```
-
-### Develop
-
-```bash
-bun dev                  # public site + admin SPA
-bun worker/dev-server.ts # admin API on :8787 (Bun — no wrangler needed locally)
-```
-
-Set `VITE_ADMIN_API=http://localhost:8787` in `.env.local`, then log into `/admin` with a user from `worker/.dev.vars`. (Production deploys the Worker via wrangler — see below.)
 
 ### Build / type-check / lint
 
-```bash
-bun run build      # type-check + vite-ssg + OG + favicons
+```sh
+bun run build
+bun run docs:build
 bun run type-check
 bun lint
 ```
 
+## White-label checklist
+
+1. **GitHub Fork** this repo (Fork button)
+2. Edit `content/site.json` — brand, domain, origin, GitHub repo, SEO/OG copy, copyright
+3. Replace `content/bios/*.json` (and `public/media/`) with your people
+4. Update `public/CNAME` and Worker/serverless vars (`GITHUB_REPO`, `ALLOWED_ORIGIN`, …)
+5. Set GitHub Actions Variables/Secrets on **your fork** (see [DEPLOY.md](./DEPLOY.md))
+6. Align bootstrap meta in `index.html` with `content/site.json`
+
+## De Luisa instance
+
+Family content lives under `instances/deluisa-bio/` as a restore snapshot. Create
+`de-luisa-bio` with **GitHub → Fork** from this upstream, then restore that snapshot — see
+[docs/deploy/fork-instance.md](./docs/deploy/fork-instance.md).
+
 ## Deploy
 
-Two GitHub Actions workflows:
+- **`.github/workflows/ci.yml`** — type-check, lint, build on PRs / pushes
+- **`.github/workflows/deploy-site.yml`** — `dist/` (+ docs) → GitHub Pages on `master`
+- **`.github/workflows/deploy-worker.yml`** — Cloudflare Worker (default admin adapter)
 
-- **`.github/workflows/deploy-site.yml`** — builds and deploys `dist/` to GitHub Pages on push to `master`. Public values come from repo **Variables** (`VITE_POSTHOG_KEY`, `VITE_POSTHOG_HOST`, `VITE_ADMIN_API` = `https://api.deluisa.bio`). `public/CNAME` pins `deluisa.bio`; a `404.html` SPA fallback is added.
-- **`.github/workflows/deploy-worker.yml`** — `wrangler deploy` for `worker/` on changes, pushing secrets from repo **Secrets**: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `SESSION_SECRET`, `ADMIN_GITHUB_TOKEN` (→ Worker `GITHUB_TOKEN`), `POSTHOG_READ_KEY`, `ADMIN_USERS`. Non-secret config is in `worker/wrangler.toml` (`GITHUB_REPO`, `POSTHOG_HOST`, `POSTHOG_PROJECT_ID`, `ALLOWED_ORIGIN`).
-
-### DNS (Cloudflare) — path canonical, subdomain redirects
-
-- **Apex `deluisa.bio` → GitHub Pages** (DNS-only / grey cloud, so GitHub issues the Let's Encrypt cert): `A` → `185.199.108.153`, `.109.153`, `.110.153`, `.111.153`; `CAA 0 issue "letsencrypt.org"`. Set + verify the custom domain in the repo's Pages settings. GitHub Pages does not expose project-level response-header configuration, so the application cannot add `Strict-Transport-Security` itself. To serve HSTS, proxy the apex through Cloudflare and enable **SSL/TLS → Edge Certificates → HTTP Strict Transport Security** with at least `max-age=31536000`; enable `includeSubDomains` only after confirming every subdomain is HTTPS. Keep the apex DNS-only until that proxy migration is complete—an HTML `<meta>` tag or a repository `_headers` file is not a valid HSTS substitute.
-- **Wildcard `*.deluisa.bio` → redirect** (proxied / orange cloud, so the redirect rule fires and Universal SSL covers it): `*.deluisa.bio` CNAME → `deluisa.bio`, plus one Cloudflare **Dynamic Redirect** rule using a **Wildcard pattern** (the Free plan can't use `regex_replace`):
-  - **When** → custom expression: `(http.request.full_uri wildcard "https://*.deluisa.bio/*" and http.host ne "api.deluisa.bio")`
-  - **Then** → Dynamic → `https://deluisa.bio/${1}`, status **301**, preserve query string.
-
-  `${1}` is the subdomain; **do not** append `${2}`/the path or a trailing `/` — vite-ssg emits flat `dist/<slug>.html`, so GitHub Pages serves `/massimo` (200) but `/massimo/` 404s. The `http.host ne "api.deluisa.bio"` guard stops the admin API host from being redirected (redirect rules run before Worker routes). One rule covers every person.
-- **Admin API `api.deluisa.bio` → the Worker** — add it as a **Custom Domain** on the Worker (Workers & Pages → `de-luisa-bio-admin` → Settings → Domains & Routes), which creates the proxied DNS record + route. Same registrable domain as the site, so the session cookie is first-party.
-
-## Adding a person
-
-A member needs two things: an **admin login** and a **bio**. The home grid and routes include any `content/bios/*.json` automatically — no code changes.
-
-### 1. Create the admin login (required)
-
-Generate a salted PBKDF2 entry (username = slug):
-
-```bash
-bun worker/hash-password.ts <slug> <slug> <password>
-# e.g. bun worker/hash-password.ts marco marco a-strong-password
-# -> {"user":"marco","slug":"marco","salt":"…","passHash":"…"}
-```
-
-Add that object to the `ADMIN_USERS` JSON array:
-
-- **Local**: in `worker/.dev.vars` (insert `,{…}` before the closing `]`), then restart `bun run dev`.
-- **Production**: update the GitHub **Secret `ADMIN_USERS`** with the full array (all users).
-
-Rules: the **slug** is the URL (`deluisa.bio/<slug>`) and subdomain — lowercase letters, digits and hyphens only. Each user can edit **only** their own bio (enforced by the Worker).
-
-### 2. Create the bio — two ways
-
-- **Via the admin (easiest):** the person signs in at `/admin`, fills everything (name, colours, content, links) and **uploads an avatar**, then **Save bio**. This creates `content/bios/<slug>.json` automatically (locally it writes to the working tree; in production it commits to GitHub).
-- **Pre-seed (so they appear immediately):** copy an existing `content/bios/<slug>.json`, change `slug` / `name` / `theme` colours, leave `avatar: ""` (a coloured letter-glyph shows until a photo is uploaded). They then complete it from the admin.
-
-Avatars are uploaded as square WebP derivatives (`<slug>-{original,2000,600,250}.webp` under `public/media/`) and served responsively; the bio's `avatar` stores the base path `/media/<slug>`.
-
-Push — the site rebuilds; `deluisa.bio/<slug>` and `<slug>.deluisa.bio` both work.
-
-## Stack
-
-Vue 3 (beta) · Vite 8 · vite-ssg · Tailwind CSS v4 · Pug + SCSS · i18next · @unhead/vue · VueUse · satori + resvg (OG) · PostHog + GTM · Cloudflare Workers · TypeScript · Bun.
-
-## Author
-
-<p>
-  <a href="https://x.com/massimodeluisa"><img src="https://img.shields.io/badge/@massimodeluisa-000000?style=flat-square&logo=x" alt="X" /></a>
-  <a href="https://github.com/massimodeluisa"><img src="https://img.shields.io/badge/GitHub-massimodeluisa-181717?style=flat-square&logo=github" alt="GitHub" /></a>
-</p>
-
-**Massimo De Luisa**: [massimo.deluisa.bio](https://massimo.deluisa.bio)
-
-## License
-
-Source code MIT, content All Rights Reserved, see [LICENSE.md](LICENSE.md).
+Full DNS / Pages / custom-domain steps: **[DEPLOY.md](./DEPLOY.md)**.

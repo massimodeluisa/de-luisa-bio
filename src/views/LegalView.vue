@@ -6,6 +6,7 @@ import { useHead } from '@unhead/vue'
 import { showCookiePreferences } from '@/composables/use-consent'
 import { detectLegalLocale, legalContent } from '@/content/legal'
 import type { LegalLocale } from '@/content/legal'
+import { site } from '@/content/site'
 
 const props = defineProps<{ kind: 'privacy' | 'cookie' }>()
 
@@ -21,7 +22,7 @@ onMounted(() => {
 })
 
 useHead({
-  title: computed(() => `${pageTitle.value} — De Luisa`),
+  title: computed(() => `${pageTitle.value} — ${site.brand}`),
   htmlAttrs: { lang: locale },
 })
 </script>

@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 
 import type { IBio } from '@/content/bio'
+import { siteDomain } from '@/content/site'
 
 function resolveApi(): string {
   const explicit = import.meta.env.VITE_ADMIN_API as string | undefined
@@ -42,9 +43,13 @@ async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
       ...init,
     })
   } catch {
-    throw new Error(
-      `Cannot reach the admin API at ${API || '(unset)'}. Is the worker running? → bun worker/dev-server.ts`,
-    )
+    const isProd =
+      typeof window !== 'undefined' &&
+      !/^(localhost|127\.0\.0\.1)$/.test(window.location.hostname)
+    const hint = isProd
+      ? `Please ensure the admin Worker is deployed and has a same-site custom domain (api.${siteDomain}).`
+      : 'Is the worker running? → bun worker/dev-server.ts'
+    throw new Error(`Cannot reach the admin API at ${API || '(unset)'}. ${hint}`)
   }
   const contentType = res.headers.get('content-type') ?? ''
   if (!contentType.includes('application/json')) {
@@ -98,6 +103,11 @@ export function useAdminAuth() {
     return api<IBioStats>(`/stats?range=${range}`)
   }
 
+  /** Load the signed-in user's bio from GitHub (not the stale build bundle). */
+  function loadBio(): Promise<IBio> {
+    return api<IBio>('/bio')
+  }
+
   function saveBio(bio: IBio): Promise<{ ok: boolean }> {
     return api<{ ok: boolean }>('/bio', { method: 'POST', body: JSON.stringify(bio) })
   }
@@ -109,5 +119,5 @@ export function useAdminAuth() {
     })
   }
 
-  return { session, refresh, login, logout, fetchStats, saveBio, uploadMedia }
+  return { session, refresh, login, logout, fetchStats, loadBio, saveBio, uploadMedia }
 }

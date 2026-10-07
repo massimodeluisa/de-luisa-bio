@@ -47,3 +47,9 @@ __screenshots__/
 
 # Vite
 *.timestamp-*-*.mjs
+
+# Local secret dumps (never commit)
+secrets.local
+secrets.local.*
+!secrets.local.example
+.docs-dist

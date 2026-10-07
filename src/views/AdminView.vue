@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, watchEffect } from 'vue'
+import { computed, onMounted, ref, toRaw, watch, watchEffect } from 'vue'
 
-import type { IBio, IBioLink, TFont, TLocale } from '@/content/bio'
+import BioProfile from '@/components/BioProfile.vue'
+import type { IBio, IBioLink, TBioColumns, TFont, TLocale, TSiteCardPosition } from '@/content/bio'
+import { bioSubdomainUrl, site, siteOrigin } from '@/content/site'
 import { getBio } from '@/composables/use-bios'
 import { type IBioStats, useAdminAuth } from '@/admin/use-admin-auth'
 import { FONT_STACK, loadFont } from '@/lib/load-font'
-import { avatarSources } from '@/lib/avatar'
-import { letterGlyphDataUri } from '@/lib/letter-glyph'
 import { generateAvatarSet } from '@/admin/image-to-webp'
 
-const { session, refresh, login, logout, fetchStats, saveBio, uploadMedia } = useAdminAuth()
+const { session, refresh, login, logout, fetchStats, loadBio, saveBio, uploadMedia } = useAdminAuth()
 
-const tab = ref<'stats' | 'editor'>('stats')
+const tab = ref<'stats' | 'editor'>('editor')
 const form = ref<IBio | null>(null)
 const stats = ref<IBioStats | null>(null)
 const range = ref(30)
@@ -24,6 +24,7 @@ const loginError = ref('')
 const busy = ref(false)
 const message = ref('')
 const error = ref('')
+const statsError = ref('')
 
 const FONTS = Object.keys(FONT_STACK) as TFont[]
 const LOCALES: TLocale[] = ['en', 'it']
@@ -37,6 +38,13 @@ function blankBio(slug: string): IBio {
     slug,
     name: slug,
     avatar: `/media/${slug}.webp`,
+    siteCard: {
+      url: '',
+      image: '',
+      enabled: false,
+      position: 'before',
+    },
+    layout: { columns: 2 },
     theme: {
       primary: '#8894a9',
       secondary: '#b68370',
@@ -53,28 +61,72 @@ function blankBio(slug: string): IBio {
   }
 }
 
-function initForm() {
+/** Ensure layout / siteCard fields exist so the editor can bind them. */
+function normalizeForm(bio: IBio): IBio {
+  bio.layout ??= { columns: 2 }
+  if (bio.layout.columns !== 1 && bio.layout.columns !== 2) {
+    bio.layout.columns = 2
+  }
+  if (!bio.siteCard) {
+    bio.siteCard = {
+      url: bio.site ?? '',
+      image: '',
+      enabled: false,
+      position: 'before',
+    }
+  } else {
+    bio.siteCard.enabled ??= true
+    bio.siteCard.position ??= 'before'
+    bio.siteCard.image ??= ''
+  }
+  for (const s of bio.socials) {
+    if (s.quick === undefined) {
+      s.quick = true
+    }
+    s.color ??= '#181717'
+  }
+  return bio
+}
+
+async function initForm() {
   if (!session.value) {
     return
   }
-  const existing = getBio(session.value.slug)
-  form.value = structuredClone(existing ?? blankBio(session.value.slug))
+  const scopedSlug = session.value.slug
   avatarPreview.value = null
+  try {
+    const loaded = normalizeForm(await loadBio())
+    // Never trust a mismatched slug from storage — session is source of truth.
+    loaded.slug = scopedSlug
+    form.value = loaded
+  } catch {
+    const existing = getBio(scopedSlug)
+    form.value = normalizeForm(structuredClone(existing ?? blankBio(scopedSlug)))
+    form.value.slug = scopedSlug
+  }
 }
 
 async function loadStats() {
-  error.value = ''
+  statsError.value = ''
   try {
     stats.value = await fetchStats(range.value)
   } catch (e) {
-    stats.value = null
-    error.value = String(e)
+    stats.value = {
+      range: range.value,
+      visits: 0,
+      uniques: 0,
+      links: [],
+      series: [],
+      sources: [],
+      countries: [],
+    }
+    statsError.value = String(e)
   }
 }
 
 onMounted(async () => {
   if (await refresh()) {
-    initForm()
+    await initForm()
     void loadStats()
   }
 })
@@ -91,7 +143,7 @@ async function doLogin() {
   loginError.value = ''
   try {
     await login(loginUser.value, loginPass.value)
-    initForm()
+    await initForm()
     void loadStats()
   } catch (e) {
     loginError.value = String(e)
@@ -100,14 +152,16 @@ async function doLogin() {
 
 async function onAvatar(event: Event) {
   const file = (event.target as HTMLInputElement).files?.[0]
-  if (!file || !form.value) {
+  if (!file || !form.value || !session.value) {
     return
   }
+  // Media filenames are scoped to the signed-in user's slug server-side.
+  const slug = session.value.slug
+  form.value.slug = slug
   busy.value = true
   message.value = ''
   error.value = ''
   try {
-    const slug = form.value.slug
     const { derivatives, previewDataUrl } = await generateAvatarSet(file)
     avatarPreview.value = previewDataUrl
     for (const d of derivatives) {
@@ -123,13 +177,13 @@ async function onAvatar(event: Event) {
 }
 
 function blankLink(): IBioLink {
-  return { id: '', label: { en: '', it: '' }, href: '', icon: '' }
+  return { id: '', label: { en: '', it: '' }, href: '', icon: '', quick: true }
 }
 function addLink() {
   form.value?.links.push(blankLink())
 }
 function addSocial() {
-  form.value?.socials.push(blankLink())
+  form.value?.socials.push({ ...blankLink(), color: '#181717' })
 }
 function remove(list: IBioLink[], index: number) {
   list.splice(index, 1)
@@ -144,31 +198,64 @@ const isCircle = computed({
   },
 })
 
-const previewAvatar = computed(() => {
-  if (avatarPreview.value) {
-    return avatarPreview.value
-  }
-  const f = form.value
-  if (!f) {
-    return ''
-  }
-  return (
-    avatarSources(f.avatar)?.src ??
-    letterGlyphDataUri(f.name[0], f.theme.glyphColor ?? f.theme.primary)
-  )
+const layoutColumns = computed({
+  get: (): TBioColumns => form.value?.layout?.columns ?? 2,
+  set: (v: TBioColumns) => {
+    if (!form.value) {
+      return
+    }
+    form.value.layout ??= { columns: 2 }
+    form.value.layout.columns = Number(v) as TBioColumns
+  },
 })
-const previewFont = computed(() => (form.value ? FONT_STACK[form.value.theme.font] : ''))
+
+function onLayoutColumnsChange(event: Event) {
+  layoutColumns.value = Number((event.target as HTMLSelectElement).value) as TBioColumns
+}
+
+const siteCardEnabled = computed({
+  get: () => form.value?.siteCard?.enabled !== false,
+  set: (v: boolean) => {
+    if (!form.value?.siteCard) {
+      return
+    }
+    form.value.siteCard.enabled = v
+  },
+})
+
+const siteCardPosition = computed({
+  get: (): TSiteCardPosition => form.value?.siteCard?.position ?? 'before',
+  set: (v: TSiteCardPosition) => {
+    if (!form.value?.siteCard) {
+      return
+    }
+    form.value.siteCard.position = v
+  },
+})
+
+function onSiteCardPositionChange(event: Event) {
+  siteCardPosition.value = (event.target as HTMLSelectElement).value as TSiteCardPosition
+}
+
+const previewLocale = ref<TLocale>('en')
+const publicUrl = computed(() =>
+  form.value ? bioSubdomainUrl(form.value.slug) : `${siteOrigin}/`,
+)
 
 async function save() {
-  if (!form.value) {
+  if (!form.value || !session.value) {
     return
   }
+  // Never allow the client to change the scoped slug — server also enforces this.
+  form.value.slug = session.value.slug
   busy.value = true
   message.value = ''
   error.value = ''
   try {
-    await saveBio(form.value)
-    message.value = 'Saved — the site will rebuild shortly.'
+    const payload = JSON.parse(JSON.stringify(toRaw(form.value))) as IBio
+    payload.slug = session.value.slug
+    await saveBio(payload)
+    message.value = 'Saved to GitHub. Reload the public page in 1–2 minutes.'
   } catch (e) {
     error.value = String(e)
   } finally {
@@ -195,7 +282,7 @@ const maxViews = computed(() => Math.max(1, ...paddedSeries.value.map((s) => s.v
 <template lang="pug">
 main.flex.min-h-dvh.items-center.justify-center.bg-site-background.text-site-text.p-4(v-if="!session")
   form.w-full.max-w-sm.rounded-2xl.border.border-site-border.bg-site-surface.p-6.flex.flex-col.gap-4(@submit.prevent="doLogin")
-    h1.text-lg.font-semibold.text-site-heading De Luisa Bio — Admin
+    h1.text-lg.font-semibold.text-site-heading {{ site.adminTitle }}
     label.flex.flex-col.gap-1.text-sm
       span.text-site-muted Username
       input.rounded-lg.border.border-site-border.bg-site-background.px-3.py-2(v-model="loginUser" autocomplete="username" required)
@@ -221,7 +308,7 @@ main.min-h-dvh.bg-site-background.text-site-text(v-else)
         option(:value="7") Last 7 days
         option(:value="30") Last 30 days
         option(:value="90") Last 90 days
-    p.text-sm.text-red-500(v-if="error") {{ error }}
+    p.text-sm.text-red-500(v-if="statsError") {{ statsError }}
     .grid.grid-cols-2.gap-3
       .rounded-2xl.border.border-site-border.bg-site-surface.p-4
         .text-xs.uppercase.tracking-wide.text-site-muted Visits
@@ -261,7 +348,7 @@ main.min-h-dvh.bg-site-background.text-site-text(v-else)
             span.font-medium.text-site-heading {{ c.count }}
         p.text-sm.text-site-muted(v-else) —
 
-  section.mx-auto.grid.max-w-5xl.gap-6.p-4(v-else-if="form" class="lg:grid-cols-[1fr_320px]")
+  section.mx-auto.grid.max-w-6xl.gap-6.p-4(v-else-if="form" class="xl:grid-cols-[minmax(0,1fr)_minmax(380px,520px)]")
     .flex.flex-col.gap-5
       fieldset.rounded-2xl.border.border-site-border.bg-site-surface.p-4.flex.flex-col.gap-3
         legend.px-1.text-sm.font-semibold.text-site-heading Profile
@@ -303,6 +390,47 @@ main.min-h-dvh.bg-site-background.text-site-text(v-else)
         label.flex.flex-col.gap-1.text-sm
           span.text-site-muted Avatar border width — {{ form.theme.avatarBorderWidth }}px
           input(type="range" min="0" max="8" v-model.number="form.theme.avatarBorderWidth")
+
+      fieldset.rounded-2xl.border.border-site-border.bg-site-surface.p-4.flex.flex-col.gap-3
+        legend.px-1.text-sm.font-semibold.text-site-heading Layout
+        label.flex.flex-col.gap-1.text-sm
+          span.text-site-muted Profile grid
+          select.rounded-lg.border.border-site-border.bg-site-background.px-3.py-2(
+            :value="layoutColumns"
+            @change="onLayoutColumnsChange"
+          )
+            option(:value="2") Two columns (responsive)
+            option(:value="1") Single column
+
+      fieldset.rounded-2xl.border.border-site-border.bg-site-surface.p-4.flex.flex-col.gap-3(
+        v-if="form.siteCard"
+      )
+        legend.px-1.text-sm.font-semibold.text-site-heading Site card
+        p.text-xs.text-site-muted “Explore the full site” card above or below the link list.
+        label.flex.items-center.gap-2.text-sm
+          input(type="checkbox" v-model="siteCardEnabled")
+          span.text-site-muted Show site card
+        template(v-if="siteCardEnabled")
+          label.flex.flex-col.gap-1.text-sm
+            span.text-site-muted URL
+            input.rounded-lg.border.border-site-border.bg-site-background.px-3.py-2(
+              v-model="form.siteCard.url"
+              :placeholder="`https://${site.domain}`"
+            )
+          label.flex.flex-col.gap-1.text-sm
+            span.text-site-muted Preview image (optional — leave empty to use the site’s OG image)
+            input.rounded-lg.border.border-site-border.bg-site-background.px-3.py-2(
+              v-model="form.siteCard.image"
+              placeholder="auto from OG · or /media/… / https://…"
+            )
+          label.flex.flex-col.gap-1.text-sm
+            span.text-site-muted Position
+            select.rounded-lg.border.border-site-border.bg-site-background.px-3.py-2(
+              :value="siteCardPosition"
+              @change="onSiteCardPositionChange"
+            )
+              option(value="before") Top of links
+              option(value="after") Bottom of links
 
       fieldset.rounded-2xl.border.border-site-border.bg-site-surface.p-4.flex.flex-col.gap-3
         legend.px-1.text-sm.font-semibold.text-site-heading Content
@@ -347,11 +475,14 @@ main.min-h-dvh.bg-site-background.text-site-text(v-else)
             input.rounded.border.border-site-border.bg-site-background.px-2.py-1.text-sm(v-model="s.label.en" placeholder="label EN")
             input.rounded.border.border-site-border.bg-site-background.px-2.py-1.text-sm(v-model="s.label.it" placeholder="label IT")
           input.rounded.border.border-site-border.bg-site-background.px-2.py-1.text-sm(v-model="s.href" placeholder="https://…")
-          .flex.items-center.justify-between.text-sm
+          .flex.flex-wrap.items-center.gap-x-4.gap-y-2.text-sm
             label.flex.items-center.gap-2
               span.text-site-muted Colour
               input(type="color" v-model="s.color")
-            button.text-red-500(type="button" @click="remove(form.socials, i)") Remove
+            label.flex.items-center.gap-2
+              input(type="checkbox" v-model="s.quick")
+              span.text-site-muted Circular quick button
+            button.ml-auto.text-red-500(type="button" @click="remove(form.socials, i)") Remove
         button.self-start.rounded-lg.border.border-site-border.px-3.py-1.text-sm(type="button" @click="addSocial") + Add social
 
       .sticky.bottom-0.flex.items-center.gap-3.border-t.border-site-border.bg-site-background.py-3
@@ -359,25 +490,36 @@ main.min-h-dvh.bg-site-background.text-site-text(v-else)
         span.text-sm.text-green-600(v-if="message") {{ message }}
         span.text-sm.text-red-500(v-if="error") {{ error }}
 
-    aside.flex.flex-col.gap-2
-      .text-xs.uppercase.tracking-wide.text-site-muted Live preview
-      .rounded-3xl.border.border-site-border.p-5.flex.flex-col.items-center.gap-3.text-center(
-        :style="{ background: form.theme.primary + '14', fontFamily: previewFont }"
+    aside.order-last.flex.flex-col.gap-2(class="xl:order-none xl:sticky xl:top-20 xl:self-start")
+      .flex.items-center.justify-between.gap-2
+        .text-xs.uppercase.tracking-wide.text-site-muted Live preview
+        .flex.items-center.gap-2
+          button.rounded.px-2(
+            type="button"
+            class="py-0.5 text-xs"
+            :class="previewLocale === 'en' ? 'bg-site-heading text-site-background' : 'text-site-muted'"
+            @click="previewLocale = 'en'"
+          ) EN
+          button.rounded.px-2(
+            type="button"
+            class="py-0.5 text-xs"
+            :class="previewLocale === 'it' ? 'bg-site-heading text-site-background' : 'text-site-muted'"
+            @click="previewLocale = 'it'"
+          ) IT
+      a.text-xs.text-site-secondary.no-underline(
+        :href="publicUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+      ) Open public page ↗
+      .rounded-2xl.border.border-site-border.bg-site-background(
+        class="xl:max-h-[calc(100dvh-8rem)] xl:overflow-auto"
       )
-        img.size-24.object-cover(
-          v-if="previewAvatar"
-          :src="previewAvatar"
-          :style="{ borderRadius: `${form.theme.avatarRadius}px`, border: `${form.theme.avatarBorderWidth}px solid ${form.theme.avatarBorderColor}` }"
+        BioProfile(
+          :bio="form"
+          :locale="previewLocale"
+          :avatar-override="avatarPreview"
+          :interactive="false"
         )
-        div(:style="{ fontWeight: 600, color: '#1a1a1a' }") {{ form.name }}
-        div(:style="{ fontSize: '11px', letterSpacing: '0.18em', textTransform: 'uppercase', color: form.theme.secondary }") {{ form.content.en.eyebrow }}
-        p.text-xs(:style="{ color: '#555', maxWidth: '15rem' }") {{ form.content.en.tagline }}
-        .flex.w-full.flex-col.gap-2.pt-2
-          .px-3.py-2.text-xs.text-white(
-            v-for="(l, i) in form.links"
-            :key="`pv${i}`"
-            :style="{ background: l.primary ? '#1a1a1a' : form.theme.primary, borderRadius: `${form.theme.cardRadius}px` }"
-          ) {{ l.label.en || l.id }}
 </template>
 
 <style scoped lang="scss">

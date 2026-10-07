@@ -7,12 +7,14 @@ import satori, { type SatoriOptions } from 'satori'
 import sharp from 'sharp'
 
 import type { IBio } from '../src/content/bio'
+import type { ISiteConfig } from '../src/content/site'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const DIST = join(ROOT, 'dist')
 const OG_DIR = join(DIST, 'og')
 const BIOS_DIR = join(ROOT, 'content/bios')
 const PUBLIC_DIR = join(ROOT, 'public')
+const site = JSON.parse(readFileSync(join(ROOT, 'content/site.json'), 'utf8')) as ISiteConfig
 
 const WIDTH = 1200
 const HEIGHT = 630
@@ -255,14 +257,14 @@ async function buildHomeCard(allBios: IBio[]): Promise<ISatoriNode> {
         borderBottom: '2px solid #b68370',
       },
       children: [
-        text('DELUISA.BIO', {
+        text(site.og.homeEyebrow, {
           fontFamily: 'JetBrains Mono',
           fontSize: 24,
           color: '#b68370',
           letterSpacing: '6px',
           marginBottom: '14px',
         }),
-        text('De Luisa', {
+        text(site.og.homeTitle, {
           fontFamily: 'Inter',
           fontSize: 120,
           fontWeight: 700,
@@ -270,7 +272,7 @@ async function buildHomeCard(allBios: IBio[]): Promise<ISatoriNode> {
           letterSpacing: '-3px',
           lineHeight: 1,
         }),
-        text('I nostri link, in un posto solo.', {
+        text(site.og.homeTagline, {
           fontFamily: 'JetBrains Mono',
           fontSize: 26,
           color: 'rgba(255,255,255,0.82)',

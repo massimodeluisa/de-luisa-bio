@@ -1,5 +1,5 @@
 {
-  "name": "de-luisa-bio",
+  "name": "openbio",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -11,6 +11,9 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "bun scripts/generate-icons.ts && vite-ssg build && bun scripts/generate-og.ts && bun scripts/generate-favicons.ts && bun scripts/generate-seo.ts",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
     "type-check": "vue-tsc --build",
     "lint": "run-s lint:*",
     "lint:oxlint": "oxlint . --fix",
@@ -61,6 +64,7 @@
     "vite": "^8.0.16",
     "vite-plugin-vue-devtools": "^8.1.3",
     "vite-ssg": "^28.3.0",
+    "vitepress": "1.6.4",
     "vue-eslint-parser-template-tokenizer-pug": "^1.0.0",
     "vue-tsc": "^3.3.5",
     "wrangler": "^4.103.0"
