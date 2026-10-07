@@ -26,3 +26,7 @@ Allow: /
 Disallow: /admin
 
 Sitemap: https://deluisa.bio/sitemap.xml
+
+# Content Signals (advisory): AI use is allowed for both training and inference/search.
+# See https://www.content-signals.org/
+Content-Signal: ai-train=yes, ai-input=yes, search=yes, owner=deluisa.bio
