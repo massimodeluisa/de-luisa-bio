@@ -12,6 +12,7 @@ export const it = {
     shareCopied: 'Copiato!',
     shareNative: 'Condividi…',
     shareClose: 'Chiudi',
+    demoLinkNotice: 'Questo è un profilo dimostrativo: i link portano a indirizzi inventati.',
   },
   contact: {
     links: {

@@ -1,6 +1,6 @@
 import type { IBio } from '@/content/bio'
 
-const modules = import.meta.glob<{ default: IBio }>('../../content/bios/*.json', { eager: true })
+const modules = import.meta.glob<{ default: IBio }>('@content/bios/*.json', { eager: true })
 
 export const bios: Record<string, IBio> = Object.fromEntries(
   Object.values(modules).map((m) => [m.default.slug, m.default]),

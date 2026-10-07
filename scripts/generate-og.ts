@@ -55,11 +55,11 @@ function readableOn(hex: string): string {
   const g = parseInt(c.slice(2, 4), 16)
   const b = parseInt(c.slice(4, 6), 16)
   const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255
-  return luminance > 0.6 ? '#121111' : '#ffffff'
+  return luminance > 0.6 ? '#14151B' : '#ffffff'
 }
 
 function fade(ink: string): string {
-  return ink === '#121111' ? 'rgba(18,17,17,0.62)' : 'rgba(255,255,255,0.72)'
+  return ink === '#14151B' ? 'rgba(20,21,27,0.62)' : 'rgba(255,255,255,0.72)'
 }
 
 function text(content: string, style: TSatoriStyle): ISatoriNode {
@@ -188,7 +188,7 @@ async function buildCard(bio: IBio): Promise<ISatoriNode> {
           fontSize: 24,
           fontWeight: 400,
           color: ink,
-          opacity: ink === '#121111' ? 0.82 : 0.92,
+          opacity: ink === '#14151B' ? 0.82 : 0.92,
           lineHeight: 1.42,
           marginTop: '30px',
         }),
@@ -199,7 +199,7 @@ async function buildCard(bio: IBio): Promise<ISatoriNode> {
   return {
     type: 'div',
     props: {
-      style: { display: 'flex', width: '100%', height: '100%', backgroundColor: '#121111' },
+      style: { display: 'flex', width: '100%', height: '100%', backgroundColor: '#14151B' },
       children: [left, right],
     },
   }
@@ -252,15 +252,15 @@ async function buildHomeCard(allBios: IBio[]): Promise<ISatoriNode> {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'rgba(18,17,17,0.62)',
-        borderTop: '2px solid #b68370',
-        borderBottom: '2px solid #b68370',
+        backgroundColor: 'rgba(20,21,27,0.62)',
+        borderTop: '2px solid #3A5BFF',
+        borderBottom: '2px solid #3A5BFF',
       },
       children: [
         text(site.og.homeEyebrow, {
           fontFamily: 'JetBrains Mono',
           fontSize: 24,
-          color: '#b68370',
+          color: '#3A5BFF',
           letterSpacing: '6px',
           marginBottom: '14px',
         }),
@@ -285,7 +285,7 @@ async function buildHomeCard(allBios: IBio[]): Promise<ISatoriNode> {
   return {
     type: 'div',
     props: {
-      style: { position: 'relative', display: 'flex', width: '100%', height: '100%', backgroundColor: '#121111' },
+      style: { position: 'relative', display: 'flex', width: '100%', height: '100%', backgroundColor: '#14151B' },
       children: [
         {
           type: 'div',
@@ -304,7 +304,7 @@ async function buildHomeCard(allBios: IBio[]): Promise<ISatoriNode> {
               display: 'flex',
               width: `${WIDTH}px`,
               height: `${HEIGHT}px`,
-              backgroundColor: 'rgba(18,17,17,0.20)',
+              backgroundColor: 'rgba(20,21,27,0.20)',
             },
           },
         },
@@ -329,7 +329,7 @@ async function writeCard(node: ISatoriNode, slug: string): Promise<void> {
 
 async function writeHomeCard(node: ISatoriNode): Promise<void> {
   const jpeg = await sharp(await renderPng(node))
-    .flatten({ background: '#121111' })
+    .flatten({ background: '#14151B' })
     .jpeg({ quality: 85, mozjpeg: true })
     .toBuffer()
   const file = join(OG_DIR, 'home.jpg')

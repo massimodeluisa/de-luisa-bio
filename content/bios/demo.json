@@ -11,14 +11,14 @@
   },
   "layout": { "columns": 2 },
   "theme": {
-    "primary": "#1C1B1A",
-    "secondary": "#C46A4A",
-    "glyphColor": "#C46A4A",
+    "primary": "#14151B",
+    "secondary": "#2F4BE0",
+    "glyphColor": "#3A5BFF",
     "font": "geist-sans",
     "cardRadius": 14,
     "avatarRadius": 9999,
     "avatarBorderWidth": 1,
-    "avatarBorderColor": "#C46A4A"
+    "avatarBorderColor": "#3A5BFF"
   },
   "content": {
     "en": {

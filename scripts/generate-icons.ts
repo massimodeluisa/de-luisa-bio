@@ -1,19 +1,32 @@
-import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import type { IBio } from '../src/content/bio'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
-const BIOS_DIR = join(ROOT, 'content/bios')
+const EXAMPLES_DIR = join(ROOT, 'examples')
 const OUT = join(ROOT, 'src/generated/icons.ts')
 
+/** Example instances share this generated module, so their icons are inlined too. */
+const biosDirs = [join(ROOT, 'content/bios')]
+if (existsSync(EXAMPLES_DIR)) {
+  for (const entry of readdirSync(EXAMPLES_DIR, { withFileTypes: true })) {
+    const dir = join(EXAMPLES_DIR, entry.name, 'content/bios')
+    if (entry.isDirectory() && existsSync(dir)) {
+      biosDirs.push(dir)
+    }
+  }
+}
+
 const names = new Set<string>(['mdi:export-variant'])
-for (const file of readdirSync(BIOS_DIR).filter((f) => f.endsWith('.json'))) {
-  const bio = JSON.parse(readFileSync(join(BIOS_DIR, file), 'utf8')) as IBio
-  for (const link of [...bio.links, ...bio.socials]) {
-    if (link.icon) {
-      names.add(link.icon)
+for (const biosDir of biosDirs) {
+  for (const file of readdirSync(biosDir).filter((f) => f.endsWith('.json'))) {
+    const bio = JSON.parse(readFileSync(join(biosDir, file), 'utf8')) as IBio
+    for (const link of [...bio.links, ...bio.socials]) {
+      if (link.icon) {
+        names.add(link.icon)
+      }
     }
   }
 }

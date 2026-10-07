@@ -1,0 +1,53 @@
+{
+  "slug": "anja-novak",
+  "name": "Anja Novak",
+  "avatar": "/media/anja-novak.webp",
+  "site": "https://studio-pietra.example",
+  "layout": { "columns": 2 },
+  "theme": {
+    "primary": "#1E1E1E",
+    "secondary": "#7A5C40",
+    "glyphColor": "#1E1E1E",
+    "font": "geist-mono",
+    "cardRadius": 0,
+    "avatarRadius": 0,
+    "avatarBorderWidth": 0,
+    "avatarBorderColor": "#1E1E1E"
+  },
+  "content": {
+    "en": {
+      "eyebrow": "Senior architect",
+      "tagline": "Turns concepts into buildable details and models everything first."
+    },
+    "it": {
+      "eyebrow": "Architetta senior",
+      "tagline": "Trasforma i concept in dettagli realizzabili e modella tutto prima."
+    }
+  },
+  "links": [
+    {
+      "id": "email",
+      "label": { "en": "Email", "it": "Email" },
+      "href": "mailto:anja@studio-pietra.example",
+      "icon": "mdi:email-outline",
+      "primary": true
+    },
+    {
+      "id": "work",
+      "label": { "en": "Projects", "it": "Progetti" },
+      "href": "https://studio-pietra.example/people/anja-novak",
+      "icon": "mdi:floor-plan",
+      "external": true
+    }
+  ],
+  "socials": [
+    {
+      "id": "linkedin",
+      "label": { "en": "LinkedIn", "it": "LinkedIn" },
+      "href": "https://linkedin.example/in/anja-novak",
+      "icon": "mdi:linkedin",
+      "color": "#0A66C2",
+      "external": true
+    }
+  ]
+}

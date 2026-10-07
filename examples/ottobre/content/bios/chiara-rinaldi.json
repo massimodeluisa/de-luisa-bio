@@ -1,0 +1,60 @@
+{
+  "slug": "chiara-rinaldi",
+  "name": "Chiara Rinaldi",
+  "avatar": "/media/chiara-rinaldi.webp",
+  "site": "https://ottobre-coffee.example",
+  "layout": { "columns": 2 },
+  "theme": {
+    "primary": "#3A2A20",
+    "secondary": "#94570F",
+    "glyphColor": "#3A2A20",
+    "font": "space-grotesk",
+    "cardRadius": 28,
+    "avatarRadius": 9999,
+    "avatarBorderWidth": 0,
+    "avatarBorderColor": "#3A2A20"
+  },
+  "content": {
+    "en": {
+      "eyebrow": "Co-founder and head roaster",
+      "tagline": "Sources green coffee from six farms and roasts it twice a week."
+    },
+    "it": {
+      "eyebrow": "Cofondatrice e responsabile tostatura",
+      "tagline": "Sceglie il caffè verde da sei fattorie e lo tosta due volte a settimana."
+    }
+  },
+  "links": [
+    {
+      "id": "shop",
+      "label": { "en": "Order beans", "it": "Ordina il caffè" },
+      "href": "https://ottobre-coffee.example/shop",
+      "icon": "mdi:shopping-outline",
+      "primary": true,
+      "external": true
+    },
+    {
+      "id": "farms",
+      "label": { "en": "Our farms", "it": "Le nostre fattorie" },
+      "href": "https://ottobre-coffee.example/farms",
+      "icon": "mdi:sprout-outline",
+      "external": true
+    },
+    {
+      "id": "email",
+      "label": { "en": "Email", "it": "Email" },
+      "href": "mailto:chiara@ottobre-coffee.example",
+      "icon": "mdi:email-outline"
+    }
+  ],
+  "socials": [
+    {
+      "id": "instagram",
+      "label": { "en": "Instagram", "it": "Instagram" },
+      "href": "https://instagram.example/ottobre.coffee",
+      "icon": "mdi:instagram",
+      "color": "#E4405F",
+      "external": true
+    }
+  ]
+}

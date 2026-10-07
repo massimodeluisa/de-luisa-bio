@@ -1,0 +1,59 @@
+{
+  "slug": "samuel-osei",
+  "name": "Samuel Osei",
+  "avatar": "/media/samuel-osei.webp",
+  "site": "https://northvale-engineering.example",
+  "layout": { "columns": 2 },
+  "theme": {
+    "primary": "#17324D",
+    "secondary": "#B04E15",
+    "glyphColor": "#17324D",
+    "font": "inter",
+    "cardRadius": 6,
+    "avatarRadius": 16,
+    "avatarBorderWidth": 0,
+    "avatarBorderColor": "#17324D"
+  },
+  "content": {
+    "en": {
+      "eyebrow": "CAD Technician",
+      "tagline": "Turns engineering sketches into clean construction drawings."
+    },
+    "it": {
+      "eyebrow": "Tecnico CAD",
+      "tagline": "Trasforma gli schizzi ingegneristici in disegni costruttivi puliti."
+    }
+  },
+  "links": [
+    {
+      "id": "email",
+      "label": { "en": "Email", "it": "Email" },
+      "href": "mailto:samuel.osei@northvale-engineering.example",
+      "icon": "mdi:email-outline",
+      "primary": true
+    },
+    {
+      "id": "office",
+      "label": { "en": "Office line", "it": "Centralino" },
+      "href": "tel:+442079460280",
+      "icon": "mdi:phone-outline"
+    },
+    {
+      "id": "projects",
+      "label": { "en": "Selected projects", "it": "Progetti selezionati" },
+      "href": "https://northvale-engineering.example/people/samuel-osei",
+      "icon": "mdi:office-building-outline",
+      "external": true
+    }
+  ],
+  "socials": [
+    {
+      "id": "linkedin",
+      "label": { "en": "LinkedIn", "it": "LinkedIn" },
+      "href": "https://linkedin.example/in/samuel-osei",
+      "icon": "mdi:linkedin",
+      "color": "#0A66C2",
+      "external": true
+    }
+  ]
+}

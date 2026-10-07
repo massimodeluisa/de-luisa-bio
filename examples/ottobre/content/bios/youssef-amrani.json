@@ -1,0 +1,60 @@
+{
+  "slug": "youssef-amrani",
+  "name": "Youssef Amrani",
+  "avatar": "/media/youssef-amrani.webp",
+  "site": "https://ottobre-coffee.example",
+  "layout": { "columns": 2 },
+  "theme": {
+    "primary": "#3A2A20",
+    "secondary": "#94570F",
+    "glyphColor": "#3A2A20",
+    "font": "space-grotesk",
+    "cardRadius": 28,
+    "avatarRadius": 9999,
+    "avatarBorderWidth": 0,
+    "avatarBorderColor": "#3A2A20"
+  },
+  "content": {
+    "en": {
+      "eyebrow": "Co-founder, café and wholesale",
+      "tagline": "Runs the café counter and supplies restaurants across Turin."
+    },
+    "it": {
+      "eyebrow": "Cofondatore, bar e ingrosso",
+      "tagline": "Gestisce il banco del bar e rifornisce i ristoranti di Torino."
+    }
+  },
+  "links": [
+    {
+      "id": "visit",
+      "label": { "en": "Visit the café", "it": "Vieni al bar" },
+      "href": "https://ottobre-coffee.example/visit",
+      "icon": "mdi:map-marker-outline",
+      "primary": true,
+      "external": true
+    },
+    {
+      "id": "wholesale",
+      "label": { "en": "Wholesale enquiries", "it": "Ingrosso" },
+      "href": "https://ottobre-coffee.example/wholesale",
+      "icon": "mdi:truck-outline",
+      "external": true
+    },
+    {
+      "id": "email",
+      "label": { "en": "Email", "it": "Email" },
+      "href": "mailto:youssef@ottobre-coffee.example",
+      "icon": "mdi:email-outline"
+    }
+  ],
+  "socials": [
+    {
+      "id": "instagram",
+      "label": { "en": "Instagram", "it": "Instagram" },
+      "href": "https://instagram.example/ottobre.coffee",
+      "icon": "mdi:instagram",
+      "color": "#E4405F",
+      "external": true
+    }
+  ]
+}

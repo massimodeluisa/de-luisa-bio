@@ -4,7 +4,7 @@ import type { PostHog } from 'posthog-js'
 const GTM_ID = (import.meta.env.VITE_GTM_ID as string | undefined)?.trim() || ''
 const POSTHOG_KEY = import.meta.env.VITE_POSTHOG_KEY as string | undefined
 const POSTHOG_HOST =
-  (import.meta.env.VITE_POSTHOG_HOST as string | undefined) ?? 'https://eu.i.posthog.com'
+  (import.meta.env.VITE_POSTHOG_HOST as string | undefined)?.trim() || 'https://eu.i.posthog.com'
 
 declare global {
   interface Window {

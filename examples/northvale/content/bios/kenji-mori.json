@@ -1,0 +1,59 @@
+{
+  "slug": "kenji-mori",
+  "name": "Kenji Mori",
+  "avatar": "/media/kenji-mori.webp",
+  "site": "https://northvale-engineering.example",
+  "layout": { "columns": 2 },
+  "theme": {
+    "primary": "#17324D",
+    "secondary": "#B04E15",
+    "glyphColor": "#17324D",
+    "font": "inter",
+    "cardRadius": 6,
+    "avatarRadius": 16,
+    "avatarBorderWidth": 0,
+    "avatarBorderColor": "#17324D"
+  },
+  "content": {
+    "en": {
+      "eyebrow": "BIM Manager",
+      "tagline": "Runs the shared 3D models that architects and contractors build from."
+    },
+    "it": {
+      "eyebrow": "BIM manager",
+      "tagline": "Gestisce i modelli 3D condivisi da cui partono architetti e imprese."
+    }
+  },
+  "links": [
+    {
+      "id": "email",
+      "label": { "en": "Email", "it": "Email" },
+      "href": "mailto:kenji.mori@northvale-engineering.example",
+      "icon": "mdi:email-outline",
+      "primary": true
+    },
+    {
+      "id": "office",
+      "label": { "en": "Office line", "it": "Centralino" },
+      "href": "tel:+442079460180",
+      "icon": "mdi:phone-outline"
+    },
+    {
+      "id": "projects",
+      "label": { "en": "Selected projects", "it": "Progetti selezionati" },
+      "href": "https://northvale-engineering.example/people/kenji-mori",
+      "icon": "mdi:office-building-outline",
+      "external": true
+    }
+  ],
+  "socials": [
+    {
+      "id": "linkedin",
+      "label": { "en": "LinkedIn", "it": "LinkedIn" },
+      "href": "https://linkedin.example/in/kenji-mori",
+      "icon": "mdi:linkedin",
+      "color": "#0A66C2",
+      "external": true
+    }
+  ]
+}

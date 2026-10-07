@@ -1,19 +1,22 @@
+<script setup>import UiShot from './.vitepress/theme/components/UiShot.vue'
+import AdminUserHasher from './.vitepress/theme/components/AdminUserHasher.vue'</script>
+
 # Create your bio
 
-You do not need to be a maintainer of Open Bio Page to publish your own link-in-bio.
+You do not need to be a maintainer of Open Bio Page to publish your own.
 
-## 1. GitHub Fork (required)
+## 1. Fork on GitHub
 
-Create your instance with **GitHub’s Fork button** — not a manual copy of the repo.
+Create the instance with GitHub's Fork button. A manual copy of the repo is not the same thing.
 
 1. Open the Open Bio Page repository on GitHub
-2. Click **Fork** (top-right)
-3. Pick your account/org and repo name
-4. Clone **your fork** and work there
+2. Click Fork (top right)
+3. Pick your account or org, and a repo name
+4. Clone your fork and work there
 
-That keeps `Forked from …` so you can pull upstream template updates later.
+The fork stays linked ("Forked from"), so you can pull template updates later.
 
-Do **not**: create an empty repo and push a copy, download a ZIP into a new repo, or clone and repoint `origin` to a new empty remote. Those are not GitHub Forks.
+Do not create an empty repo and push a copy, drop a ZIP into a new repo, or clone and point `origin` at a new empty remote. None of those are GitHub forks.
 
 ## 2. Brand
 
@@ -27,28 +30,48 @@ Edit `content/site.json`:
 | `copyrightOwner` | `Acme Inc.` |
 | `home.*` / `og.*` / `seo.*` | Titles and descriptions |
 
-Update `public/CNAME` to your domain.
+Write your domain in `public/CNAME`.
 
 ## 3. People
 
 - Delete `content/bios/demo.json`
-- Add `content/bios/<slug>.json` (copy the demo file)
-- Put avatars in `public/media/<slug>-{original,2000,600,250}.webp` or upload via `/admin`
+- Add `content/bios/<slug>.json` (start from the demo file)
+- Put avatars in `public/media/<slug>-{original,2000,600,250}.webp`, or upload them in `/admin`
+
+One image with a normal extension is enough. An empty `avatar` draws a letter.
+
+<UiShot
+  name="bio"
+  alt="Giulia Ferraresi's profile page with her avatar, the eyebrow Paediatric nurse, a short tagline, and links to her recipe notebook, email, and Instagram."
+  url="your-domain.com/giulia"
+  caption="A profile page"
+/>
 
 ## 4. Admin users
+
+<AdminUserHasher />
+
+Generate each entry here, or run the same hash in a terminal:
 
 ```bash
 bun worker/hash-password.ts <user> <slug> <password>
 ```
 
-Put the JSON objects in the `ADMIN_USERS` secret (array). Each user is locked to one `slug`.
+Put the entries in the `ADMIN_USERS` secret as a JSON array; the Copy ADMIN_USERS button gives you that array. Each user is locked to one `slug`.
+
+<UiShot
+  name="admin-login"
+  alt="The admin sign-in form, titled Ferraresi family: Admin, with Username and Password fields and a Sign in button."
+  url="your-domain.com/admin"
+  caption="The admin sign-in"
+/>
 
 ## 5. Secrets
 
-Copy `secrets.local.example` → `secrets.local`, fill values, then upload to your **fork** (GitHub Actions Secrets/Variables + Worker/serverless env). See [Secrets](/secrets).
+Copy `secrets.local.example` to `secrets.local`, fill it in, and upload those values to your fork (Actions secrets and variables, plus the Worker or other host). See [Secrets](/secrets).
 
 ## 6. Publish
 
-Pick a [provider](/providers/) for the admin API and deploy the static `dist/` (GitHub Pages by default). Same-site admin API host is required for cookies (e.g. `api.yourdomain.com`).
+Pick a [provider](/providers/) for the admin API, and deploy the static `dist/` (GitHub Pages by default). The admin host has to share the site's domain, for example `api.yourdomain.com`, or the login cookie will not stick.
 
-Branded family instance (De Luisa): [GitHub Fork → instance](/deploy/fork-instance).
+The page [Your instance](/deploy/fork-instance) is the same path. A blank `site.json` and one profile are in `template/`.

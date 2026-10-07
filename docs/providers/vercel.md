@@ -17,5 +17,4 @@ export { default, config } from '../server/adapters/vercel'
 
 ## Notes
 
-- Use Edge when possible for Web `Request`/`Response` parity with the shared handler
-- Confirm `Set-Cookie` reaches the browser on your custom API domain
+Use the Edge runtime when you can. The shared handler speaks Web `Request` and `Response`, and Edge matches that. Then check that `Set-Cookie` actually arrives in the browser on your API domain. A platform URL often drops it.

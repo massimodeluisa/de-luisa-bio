@@ -1,0 +1,59 @@
+{
+  "slug": "marco-bellini",
+  "name": "Marco Bellini",
+  "avatar": "/media/marco-bellini.webp",
+  "site": "https://northvale-engineering.example",
+  "layout": { "columns": 2 },
+  "theme": {
+    "primary": "#17324D",
+    "secondary": "#B04E15",
+    "glyphColor": "#17324D",
+    "font": "inter",
+    "cardRadius": 6,
+    "avatarRadius": 16,
+    "avatarBorderWidth": 0,
+    "avatarBorderColor": "#17324D"
+  },
+  "content": {
+    "en": {
+      "eyebrow": "Senior Structural Engineer",
+      "tagline": "Works on long-span roofs and the retrofit of listed buildings."
+    },
+    "it": {
+      "eyebrow": "Ingegnere strutturista senior",
+      "tagline": "Si occupa di coperture a grande luce e del recupero di edifici vincolati."
+    }
+  },
+  "links": [
+    {
+      "id": "email",
+      "label": { "en": "Email", "it": "Email" },
+      "href": "mailto:marco.bellini@northvale-engineering.example",
+      "icon": "mdi:email-outline",
+      "primary": true
+    },
+    {
+      "id": "office",
+      "label": { "en": "Office line", "it": "Centralino" },
+      "href": "tel:+442079460140",
+      "icon": "mdi:phone-outline"
+    },
+    {
+      "id": "projects",
+      "label": { "en": "Selected projects", "it": "Progetti selezionati" },
+      "href": "https://northvale-engineering.example/people/marco-bellini",
+      "icon": "mdi:office-building-outline",
+      "external": true
+    }
+  ],
+  "socials": [
+    {
+      "id": "linkedin",
+      "label": { "en": "LinkedIn", "it": "LinkedIn" },
+      "href": "https://linkedin.example/in/marco-bellini",
+      "icon": "mdi:linkedin",
+      "color": "#0A66C2",
+      "external": true
+    }
+  ]
+}

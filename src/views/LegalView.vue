@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 
-import { useHead } from '@unhead/vue'
+import { useHead, useSeoMeta } from '@unhead/vue'
 
 import { showCookiePreferences } from '@/composables/use-consent'
 import { detectLegalLocale, legalContent } from '@/content/legal'
 import type { LegalLocale } from '@/content/legal'
 import { site } from '@/content/site'
+import { withBase } from '@/lib/base'
+import { IS_DEMO_INSTANCE, ROBOTS_CONTENT } from '@/lib/demo'
 
 const props = defineProps<{ kind: 'privacy' | 'cookie' }>()
 
@@ -25,12 +27,16 @@ useHead({
   title: computed(() => `${pageTitle.value} — ${site.brand}`),
   htmlAttrs: { lang: locale },
 })
+
+if (IS_DEMO_INSTANCE) {
+  useSeoMeta({ robots: ROBOTS_CONTENT })
+}
 </script>
 
 <template>
   <main class="mx-auto min-h-svh w-full max-w-2xl px-5 py-12 text-site-heading">
     <a
-      href="/"
+      :href="withBase('/')"
       class="font-mono text-[11px] uppercase tracking-[0.18em] text-site-secondary hover:text-site-heading"
     >
       ← {{ content.backHome }}
@@ -95,6 +101,7 @@ useHead({
     </template>
 
     <button
+      v-if="!IS_DEMO_INSTANCE"
       type="button"
       class="mt-10 rounded-full border border-site-border bg-site-surface/70 px-5 py-2 text-sm font-semibold text-site-heading transition active:scale-[0.99] hover:border-site-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-site-secondary"
       @click="showCookiePreferences()"

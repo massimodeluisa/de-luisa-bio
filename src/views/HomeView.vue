@@ -8,6 +8,8 @@ import { site, siteOrigin } from '@/content/site'
 import { bios } from '@/composables/use-bios'
 import { track } from '@/composables/use-analytics'
 import { avatarSources } from '@/lib/avatar'
+import { withBase } from '@/lib/base'
+import { IS_DEMO_INSTANCE, ROBOTS_CONTENT } from '@/lib/demo'
 import { FAVICON_RADIUS, letterGlyphDataUri } from '@/lib/letter-glyph'
 
 function shuffle(input: IBio[]): IBio[] {
@@ -37,6 +39,22 @@ const onOpen = (slug: string) => track('home_open_bio', { bio: slug })
 
 const sortedBios = Object.values(bios).sort((a, b) => a.name.localeCompare(b.name))
 const profileCount = sortedBios.length
+
+/** Spread tiles over the fewest rows a breakpoint allows, then even out the columns. */
+function balancedColumns(count: number, maxColumns: number): string {
+  if (count <= 1) {
+    return '1'
+  }
+  const rows = Math.ceil(count / maxColumns)
+  return String(Math.ceil(count / rows))
+}
+
+const gridStyle = {
+  '--cols-base': balancedColumns(profileCount, 2),
+  '--cols-sm': balancedColumns(profileCount, 3),
+  '--cols-lg': balancedColumns(profileCount, 4),
+  '--cols-xl': balancedColumns(profileCount, 5),
+}
 const peopleCount = sortedBios.filter((b) => b.slug !== 'pasticceria').length
 const organizationCount = profileCount - peopleCount
 const socialCount = sortedBios.reduce((total, b) => total + b.socials.length, 0)
@@ -86,7 +104,7 @@ useSeoMeta({
   twitterDescription: homeDescription,
   twitterImage: homeOgImage,
   twitterImageAlt: site.home.ogImageAlt,
-  robots: 'index, follow, max-image-preview:large',
+  robots: ROBOTS_CONTENT,
 })
 
 const jsonLd = {
@@ -156,7 +174,7 @@ useHead({
   script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(jsonLd) }],
 })
 
-useFavicon(letterGlyphDataUri(site.brand[0] || 'B', '#b68370', FAVICON_RADIUS))
+useFavicon(letterGlyphDataUri(site.brand[0] || 'B', '#3A5BFF', FAVICON_RADIUS))
 </script>
 
 <template lang="pug">
@@ -170,6 +188,7 @@ main.relative.w-full.bg-site-background.text-site-text
 
   section#profiles.scroll-mt-24.flex.min-h-dvh.flex-wrap.content-stretch(
     aria-labelledby="profiles-heading"
+    :style="gridStyle"
   )
     h2#profiles-heading.sr-only {{ site.brand }} profiles
     router-link.tile.group.relative.grow.overflow-hidden.no-underline(
@@ -303,19 +322,19 @@ main.relative.w-full.bg-site-background.text-site-text
         | people or organization represented by the entries. Individual profiles identify their
         | main person or organization and use canonical URLs so multiple discovery paths resolve
         | to one preferred address.
-      p
+      p(v-if="!IS_DEMO_INSTANCE")
         | Automated crawlers can also consult the site's
         |
-        a.text-site-link.underline.underline-offset-4(href="/robots.txt") robots.txt
+        a.text-site-link.underline.underline-offset-4(:href="withBase('/robots.txt')") robots.txt
         | ,
         |
-        a.text-site-link.underline.underline-offset-4(href="/sitemap.xml") XML sitemap
+        a.text-site-link.underline.underline-offset-4(:href="withBase('/sitemap.xml')") XML sitemap
         | ,
         |
-        a.text-site-link.underline.underline-offset-4(href="/llms.txt") LLM index
+        a.text-site-link.underline.underline-offset-4(:href="withBase('/llms.txt')") LLM index
         |  and
         |
-        a.text-site-link.underline.underline-offset-4(href="/llms-full.txt") full text export
+        a.text-site-link.underline.underline-offset-4(:href="withBase('/llms-full.txt')") full text export
         | . The robots file follows the standard described in
         |
         a.text-site-link.underline.underline-offset-4(
@@ -373,15 +392,15 @@ footer.border-t.border-site-border.bg-site-background.px-6.py-8.text-sm.text-sit
           router-link.text-inherit.underline.underline-offset-4(to="/privacy") Privacy
         li
           router-link.text-inherit.underline.underline-offset-4(to="/cookie-policy") Cookie policy
-        li
-          a.text-inherit.underline.underline-offset-4(href="/sitemap.xml") Sitemap
-        li
-          a.text-inherit.underline.underline-offset-4(href="/llms.txt") LLM index
+        li(v-if="!IS_DEMO_INSTANCE")
+          a.text-inherit.underline.underline-offset-4(:href="withBase('/sitemap.xml')") Sitemap
+        li(v-if="!IS_DEMO_INSTANCE")
+          a.text-inherit.underline.underline-offset-4(:href="withBase('/llms.txt')") LLM index
 </template>
 
 <style scoped lang="scss">
 .tile {
-  flex-basis: 50%;
+  flex-basis: calc(100% / var(--cols-base));
 }
 
 .machine-readable-only {
@@ -398,19 +417,19 @@ footer.border-t.border-site-border.bg-site-background.px-6.py-8.text-sm.text-sit
 
 @media (min-width: 640px) {
   .tile {
-    flex-basis: 33.333%;
+    flex-basis: calc(100% / var(--cols-sm));
   }
 }
 
 @media (min-width: 1024px) {
   .tile {
-    flex-basis: 25%;
+    flex-basis: calc(100% / var(--cols-lg));
   }
 }
 
 @media (min-width: 1280px) {
   .tile {
-    flex-basis: 20%;
+    flex-basis: calc(100% / var(--cols-xl));
   }
 }
 </style>

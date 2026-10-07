@@ -1,0 +1,45 @@
+{
+  "slug": "tommaso",
+  "name": "Tommaso Ferraresi",
+  "avatar": "/media/tommaso.webp",
+  "site": "https://ferraresi.example",
+  "layout": { "columns": 2 },
+  "theme": {
+    "primary": "#2F4F3E",
+    "secondary": "#A84A33",
+    "glyphColor": "#2F4F3E",
+    "font": "fraunces",
+    "cardRadius": 16,
+    "avatarRadius": 9999,
+    "avatarBorderWidth": 3,
+    "avatarBorderColor": "#FFFFFF"
+  },
+  "content": {
+    "en": {
+      "eyebrow": "Middle school",
+      "tagline": "Twelve. Skateboards, Lego, and a lot of questions about space."
+    },
+    "it": {
+      "eyebrow": "Scuola media",
+      "tagline": "Dodici anni. Skateboard, Lego e un sacco di domande sullo spazio."
+    }
+  },
+  "links": [
+    {
+      "id": "builds",
+      "label": { "en": "My Lego builds", "it": "Le mie costruzioni Lego" },
+      "href": "https://tommaso.ferraresi.example/lego",
+      "icon": "mdi:toy-brick-outline",
+      "primary": true,
+      "external": true
+    },
+    {
+      "id": "space",
+      "label": { "en": "Space questions I asked this year", "it": "Le domande sullo spazio di quest'anno" },
+      "href": "https://tommaso.ferraresi.example/space",
+      "icon": "mdi:rocket-launch-outline",
+      "external": true
+    }
+  ],
+  "socials": []
+}

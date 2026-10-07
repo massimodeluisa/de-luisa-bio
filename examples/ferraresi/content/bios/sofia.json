@@ -1,0 +1,45 @@
+{
+  "slug": "sofia",
+  "name": "Sofia Ferraresi",
+  "avatar": "/media/sofia.webp",
+  "site": "https://ferraresi.example",
+  "layout": { "columns": 2 },
+  "theme": {
+    "primary": "#2F4F3E",
+    "secondary": "#A84A33",
+    "glyphColor": "#2F4F3E",
+    "font": "fraunces",
+    "cardRadius": 16,
+    "avatarRadius": 9999,
+    "avatarBorderWidth": 3,
+    "avatarBorderColor": "#FFFFFF"
+  },
+  "content": {
+    "en": {
+      "eyebrow": "Student and photographer",
+      "tagline": "Sixteen, swims for the school team and shoots everything on film."
+    },
+    "it": {
+      "eyebrow": "Studentessa e fotografa",
+      "tagline": "Sedici anni, nuota per la squadra della scuola e fotografa tutto su pellicola."
+    }
+  },
+  "links": [
+    {
+      "id": "photos",
+      "label": { "en": "Film photos", "it": "Foto su pellicola" },
+      "href": "https://sofia.ferraresi.example/photos",
+      "icon": "mdi:camera-outline",
+      "primary": true,
+      "external": true
+    },
+    {
+      "id": "swim",
+      "label": { "en": "Swim team results", "it": "Risultati di nuoto" },
+      "href": "https://swimclub-bologna.example/results",
+      "icon": "mdi:swim",
+      "external": true
+    }
+  ],
+  "socials": []
+}
