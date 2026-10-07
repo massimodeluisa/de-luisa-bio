@@ -2,7 +2,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import worker, { type Env, type IStorage } from './src/index'
+import { type Env, type IStorage, handleRequest } from '../server/core/handler'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const REPO_ROOT = join(HERE, '..')
@@ -30,11 +30,14 @@ function loadDevVars(): Record<string, string> {
     if (!m) {
       continue
     }
-    let value = m[2].trim()
-    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+    let value = m[2]!.trim()
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
       value = value.slice(1, -1)
     }
-    out[m[1]] = value
+    out[m[1]!] = value
   }
   return out
 }
@@ -44,18 +47,18 @@ const env = {
   ADMIN_USERS: vars.ADMIN_USERS ?? '[]',
   SESSION_SECRET: vars.SESSION_SECRET ?? 'dev-secret',
   GITHUB_TOKEN: vars.GITHUB_TOKEN ?? '',
-  GITHUB_REPO: vars.GITHUB_REPO ?? 'massimodeluisa/de-luisa-bio',
-  GITHUB_BRANCH: vars.GITHUB_BRANCH ?? 'main',
+  GITHUB_REPO: vars.GITHUB_REPO ?? 'your-org/openbio',
+  GITHUB_BRANCH: vars.GITHUB_BRANCH ?? 'master',
   POSTHOG_HOST: vars.POSTHOG_HOST ?? 'https://eu.posthog.com',
   POSTHOG_PROJECT_ID: vars.POSTHOG_PROJECT_ID ?? '',
   POSTHOG_READ_KEY: vars.POSTHOG_READ_KEY ?? '',
-  ALLOWED_ORIGIN: vars.ALLOWED_ORIGIN ?? 'https://deluisa.bio',
+  ALLOWED_ORIGIN: vars.ALLOWED_ORIGIN ?? 'http://localhost:5173',
   storage: localStorage,
 } satisfies Env
 
 const port = Number(process.env.PORT ?? 8787)
 try {
-  Bun.serve({ port, fetch: (request) => worker.fetch(request, env) })
+  Bun.serve({ port, fetch: (request) => handleRequest(request, env) })
   console.log(`admin API (dev) → http://localhost:${port}`)
 } catch (err) {
   if ((err as { code?: string })?.code === 'EADDRINUSE') {

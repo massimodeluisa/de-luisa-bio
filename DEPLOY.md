@@ -1,14 +1,16 @@
-# Deploy & publish — Agnostic Bio
+# Deploy & publish — Open Bio
 
-This guide walks through publishing a white-label instance (default: De Luisa / `deluisa.bio`).
-Replace domain names with the values from your `content/site.json`.
+Publish a white-label instance after a **GitHub Fork** of this template. Replace domain names
+with the values from your `content/site.json`. Default template domain: `openbio.page`.
+
+For the De Luisa branded child: [GitHub Fork → instance](./docs/deploy/fork-instance.md).
 
 ## Prerequisites
 
-- GitHub repository with Actions enabled
-- Cloudflare account (DNS + Workers)
+- GitHub repository created with the **Fork** button (keeps `Forked from …`)
+- Cloudflare account (DNS + Workers) — or another [provider](./docs/providers/)
 - Bun locally for hashing admin passwords (`bun worker/hash-password.ts`)
-- Optional: PostHog project (EU or US) for analytics + admin stats
+- Optional: PostHog project for analytics + admin stats
 
 ## 1. Configure the brand
 
@@ -29,14 +31,14 @@ Also set:
 - `worker/wrangler.toml` → `GITHUB_REPO`, `ALLOWED_ORIGIN`, PostHog host/project id
 - Bootstrap meta in `index.html` (keep in sync with `site.json`)
 
-## 2. GitHub repository settings
+## 2. GitHub repository settings (on your fork)
 
 ### Pages
 
 1. Repo **Settings → Pages**
 2. **Build and deployment → Source** = **GitHub Actions**
-3. After the first successful deploy, set **Custom domain** to the value of `site.domain`
-   (e.g. `deluisa.bio`) and wait for DNS / HTTPS to verify
+3. After the first successful deploy, set **Custom domain** to `site.domain`
+   and wait for DNS / HTTPS to verify
 
 ### Variables (Settings → Secrets and variables → Actions → Variables)
 
@@ -44,7 +46,7 @@ Also set:
 | --- | --- |
 | `VITE_POSTHOG_KEY` | `phc_…` (public) |
 | `VITE_POSTHOG_HOST` | `https://eu.i.posthog.com` |
-| `VITE_ADMIN_API` | `https://api.deluisa.bio` |
+| `VITE_ADMIN_API` | `https://api.openbio.page` |
 
 ### Secrets
 
@@ -60,13 +62,15 @@ Also set:
 Generate users:
 
 ```sh
-bun worker/hash-password.ts massimo massimo 'your-password'
+bun worker/hash-password.ts demo demo 'your-password'
 # Append the printed object into the ADMIN_USERS array secret
 ```
 
-## 3. DNS (Cloudflare)
+Use `secrets.local.example` → `secrets.local` as a local dump checklist. Never commit `secrets.local`.
 
-Assume apex `deluisa.bio` — substitute your domain.
+## 3. DNS (Cloudflare example)
+
+Assume apex `openbio.page` — substitute your domain.
 
 ### Apex → GitHub Pages
 
@@ -93,12 +97,11 @@ Guarding `api.` stops the admin API from being redirected.
 ## 4. First publish
 
 ```sh
-# Local sanity check
 bun install
 bun run build
+bun run docs:build
 bun lint
 
-# Push to master — Actions builds and deploys site + worker when paths change
 git push origin master
 ```
 
@@ -113,6 +116,7 @@ Verify:
 
 - `https://YOUR_DOMAIN/` — home directory
 - `https://YOUR_DOMAIN/<slug>` — profile
+- `https://YOUR_DOMAIN/docs/` — documentation
 - `https://YOUR_DOMAIN/admin` — login; edit only your own bio
 - `https://api.YOUR_DOMAIN/me` — 401 without cookie (expected)
 
@@ -122,19 +126,11 @@ Verify:
 bun install
 cp .env.example .env.local
 cp worker/.dev.vars.example worker/.dev.vars
-# Fill ADMIN_USERS / SESSION_SECRET / optional GitHub + PostHog in .dev.vars
-
 bun dev
 # Site: http://localhost:5173
 # Admin API: http://localhost:8787
+bun run docs:dev
 ```
-
-## 6. Admin UX notes
-
-- Editor loads the bio from GitHub (`GET /bio`) so you never edit a stale build bundle
-- Live preview uses the real public `BioProfile` layout (theme, site card, 1/2 columns, quick socials)
-- Stats failures do not block the editor
-- Saving commits JSON to the repo and triggers a Pages rebuild (usually 1–2 minutes)
 
 ## Security reminders
 
@@ -142,3 +138,4 @@ bun dev
 - Never point `VITE_ADMIN_API` at `*.workers.dev` in production
 - One `ADMIN_USERS` entry per person; slug must match their `content/bios/<slug>.json`
 - Rotate `SESSION_SECRET` if a cookie is leaked (invalidates all sessions)
+- Instance secrets belong on the **GitHub Fork**, not on a manually copied remote

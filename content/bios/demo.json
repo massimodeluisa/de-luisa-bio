@@ -1,0 +1,54 @@
+{
+  "slug": "demo",
+  "name": "Open Bio Demo",
+  "avatar": "",
+  "site": "https://openbio.page",
+  "siteCard": {
+    "url": "https://openbio.page",
+    "image": "",
+    "enabled": true,
+    "position": "before"
+  },
+  "layout": { "columns": 2 },
+  "theme": {
+    "primary": "#1a1a1a",
+    "secondary": "#3d7a5c",
+    "glyphColor": "#3d7a5c",
+    "font": "geist-sans",
+    "cardRadius": 14,
+    "avatarRadius": 9999,
+    "avatarBorderWidth": 1,
+    "avatarBorderColor": "#3d7a5c"
+  },
+  "content": {
+    "en": {
+      "eyebrow": "Example profile",
+      "tagline": "GitHub Fork Open Bio, edit content/site.json, add your people under content/bios/, and publish."
+    },
+    "it": {
+      "eyebrow": "Profilo di esempio",
+      "tagline": "Usa GitHub Fork su Open Bio, modifica content/site.json, aggiungi i profili in content/bios/ e pubblica."
+    }
+  },
+  "links": [
+    {
+      "id": "docs",
+      "label": { "en": "Read the docs", "it": "Leggi la docs" },
+      "href": "https://openbio.page/docs/",
+      "icon": "mdi:file-document-outline",
+      "primary": true,
+      "external": true
+    }
+  ],
+  "socials": [
+    {
+      "id": "github",
+      "label": { "en": "GitHub", "it": "GitHub" },
+      "href": "https://github.com/massimodeluisa/de-luisa-bio",
+      "icon": "mdi:github",
+      "color": "#181717",
+      "external": true,
+      "iconSize": "1.75rem"
+    }
+  ]
+}
