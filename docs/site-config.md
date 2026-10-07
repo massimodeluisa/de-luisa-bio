@@ -1,6 +1,15 @@
+<script setup>import UiShot from './.vitepress/theme/components/UiShot.vue'</script>
+
 # site.json
 
-White-label control plane. Loaded by `src/content/site.ts`.
+This is the brand file. `src/content/site.ts` loads it.
+
+<UiShot
+  name="home"
+  alt="The Ferraresi family directory home, with a portrait and first name for each of the five family members."
+  url="your-domain.com/"
+  caption="The directory home uses the brand and home fields from site.json"
+/>
 
 ```json
 {
@@ -10,7 +19,7 @@ White-label control plane. Loaded by `src/content/site.ts`.
   "githubRepo": "your-org/open-bio-page",
   "licensePath": "LICENSE.md",
   "copyrightOwner": "Open Bio Page",
-  "adminTitle": "Open Bio Page — Admin",
+  "adminTitle": "Open Bio Page: Admin",
   "home": { "title": "...", "description": "...", "author": "...", "ogImageAlt": "...", "collectionName": "..." },
   "og": { "homeEyebrow": "...", "homeTitle": "...", "homeTagline": "..." },
   "seo": { "llmsTitle": "...", "llmsBlurb": "..." },
@@ -18,4 +27,4 @@ White-label control plane. Loaded by `src/content/site.ts`.
 }
 ```
 
-Change this file — do not hardcode brand strings in Vue views.
+Change this file. Do not hardcode the brand in Vue views.

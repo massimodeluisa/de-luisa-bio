@@ -1,0 +1,38 @@
+{
+  "slug": "you",
+  "name": "Your Name",
+  "avatar": "",
+  "site": "https://example.com",
+  "layout": { "columns": 2 },
+  "theme": {
+    "primary": "#14151B",
+    "secondary": "#2F4BE0",
+    "glyphColor": "#3A5BFF",
+    "font": "geist-sans",
+    "cardRadius": 14,
+    "avatarRadius": 9999,
+    "avatarBorderWidth": 1,
+    "avatarBorderColor": "#3A5BFF"
+  },
+  "content": {
+    "en": {
+      "eyebrow": "Hello",
+      "tagline": "Replace this line."
+    },
+    "it": {
+      "eyebrow": "Hello",
+      "tagline": "Replace this line."
+    }
+  },
+  "links": [
+    {
+      "id": "site",
+      "label": { "en": "Website", "it": "Website" },
+      "href": "https://example.com",
+      "icon": "mdi:web",
+      "primary": true,
+      "external": true
+    }
+  ],
+  "socials": []
+}

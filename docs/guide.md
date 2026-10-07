@@ -1,3 +1,5 @@
+<script setup>import UiShot from './.vitepress/theme/components/UiShot.vue'</script>
+
 # Install and usage
 
 Open Bio Page is a Vue 3 + Vite SSG app with a small serverless admin API.
@@ -6,7 +8,7 @@ Open Bio Page is a Vue 3 + Vite SSG app with a small serverless admin API.
 
 - [Bun](https://bun.sh) 1.3+ (or Node 22+)
 - A GitHub repo you can write to (admin saves bios via the Contents API)
-- Optional: PostHog project for analytics + admin stats
+- Optional: [PostHog](/analytics) project for analytics + admin stats
 
 ## Local setup
 
@@ -23,6 +25,20 @@ bun dev
 - Public site: `http://localhost:5173`
 - Admin: `http://localhost:5173/admin`
 - API: `http://localhost:8787` (`VITE_ADMIN_API`)
+
+<UiShot
+  name="home"
+  alt="The Ferraresi family directory home, with a portrait and first name for each of the five family members."
+  url="localhost:5173/"
+  caption="Directory home at localhost:5173"
+/>
+
+<UiShot
+  name="bio"
+  alt="Giulia Ferraresi's profile page with her avatar, the eyebrow Paediatric nurse, a short tagline, and links to her recipe notebook, email, and Instagram."
+  url="localhost:5173/giulia"
+  caption="A profile page"
+/>
 
 ## Build
 
@@ -41,5 +57,5 @@ server/core/          shared admin API (auth, GitHub writes, stats)
 server/adapters/      Cloudflare · Vercel · Netlify · AWS · Azure
 worker/               Cloudflare deploy + local Bun API
 docs/                 VitePress documentation (this site)
-instances/deluisa-bio content snapshot applied after a real GitHub Fork
+template/             blank site.json, one profile, and a CNAME placeholder
 ```

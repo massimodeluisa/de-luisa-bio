@@ -1,0 +1,45 @@
+{
+  "slug": "bea",
+  "name": "Bea Ferraresi",
+  "avatar": "/media/bea.webp",
+  "site": "https://ferraresi.example",
+  "layout": { "columns": 2 },
+  "theme": {
+    "primary": "#2F4F3E",
+    "secondary": "#A84A33",
+    "glyphColor": "#2F4F3E",
+    "font": "fraunces",
+    "cardRadius": 16,
+    "avatarRadius": 9999,
+    "avatarBorderWidth": 3,
+    "avatarBorderColor": "#FFFFFF"
+  },
+  "content": {
+    "en": {
+      "eyebrow": "Primary school",
+      "tagline": "Seven. Draws horses and sings in the car."
+    },
+    "it": {
+      "eyebrow": "Scuola elementare",
+      "tagline": "Sette anni. Disegna cavalli e canta in macchina."
+    }
+  },
+  "links": [
+    {
+      "id": "drawings",
+      "label": { "en": "My drawings", "it": "I miei disegni" },
+      "href": "https://bea.ferraresi.example/drawings",
+      "icon": "mdi:palette-outline",
+      "primary": true,
+      "external": true
+    },
+    {
+      "id": "song",
+      "label": { "en": "The song we sing in the car", "it": "La canzone che cantiamo in macchina" },
+      "href": "https://bea.ferraresi.example/song",
+      "icon": "mdi:music-note-outline",
+      "external": true
+    }
+  ],
+  "socials": []
+}

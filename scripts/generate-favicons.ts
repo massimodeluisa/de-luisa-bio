@@ -1,14 +1,14 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { dirname, join } from 'node:path'
+import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import type { IBio } from '../src/content/bio'
 import { FAVICON_RADIUS, letterGlyphSvg } from '../src/lib/letter-glyph'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
-const DIST = join(ROOT, 'dist')
+const DIST = resolve(ROOT, process.env.OBP_OUT_DIR || 'dist')
 const FAV_DIR = join(DIST, 'favicons')
-const BIOS_DIR = join(ROOT, 'content/bios')
+const BIOS_DIR = join(resolve(ROOT, process.env.OBP_CONTENT_DIR || 'content'), 'bios')
 
 if (!existsSync(DIST)) {
   console.error('[favicons] dist/ not found — run this after `vite-ssg build`.')

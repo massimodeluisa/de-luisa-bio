@@ -1,0 +1,26 @@
+{
+  "brand": "Ottobre Coffee Roasters",
+  "domain": "ottobre-coffee.example",
+  "origin": "https://openbio.page/examples/ottobre",
+  "githubRepo": "open-bio-page/open-bio-page",
+  "licensePath": "LICENSE.md",
+  "copyrightOwner": "Ottobre Coffee Roasters",
+  "adminTitle": "Ottobre Coffee Roasters: Admin",
+  "home": {
+    "title": "Ottobre Coffee Roasters: the two of us",
+    "description": "Chiara roasts, Youssef runs the café and wholesale. Turin.",
+    "author": "Ottobre Coffee Roasters",
+    "ogImageAlt": "Ottobre Coffee Roasters",
+    "collectionName": "Ottobre Coffee Roasters directory"
+  },
+  "og": {
+    "homeEyebrow": "OTTOBRE-COFFEE.EXAMPLE",
+    "homeTitle": "Ottobre Coffee Roasters",
+    "homeTagline": "Chiara roasts, Youssef runs the café and wholesale. Turin."
+  },
+  "seo": {
+    "llmsTitle": "Ottobre Coffee Roasters",
+    "llmsBlurb": "Chiara roasts, Youssef runs the café and wholesale. Turin."
+  },
+  "privacyContactEmail": "hello@ottobre-coffee.example"
+}

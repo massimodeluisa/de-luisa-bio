@@ -1,0 +1,59 @@
+{
+  "slug": "lucia-ortega",
+  "name": "Lucía Ortega",
+  "avatar": "/media/lucia-ortega.webp",
+  "site": "https://northvale-engineering.example",
+  "layout": { "columns": 2 },
+  "theme": {
+    "primary": "#17324D",
+    "secondary": "#B04E15",
+    "glyphColor": "#17324D",
+    "font": "inter",
+    "cardRadius": 6,
+    "avatarRadius": 16,
+    "avatarBorderWidth": 0,
+    "avatarBorderColor": "#17324D"
+  },
+  "content": {
+    "en": {
+      "eyebrow": "Sustainability Lead",
+      "tagline": "Measures embodied carbon and finds ways to use less material."
+    },
+    "it": {
+      "eyebrow": "Responsabile sostenibilità",
+      "tagline": "Misura il carbonio incorporato e trova il modo di usare meno materiale."
+    }
+  },
+  "links": [
+    {
+      "id": "email",
+      "label": { "en": "Email", "it": "Email" },
+      "href": "mailto:lucía.ortega@northvale-engineering.example",
+      "icon": "mdi:email-outline",
+      "primary": true
+    },
+    {
+      "id": "office",
+      "label": { "en": "Office line", "it": "Centralino" },
+      "href": "tel:+442079460210",
+      "icon": "mdi:phone-outline"
+    },
+    {
+      "id": "projects",
+      "label": { "en": "Selected projects", "it": "Progetti selezionati" },
+      "href": "https://northvale-engineering.example/people/lucia-ortega",
+      "icon": "mdi:office-building-outline",
+      "external": true
+    }
+  ],
+  "socials": [
+    {
+      "id": "linkedin",
+      "label": { "en": "LinkedIn", "it": "LinkedIn" },
+      "href": "https://linkedin.example/in/lucia-ortega",
+      "icon": "mdi:linkedin",
+      "color": "#0A66C2",
+      "external": true
+    }
+  ]
+}

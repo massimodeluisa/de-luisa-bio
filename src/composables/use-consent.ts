@@ -4,6 +4,7 @@ import * as CookieConsent from 'vanilla-cookieconsent'
 
 import { LEGAL_LOCALES, legalContent } from '@/content/legal'
 import type { LegalLocale } from '@/content/legal'
+import { withBase } from '@/lib/base'
 
 import { setAnalyticsConsent } from './use-analytics'
 
@@ -71,7 +72,7 @@ function buildTranslation(locale: LegalLocale) {
       acceptAllBtn: b.acceptAll,
       acceptNecessaryBtn: b.reject,
       showPreferencesBtn: b.preferences,
-      footer: `<a href="/cookie-policy">${c.cookiePolicyLabel}</a> · <a href="/privacy">${c.privacyPolicyLabel}</a>`,
+      footer: `<a href="${withBase('/cookie-policy')}">${c.cookiePolicyLabel}</a> · <a href="${withBase('/privacy')}">${c.privacyPolicyLabel}</a>`,
     },
     preferencesModal: {
       title: b.prefsTitle,

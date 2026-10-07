@@ -55,3 +55,4 @@ secrets.local.*
 .docs-dist
 docs/.vitepress/dist
 docs/.vitepress/cache
+docs/public/examples/

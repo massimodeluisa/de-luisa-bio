@@ -1,23 +1,23 @@
 # Deploy overview
 
-Open Bio Page publishes as:
+A published Open Bio Page is two hosts:
 
-1. **Static site** — `bun run build` → `dist/` (GitHub Pages, Netlify, Vercel static, S3+CDN, …)
-2. **Admin API** — one serverless adapter from `server/adapters/`
+1. The static site from `bun run build`, written to `dist/`. GitHub Pages is the default. Netlify, Vercel, or S3 plus a CDN also work.
+2. The admin API, one adapter from `server/adapters/`.
 
-The SPA talks to `VITE_ADMIN_API`. That URL **must** be a subdomain of your public site so the session cookie is first-party.
+The site calls `VITE_ADMIN_API`. That URL has to be a subdomain of the public site, so the session cookie is first-party.
 
 ```
 yourdomain.com          → static site
 api.yourdomain.com      → serverless admin
 ```
 
-## Default path (GitHub Pages + Cloudflare Worker)
+## GitHub Pages and a Worker
 
-See [GitHub Pages + secrets](/deploy/github-pages).
+[GitHub Pages and secrets](/deploy/github-pages).
 
-## Instance recipe (De Luisa)
+## Your instance
 
-Use **GitHub → Fork** on the Open Bio Page upstream, then restore brand content from `instances/deluisa-bio/`.
+Fork the upstream repo with GitHub's Fork button, then put your brand in `content/site.json` and your people in `content/bios/`. `template/` is a blank copy of those files.
 
-See [GitHub Fork → instance](/deploy/fork-instance).
+[Your instance](/deploy/fork-instance).

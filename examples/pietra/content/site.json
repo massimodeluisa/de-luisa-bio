@@ -1,0 +1,26 @@
+{
+  "brand": "Studio Pietra",
+  "domain": "studio-pietra.example",
+  "origin": "https://openbio.page/examples/pietra",
+  "githubRepo": "open-bio-page/open-bio-page",
+  "licensePath": "LICENSE.md",
+  "copyrightOwner": "Studio Pietra",
+  "adminTitle": "Studio Pietra: Admin",
+  "home": {
+    "title": "Studio Pietra: architects in Lisbon",
+    "description": "The six people behind Studio Pietra, an architecture and interiors practice in Lisbon.",
+    "author": "Studio Pietra",
+    "ogImageAlt": "Studio Pietra",
+    "collectionName": "Studio Pietra directory"
+  },
+  "og": {
+    "homeEyebrow": "STUDIO-PIETRA.EXAMPLE",
+    "homeTitle": "Studio Pietra",
+    "homeTagline": "The six people behind Studio Pietra, an architecture and interiors practice in Lisbon."
+  },
+  "seo": {
+    "llmsTitle": "Studio Pietra",
+    "llmsBlurb": "The six people behind Studio Pietra, an architecture and interiors practice in Lisbon."
+  },
+  "privacyContactEmail": "hello@studio-pietra.example"
+}

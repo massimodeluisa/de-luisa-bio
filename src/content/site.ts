@@ -41,7 +41,7 @@ export interface ISiteConfig {
   privacyContactEmail: string
 }
 
-const modules = import.meta.glob<{ default: ISiteConfig }>('../../content/site.json', {
+const modules = import.meta.glob<{ default: ISiteConfig }>('@content/site.json', {
   eager: true,
 })
 

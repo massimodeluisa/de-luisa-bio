@@ -1,0 +1,26 @@
+{
+  "brand": "Your name",
+  "domain": "example.com",
+  "origin": "https://example.com",
+  "githubRepo": "you/your-repo",
+  "licensePath": "LICENSE.md",
+  "copyrightOwner": "Your name",
+  "adminTitle": "Your name: Admin",
+  "home": {
+    "title": "Your name",
+    "description": "Links for Your name.",
+    "author": "Your name",
+    "ogImageAlt": "Your name",
+    "collectionName": "Your name"
+  },
+  "og": {
+    "homeEyebrow": "EXAMPLE.COM",
+    "homeTitle": "Your name",
+    "homeTagline": "Your links."
+  },
+  "seo": {
+    "llmsTitle": "Your name",
+    "llmsBlurb": "Link page for Your name."
+  },
+  "privacyContactEmail": "hello@example.com"
+}

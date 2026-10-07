@@ -24,25 +24,27 @@
 
 @layer base {
   :root,
-  [data-theme='light'] {
+  [data-theme='light'],
+  .bio-theme {
     color-scheme: light;
-    --site-primary: #8894a9;
-    --site-primary-dark: #484647;
-    --site-secondary: #b68370;
-    --site-background: #f8f8f5;
-    --site-surface: #ffffff;
+    --site-primary: #3A5BFF;
+    --site-primary-dark: #14151B;
+    --site-secondary: #7B44E8;
+    --site-background: #F6F6F4;
+    --site-surface: #FFFFFF;
     --site-text: var(--site-primary-dark);
     --site-heading: var(--site-primary-dark);
-    --site-muted: #585855;
-    --site-border: #deded8;
+    --site-muted: #5B5E6B;
+    --site-border: #DCDDE3;
     --site-link: var(--site-primary);
     --site-link-hover: var(--site-secondary);
-    --site-selection: #d8ddd9;
+    --site-selection: #E2E7FF;
   }
 
   @supports (color: color-mix(in oklab, black, white)) {
     :root,
-    [data-theme='light'] {
+    [data-theme='light'],
+    .bio-theme {
       --site-background: color-mix(in oklab, var(--site-primary) 8%, white);
       --site-surface: color-mix(in oklab, var(--site-secondary) 6%, white);
       --site-text: color-mix(in oklab, var(--site-primary-dark) 92%, white);
@@ -56,25 +58,27 @@
   }
 
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme='light']) {
+    :root:not([data-theme='light']),
+    :root:not([data-theme='light']) .bio-theme {
       color-scheme: dark;
-      --site-background: #121111;
-      --site-surface: #1d1c1c;
-      --site-text: #e8e4d7;
-      --site-heading: #f7f5e2;
-      --site-muted: #a8a39a;
-      --site-border: #383737;
-      --site-link: #b7c1d2;
-      --site-link-hover: #d2a08e;
-      --site-selection: #394155;
+      --site-background: #14151B;
+      --site-surface: #1C1D25;
+      --site-text: #E6E7EC;
+      --site-heading: #F6F6F4;
+      --site-muted: #A3A6B2;
+      --site-border: #2E3040;
+      --site-link: #8FA2FF;
+      --site-link-hover: #B99BFF;
+      --site-selection: #2A3570;
     }
 
     @supports (color: color-mix(in oklab, black, white)) {
-      :root:not([data-theme='light']) {
+      :root:not([data-theme='light']),
+      :root:not([data-theme='light']) .bio-theme {
         --site-background: color-mix(in oklab, var(--site-primary-dark) 34%, black);
         --site-surface: color-mix(in oklab, var(--site-primary-dark) 48%, black);
-        --site-text: color-mix(in oklab, #f7f5e2 82%, var(--site-primary));
-        --site-heading: color-mix(in oklab, #f7f5e2 94%, white);
+        --site-text: color-mix(in oklab, #F6F6F4 82%, var(--site-primary));
+        --site-heading: color-mix(in oklab, #F6F6F4 94%, white);
         --site-muted: color-mix(in oklab, var(--site-text) 58%, transparent);
         --site-border: color-mix(in oklab, var(--site-primary) 24%, transparent);
         --site-link: color-mix(in oklab, var(--site-primary) 72%, white);
@@ -86,17 +90,19 @@
 
   :root[data-theme='dark'],
   [data-theme='dark'],
-  .dark {
+  .dark,
+  [data-theme='dark'] .bio-theme,
+  .dark .bio-theme {
     color-scheme: dark;
-    --site-background: #121111;
-    --site-surface: #1d1c1c;
-    --site-text: #e8e4d7;
-    --site-heading: #f7f5e2;
-    --site-muted: #a8a39a;
-    --site-border: #383737;
-    --site-link: #b7c1d2;
-    --site-link-hover: #d2a08e;
-    --site-selection: #394155;
+    --site-background: #14151B;
+    --site-surface: #1C1D25;
+    --site-text: #E6E7EC;
+    --site-heading: #F6F6F4;
+    --site-muted: #A3A6B2;
+    --site-border: #2E3040;
+    --site-link: #8FA2FF;
+    --site-link-hover: #B99BFF;
+    --site-selection: #2A3570;
   }
 
   body {

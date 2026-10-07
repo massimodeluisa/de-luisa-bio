@@ -1,10 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-label="Open Bio Page">
   <title>Open Bio Page · dark square mark</title>
-  <rect width="1024" height="1024" fill="#1C1B1A"/>
-  <circle cx="340" cy="512" r="120" fill="#C46A4A"/>
-  <g fill="#F4F0E6">
-    <rect x="536" y="372" width="328" height="72" rx="36"/>
-    <rect x="536" y="476" width="248" height="72" rx="36"/>
+  <rect width="1024" height="1024" rx="0" fill="#14151B"/>
+  <g fill="#3A5BFF">
+    <path d="M192 192h128v128h-128zM448 192h128v128h-128zM704 192h128v128h-128zM320 320h128v128h-128zM448 320h128v128h-128zM576 320h128v128h-128zM448 448h128v128h-128zM320 576h128v128h-128zM448 576h128v128h-128zM576 576h128v128h-128zM320 704h128v128h-128zM576 704h128v128h-128z"/>
   </g>
-  <rect x="536" y="580" width="184" height="72" rx="36" fill="#8A96A8"/>
 </svg>

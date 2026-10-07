@@ -1,0 +1,53 @@
+{
+  "slug": "tiago-santos",
+  "name": "Tiago Santos",
+  "avatar": "/media/tiago-santos.webp",
+  "site": "https://studio-pietra.example",
+  "layout": { "columns": 2 },
+  "theme": {
+    "primary": "#1E1E1E",
+    "secondary": "#7A5C40",
+    "glyphColor": "#1E1E1E",
+    "font": "geist-mono",
+    "cardRadius": 0,
+    "avatarRadius": 0,
+    "avatarBorderWidth": 0,
+    "avatarBorderColor": "#1E1E1E"
+  },
+  "content": {
+    "en": {
+      "eyebrow": "Architect",
+      "tagline": "Works on schools and small public buildings."
+    },
+    "it": {
+      "eyebrow": "Architetto",
+      "tagline": "Lavora su scuole e piccoli edifici pubblici."
+    }
+  },
+  "links": [
+    {
+      "id": "email",
+      "label": { "en": "Email", "it": "Email" },
+      "href": "mailto:tiago@studio-pietra.example",
+      "icon": "mdi:email-outline",
+      "primary": true
+    },
+    {
+      "id": "work",
+      "label": { "en": "Projects", "it": "Progetti" },
+      "href": "https://studio-pietra.example/people/tiago-santos",
+      "icon": "mdi:floor-plan",
+      "external": true
+    }
+  ],
+  "socials": [
+    {
+      "id": "linkedin",
+      "label": { "en": "LinkedIn", "it": "LinkedIn" },
+      "href": "https://linkedin.example/in/tiago-santos",
+      "icon": "mdi:linkedin",
+      "color": "#0A66C2",
+      "external": true
+    }
+  ]
+}

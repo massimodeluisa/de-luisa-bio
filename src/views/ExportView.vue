@@ -6,6 +6,7 @@ import { useHead, useSeoMeta } from '@unhead/vue'
 import { useCurrentBio } from '@/composables/use-current-bio'
 import { track } from '@/composables/use-analytics'
 import { siteDomain } from '@/content/site'
+import { withBase } from '@/lib/base'
 import { DEFAULT_FAVICON } from '@/lib/letter-glyph'
 import { FONT_STACK, loadFont } from '@/lib/load-font'
 import { useI18n } from '@/i18n'
@@ -73,7 +74,10 @@ useSeoMeta({
 
 useHead({
   link: [
-    { rel: 'icon', href: () => (bio.value ? `/favicons/${bio.value.slug}.svg` : DEFAULT_FAVICON) },
+    {
+      rel: 'icon',
+      href: () => (bio.value ? withBase(`/favicons/${bio.value.slug}.svg`) : DEFAULT_FAVICON),
+    },
   ],
 })
 
@@ -88,7 +92,7 @@ const srcFull = computed(() => {
   if (!avatar) {
     return null
   }
-  return HAS_EXT.test(avatar) ? avatar : `${avatar}-original.webp`
+  return withBase(HAS_EXT.test(avatar) ? avatar : `${avatar}-original.webp`)
 })
 
 const photoImg = ref<HTMLImageElement | null>(null)
@@ -282,7 +286,7 @@ main.export-page.relative.flex.min-h-dvh.flex-col.items-center.gap-8.overflow-x-
 )
   header.flex.w-full.max-w-md.flex-col.items-center.gap-2.text-center
     a.self-start.font-mono.text-xs.uppercase.tracking-widest.text-site-secondary.no-underline.transition-colors(
-      :href="`/${slug}`"
+      :href="withBase(`/${slug}`)"
       :aria-label="t('export.back', 'Back')"
       class="hover:text-site-heading"
     ) ← {{ bio.name }}
@@ -427,7 +431,7 @@ main.flex.min-h-dvh.flex-col.items-center.justify-center.gap-3.bg-site-backgroun
 )
   h1.text-2xl.font-semibold.text-site-heading 404
   p.text-sm.text-site-muted No bio found for “{{ slug }}”.
-  a.text-sm.text-site-secondary.no-underline(href="/") ← {{ siteDomain }}
+  a.text-sm.text-site-secondary.no-underline(:href="withBase('/')") ← {{ siteDomain }}
 </template>
 
 <style scoped lang="scss">

@@ -1,0 +1,59 @@
+{
+  "slug": "mei-chen",
+  "name": "Mei Chen",
+  "avatar": "/media/mei-chen.webp",
+  "site": "https://northvale-engineering.example",
+  "layout": { "columns": 2 },
+  "theme": {
+    "primary": "#17324D",
+    "secondary": "#B04E15",
+    "glyphColor": "#17324D",
+    "font": "inter",
+    "cardRadius": 6,
+    "avatarRadius": 16,
+    "avatarBorderWidth": 0,
+    "avatarBorderColor": "#17324D"
+  },
+  "content": {
+    "en": {
+      "eyebrow": "Finance Director",
+      "tagline": "Looks after the numbers behind every bid and project."
+    },
+    "it": {
+      "eyebrow": "Direttrice finanziaria",
+      "tagline": "Cura i conti dietro ogni offerta e ogni progetto."
+    }
+  },
+  "links": [
+    {
+      "id": "email",
+      "label": { "en": "Email", "it": "Email" },
+      "href": "mailto:mei.chen@northvale-engineering.example",
+      "icon": "mdi:email-outline",
+      "primary": true
+    },
+    {
+      "id": "office",
+      "label": { "en": "Office line", "it": "Centralino" },
+      "href": "tel:+442079460230",
+      "icon": "mdi:phone-outline"
+    },
+    {
+      "id": "projects",
+      "label": { "en": "Selected projects", "it": "Progetti selezionati" },
+      "href": "https://northvale-engineering.example/people/mei-chen",
+      "icon": "mdi:office-building-outline",
+      "external": true
+    }
+  ],
+  "socials": [
+    {
+      "id": "linkedin",
+      "label": { "en": "LinkedIn", "it": "LinkedIn" },
+      "href": "https://linkedin.example/in/mei-chen",
+      "icon": "mdi:linkedin",
+      "color": "#0A66C2",
+      "external": true
+    }
+  ]
+}

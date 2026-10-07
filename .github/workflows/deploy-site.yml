@@ -40,6 +40,7 @@ jobs:
           VITE_POSTHOG_KEY: ${{ vars.VITE_POSTHOG_KEY }}
           VITE_POSTHOG_HOST: ${{ vars.VITE_POSTHOG_HOST }}
           VITE_ADMIN_API: ${{ vars.VITE_ADMIN_API }}
+          VITE_GTM_ID: ${{ vars.VITE_GTM_ID }}
 
       # SPA fallback so a hard refresh on /<slug> boots the app.
       - run: cp dist/index.html dist/404.html

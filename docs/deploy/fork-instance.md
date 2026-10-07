@@ -1,78 +1,76 @@
-# GitHub Fork → De Luisa instance
+# Your Instance
 
-`openbio.page` is the **upstream template**. `deluisa.bio` is a **branded child repo created with GitHub’s Fork button** — not a manual copy.
+`openbio.page` is the template, and it is where these docs live. Your site is a fork of that repo, on a domain you control.
 
-## What “fork” means here
+## Fork it on GitHub
 
-Use **GitHub → Fork** only:
+Use the Fork button. GitHub then shows "Forked from" on the repo, and you can pull template updates later.
 
-1. Open the upstream repo on GitHub (e.g. `open-bio-page/open-bio-page`)
-2. Click the **Fork** button (top-right)
-3. Choose owner / repo name (e.g. `massimodeluisa/de-luisa-bio`)
+1. Open `open-bio-page/open-bio-page` on GitHub
+2. Click Fork (top right)
+3. Pick the owner and the repository name
 4. Create the fork
 
-That keeps the fork linked to upstream (`Forked from …`), so you can pull template updates later.
+These are not forks:
 
-### Do **not** do these (not a GitHub Fork)
+- A new empty repo that you push a copy into
+- A ZIP download dropped into a new repo
+- `git clone`, then pointing `origin` at a new empty remote
+- Copying `template/` into a new empty repo and skipping the Fork button
 
-- Create an empty repo and `git push` a copy of the history
-- Download ZIP / copy files into a new repo
-- `git clone` + change `origin` to a new empty remote and call it a “fork”
-- Duplicate the project only via `instances/` restore without clicking **Fork**
+## On your clone
 
-`instances/deluisa-bio/` is a **content snapshot** you apply **after** the GitHub Fork exists. It is not a substitute for Fork.
+Edit `content/site.json`: brand, `domain`, `origin`, `githubRepo`, copyright, and the home and SEO lines.
 
-## After the GitHub Fork
+Replace `content/bios/demo.json` with one JSON file per person. Put photos in `public/media/`, or leave `avatar` empty and the page draws a letter.
 
-On the **forked** repo clone:
+Write `public/CNAME` as the hostname only, with no scheme and no path. Root `public/` does not include that file, because `openbio.page` belongs to these docs. `template/public/CNAME` is the placeholder `example.com`.
 
-```bash
-# restore De Luisa brand + people (from upstream snapshot that ships in the template)
-cp instances/deluisa-bio/content/site.json content/site.json
-rm -rf content/bios
-cp -R instances/deluisa-bio/content/bios content/bios
-cp instances/deluisa-bio/public/CNAME public/CNAME
-rm -rf public/media
-cp -R instances/deluisa-bio/public/media public/media
-```
+In `worker/wrangler.toml`, set `GITHUB_REPO` to `owner/name` and `ALLOWED_ORIGIN` to `https://your-domain`.
 
-Update Worker / serverless vars on the fork:
+If a Cloudflare Worker for this site is already named `openbio-admin`, keep that `name`. The template default is `open-bio-page-admin`. Renaming a live script creates a second Worker.
 
-```toml
-GITHUB_REPO = "massimodeluisa/de-luisa-bio"
-ALLOWED_ORIGIN = "https://deluisa.bio"
-```
+Match the title and Open Graph tags in `index.html` to `content/site.json`.
 
-Point `public/CNAME` and `content/site.json` (`domain`, `origin`, `githubRepo`, brand copy) at `deluisa.bio`.
+## Secrets
 
-If the Cloudflare Worker for that instance is already named `openbio-admin`, keep that `name` in `worker/wrangler.toml`. The template default is `open-bio-page-admin`. Renaming a live script creates a second Worker.
+Leave the upstream repo `open-bio-page/open-bio-page` free of your secrets.
 
-## Re-install secrets (on the fork)
+1. Keep values in a local `secrets.local`. It is gitignored. Do not commit it.
+2. Create the same Actions secrets and variables on the fork.
+3. Put the Worker secrets on the serverless host (`wrangler secret put`, or that host's equivalent).
+4. Set `VITE_ADMIN_API` to `https://api.your-domain`.
 
-Upstream Open Bio Page should stay clean of instance secrets.
+The API host has to be a subdomain of the public site. Otherwise the browser blocks the login cookie.
 
-1. Keep values in local `secrets.local` (gitignored) from the dump you made before cleaning upstream
-2. Re-create **GitHub Actions Secrets / Variables** on the **forked** repo
-3. `wrangler secret put …` (or equivalent) on the De Luisa Worker / serverless env
-4. Set `VITE_ADMIN_API=https://api.deluisa.bio`
+## Checklist
 
-## Publish checklist
+- GitHub shows Forked from the Open Bio Page repo
+- `bun run build` passes
+- The Pages custom domain is your hostname, and the DNS records are grey-cloud (not proxied)
+- `api.your-domain` points at the admin Worker
+- `/admin` logs in, and that user can write only their own slug
+- Quick icons under the profile actually show
 
-- [ ] Repo shows **Forked from** the Open Bio Page upstream on GitHub
-- [ ] `bun run build` locally
-- [ ] Pages custom domain `deluisa.bio`
-- [ ] Admin API custom domain `api.deluisa.bio` (same-site cookie)
-- [ ] Login `/admin` as a scoped user — only that slug is writable
-- [ ] WhatsApp/Discord quick icons render (iconSize + generated icons)
-
-## Pulling template updates later
-
-Because this is a real GitHub Fork:
+## Pulling template updates
 
 ```bash
 git remote add upstream https://github.com/open-bio-page/open-bio-page.git   # if missing
 git fetch upstream
-git merge upstream/master   # or rebase — resolve content conflicts carefully
+git merge upstream/master   # or rebase, and keep your content when it conflicts
 ```
 
-Do not replace the fork with a fresh manual copy; that breaks the fork relationship.
+Do not replace the fork with a fresh copy of the template. That drops the link to upstream.
+
+## Blank start
+
+`content/` in this repo is the Open Bio Page demo. `template/` is the same shape with placeholders: `site.json`, one profile, and `public/CNAME`.
+
+```bash
+cp template/content/site.json content/site.json
+rm -rf content/bios
+cp -R template/content/bios content/bios
+cp template/public/CNAME public/CNAME
+```
+
+Replace the placeholders. The app never reads `template/`. It reads `content/` and `public/` at the repo root.

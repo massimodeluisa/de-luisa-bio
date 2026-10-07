@@ -6,7 +6,7 @@
 ## Setup
 
 1. Bundle the adapter with your preferred tool (esbuild / OpenTofu / SST / SAM)
-2. Use a **Function URL** or HTTP API (payload 2.0)
+2. Use a Function URL, or an HTTP API (payload 2.0)
 3. Node 18+ runtime (Web Crypto + Fetch)
 4. Set environment variables from `secrets.local.example`
 5. Put CloudFront or API Gateway on `api.yourdomain.com`

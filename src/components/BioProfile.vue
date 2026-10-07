@@ -5,10 +5,12 @@ import i18next from 'i18next'
 import type { IBio, IBioLink, TLocale } from '@/content/bio'
 import { copyrightLine, licenseUrl } from '@/content/site'
 import { track } from '@/composables/use-analytics'
+import { useDemoLinkNotice } from '@/composables/use-demo-link-notice'
 import { useSiteCardImage } from '@/composables/use-site-card-image'
 import { avatarSources } from '@/lib/avatar'
+import { bioThemeStyle } from '@/lib/bio-theme'
+import { IS_DEMO_INSTANCE } from '@/lib/demo'
 import { letterGlyphDataUri } from '@/lib/letter-glyph'
-import { FONT_STACK } from '@/lib/load-font'
 import { ICONS } from '@/generated/icons'
 
 const props = withDefaults(
@@ -55,17 +57,7 @@ const avatar = computed(() => {
   )
 })
 
-const themeStyle = computed(() => {
-  const theme = props.bio.theme
-  return {
-    '--site-primary': theme.primary,
-    '--site-secondary': theme.secondary,
-    '--bio-card-radius': `${theme.cardRadius}px`,
-    '--bio-avatar-radius': `${theme.avatarRadius}px`,
-    '--bio-avatar-border': `${theme.avatarBorderWidth}px solid ${theme.avatarBorderColor}`,
-    fontFamily: FONT_STACK[theme.font],
-  } as Record<string, string>
-})
+const themeStyle = computed(() => bioThemeStyle(props.bio.theme))
 
 const cardStyle = { borderRadius: 'var(--bio-card-radius)' }
 
@@ -81,14 +73,14 @@ const siteCardDomain = computed(
   () => props.bio.siteCard?.url.replace(/^https?:\/\//, '') ?? '',
 )
 
-const { src: siteCardImageSrc } = useSiteCardImage(
-  () => props.bio.siteCard?.url,
-  () => props.bio.siteCard?.image,
-)
-
 const showSiteCard = computed(
   () =>
     Boolean(props.bio.siteCard?.url) && props.bio.siteCard?.enabled !== false,
+)
+
+const { src: siteCardImageSrc } = useSiteCardImage(
+  () => (showSiteCard.value ? props.bio.siteCard?.url : undefined),
+  () => props.bio.siteCard?.image,
 )
 
 const siteCardPosition = computed(
@@ -111,7 +103,7 @@ const isSplitLayout = computed(() => (props.bio.layout?.columns ?? 2) === 2)
 
 const mainGridClass = computed(() =>
   isSplitLayout.value
-    ? 'lg:w-auto lg:max-w-none lg:grid lg:grid-cols-[23rem_26rem] lg:items-center lg:gap-12'
+    ? '@min-[62.5rem]:w-auto @min-[62.5rem]:max-w-none @min-[62.5rem]:grid @min-[62.5rem]:grid-cols-[23rem_26rem] @min-[62.5rem]:items-center @min-[62.5rem]:gap-12'
     : '',
 )
 
@@ -137,10 +129,15 @@ const linkClass = (link: IBioLink) => {
   return `${base} ${interactiveClass(`active:scale-[0.99] ${hover} ${FOCUS_RING}`)}`
 }
 
-const onClick = (link: { id: string; href: string }) => {
+const interceptDemoLink = IS_DEMO_INSTANCE
+  ? useDemoLinkNotice(() => i18next.t('social.demoLinkNotice', { lng: props.locale }))
+  : null
+
+const onClick = (event: MouseEvent, link: { id: string; href: string }) => {
   if (!props.interactive) {
     return
   }
+  interceptDemoLink?.(event, link.href)
   track('link_click', {
     link_id: link.id,
     link_url: link.href,
@@ -151,7 +148,8 @@ const onClick = (link: { id: string; href: string }) => {
 </script>
 
 <template lang="pug">
-.bio-profile.relative.flex.flex-col.items-center.overflow-x-clip.bg-site-background.text-site-text.px-3(
+.bio-profile.bio-theme.relative.flex.flex-1.flex-col.items-center.overflow-x-clip.bg-site-background.text-site-text.px-3(
+  class="@container"
   :style="themeStyle"
 )
   .bio-profile__glow.pointer-events-none.absolute.inset-0.-z-10(aria-hidden="true")
@@ -159,7 +157,7 @@ const onClick = (link: { id: string; href: string }) => {
   .w-full.max-w-sm.flex-1.flex.flex-col.items-center.justify-center.gap-6.py-8(
     :class="mainGridClass"
   )
-    .flex.flex-col.items-center.gap-6.text-center(class="lg:gap-7")
+    .flex.flex-col.items-center.gap-6.text-center(class="@min-[62.5rem]:gap-7")
       .social-rise.flex.flex-col.items-center.gap-2
         component.transition-transform(
           :is="interactive && bio.site ? 'a' : 'div'"
@@ -168,7 +166,7 @@ const onClick = (link: { id: string; href: string }) => {
           :rel="interactive && bio.site ? 'noopener noreferrer' : undefined"
           :aria-label="interactive ? bio.site : undefined"
           :class="interactive ? 'active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-site-secondary' : undefined"
-          @click="bio.site && onClick({ id: 'avatar', href: bio.site })"
+          @click="bio.site && onClick($event, { id: 'avatar', href: bio.site })"
         )
           img.size-52.object-cover.bg-site-primary.shadow-sm(
             :src="avatar.src"
@@ -178,7 +176,7 @@ const onClick = (link: { id: string; href: string }) => {
             height="240"
             :alt="`${bio.name} — avatar`"
             :style="{ borderRadius: 'var(--bio-avatar-radius)', border: 'var(--bio-avatar-border)' }"
-            class="lg:size-60"
+            class="@min-[62.5rem]:size-60"
             fetchpriority="high"
             decoding="async"
           )
@@ -189,9 +187,9 @@ const onClick = (link: { id: string; href: string }) => {
             :target="interactive && bio.site ? '_blank' : undefined"
             :rel="interactive && bio.site ? 'noopener noreferrer' : undefined"
             class="no-underline"
-            @click="bio.site && onClick({ id: 'name', href: bio.site })"
+            @click="bio.site && onClick($event, { id: 'name', href: bio.site })"
           )
-            h1.font-sans.text-2xl.font-semibold.leading-none.text-site-heading(class="tracking-[-0.02em] lg:text-[2rem]") {{ bio.name }}
+            h1.font-sans.text-2xl.font-semibold.leading-none.text-site-heading(class="tracking-[-0.02em] @min-[62.5rem]:text-[2rem]") {{ bio.name }}
           p.font-mono.font-semibold.uppercase.text-site-secondary(class="text-[11px] tracking-[0.22em]") {{ content.eyebrow }}
         p.text-sm.leading-relaxed.text-pretty.text-site-muted(class="max-w-[19rem]") {{ content.tagline }}
 
@@ -208,7 +206,7 @@ const onClick = (link: { id: string; href: string }) => {
               :aria-label="label(s)"
               class="ring-black/5"
               :class="interactiveClass(`active:scale-90 hover:-translate-y-0.5 hover:shadow-md ${FOCUS_RING}`)"
-              @click="onClick(s)"
+              @click="onClick($event, s)"
             )
               span.social-icon(
                 :style="{ maskImage: `url(${iconUrl(s.icon)})`, WebkitMaskImage: `url(${iconUrl(s.icon)})`, backgroundColor: s.color, width: s.iconSize || '1.5rem', height: s.iconSize || '1.5rem' }"
@@ -229,7 +227,7 @@ const onClick = (link: { id: string; href: string }) => {
           rel="noopener noreferrer"
           class="bg-site-surface/70"
           :class="interactiveClass(CARD_HOVER)"
-          @click="onClick({ id: 'website_card', href: bio.siteCard.url })"
+          @click="onClick($event, { id: 'website_card', href: bio.siteCard.url })"
         )
           img.block.w-full.object-cover(
             v-if="siteCardImgOk && siteCardImageSrc"
@@ -261,7 +259,7 @@ const onClick = (link: { id: string; href: string }) => {
             :rel="link.external ? 'noopener noreferrer' : undefined"
             :download="link.download ? '' : undefined"
             :class="linkClass(link)"
-            @click="onClick(link)"
+            @click="onClick($event, link)"
           )
             span.size-5.shrink-0.bg-current.social-icon(
               v-if="link.icon"
@@ -284,7 +282,7 @@ const onClick = (link: { id: string; href: string }) => {
             rel="me noopener noreferrer"
             class="bg-site-surface/70"
             :class="interactiveClass(CARD_HOVER)"
-            @click="onClick(s)"
+            @click="onClick($event, s)"
           )
             span.size-5.shrink-0.social-icon(
               :class="s.mono ? 'bg-current' : ''"
@@ -307,7 +305,7 @@ const onClick = (link: { id: string; href: string }) => {
       rel="noopener noreferrer"
       :aria-label="licenseAriaLabel"
       class="hover:text-site-heading"
-      @click="onClick({ id: 'license', href: LICENSE_URL })"
+      @click="onClick($event, { id: 'license', href: LICENSE_URL })"
     ) {{ copyrightLine(year) }}
     span(v-else) {{ copyrightLine(year) }}
 </template>

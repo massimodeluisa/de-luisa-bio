@@ -1,16 +1,15 @@
-# Deploy & publish — Open Bio Page
+# Deploy and publish
 
-Publish a white-label instance after a **GitHub Fork** of this template. Replace domain names
-with the values from your `content/site.json`. Default template domain: `openbio.page`.
+Publish your own instance after a GitHub fork of this template. Use the names from your `content/site.json`. The template's own domain is `openbio.page`.
 
-For the De Luisa branded child: [GitHub Fork → instance](./docs/deploy/fork-instance.md).
+Your fork: [Your instance](./docs/deploy/fork-instance.md).
 
-This repository publishes its documentation at `https://openbio.page` (`.github/workflows/pages.yml`, upstream only). A fork publishes the directory with `.github/workflows/deploy-site.yml`. Documentation stays on `openbio.page`. It is not copied into the instance site.
+This repository publishes the docs at `https://openbio.page` from `.github/workflows/pages.yml`, and only on the upstream repo. A fork publishes the directory with `.github/workflows/deploy-site.yml`. The docs stay on `openbio.page`. They are not copied into the instance site.
 
 ## Prerequisites
 
-- GitHub repository created with the **Fork** button (keeps `Forked from …`)
-- Cloudflare account (DNS + Workers) — or another [provider](./docs/providers/)
+- A GitHub repository created with the Fork button, so it keeps `Forked from …`
+- A Cloudflare account (DNS and Workers), or another [provider](./docs/providers/)
 - Bun locally for hashing admin passwords (`bun worker/hash-password.ts`)
 - Optional: PostHog project for analytics + admin stats
 
@@ -37,10 +36,9 @@ Also set:
 
 ### Pages
 
-1. Repo **Settings → Pages**
-2. **Build and deployment → Source** = **GitHub Actions**
-3. After the first successful deploy, set **Custom domain** to `site.domain`
-   and wait for DNS / HTTPS to verify
+1. Open the repo's Settings, then Pages
+2. Set Build and deployment, Source, to GitHub Actions
+3. After the first deploy succeeds, set the custom domain to `site.domain` and wait for DNS and HTTPS
 
 ### Variables (Settings → Secrets and variables → Actions → Variables)
 
@@ -72,27 +70,27 @@ Use `secrets.local.example` → `secrets.local` as a local dump checklist. Never
 
 ## 3. DNS (Cloudflare example)
 
-Assume apex `openbio.page` — substitute your domain.
+The example apex is `openbio.page`. Use yours.
 
-### Apex → GitHub Pages
+### Apex to GitHub Pages
 
-DNS-only (grey cloud) so GitHub can issue Let’s Encrypt:
+Leave the records DNS-only (grey cloud). GitHub needs that to issue a Let's Encrypt certificate. An orange-cloud proxy makes the Pages check fail.
 
 - `A` → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
 - Optional `CAA 0 issue "letsencrypt.org"`
 
 ### Admin API → Worker
 
-1. Deploy the Worker (workflow `Deploy worker`, or `cd worker && bunx wrangler deploy`)
-2. In the Worker dashboard, add **Custom Domain** `api.<your-domain>`
-3. This **must** be a subdomain of the public site so the session cookie is first-party
+1. Deploy the Worker (the `Deploy admin worker` workflow, or `cd worker && bunx wrangler deploy`)
+2. In the Worker dashboard, add the custom domain `api.<your-domain>`
+3. That host has to be a subdomain of the public site, or the session cookie is not first-party
 
-### Optional: `*.domain` → path redirects
+### Optional: send `*.domain` to the path
 
-Proxied (orange cloud) CNAME `*` → apex, plus a Cloudflare **Redirect Rule**:
+Proxied (orange cloud) CNAME `*` to the apex, plus a Cloudflare redirect rule:
 
-- **When**: `(http.request.full_uri wildcard "https://*.YOUR_DOMAIN/*" and http.host ne "api.YOUR_DOMAIN")`
-- **Then**: Dynamic `https://YOUR_DOMAIN/${1}`, status **301**, preserve query string
+- When: `(http.request.full_uri wildcard "https://*.YOUR_DOMAIN/*" and http.host ne "api.YOUR_DOMAIN")`
+- Then: dynamic `https://YOUR_DOMAIN/${1}`, status 301, keep the query string
 
 Guarding `api.` stops the admin API from being redirected.
 
@@ -107,20 +105,17 @@ bun lint
 git push origin master
 ```
 
-Or re-run workflows manually: **Actions → Deploy docs / Deploy site / Deploy worker → Run workflow**. Upstream runs **Deploy docs**. A fork runs **Deploy site** and **Deploy worker**.
+Or run a workflow by hand from Actions: Deploy docs, Deploy site, or Deploy admin worker. Upstream runs Deploy docs. A fork runs Deploy site and Deploy admin worker.
 
-If `Deploy site` hangs on `deploy-pages` / times out after ~10 minutes, do **not** cancel and
-re-push repeatedly — cancelling an in-flight Pages deploy can leave the environment stuck. Wait
-for the run to finish (or cancel once), then **Re-run failed jobs**. The workflow uses
-`concurrency.cancel-in-progress: false` so a new push will not abort a deploy already running.
+If Deploy site sits on `deploy-pages` and times out after about 10 minutes, do not cancel it and push again in a loop. Cancelling a Pages deploy that is already running can leave the environment stuck. Wait for the run to finish, or cancel once, then use Re-run failed jobs. The workflow sets `concurrency.cancel-in-progress: false`, so a new push will not abort a deploy that is already going.
 
-Verify:
+Check:
 
-- `https://openbio.page/` — documentation
-- `https://YOUR_DOMAIN/` — home directory
-- `https://YOUR_DOMAIN/<slug>` — profile
-- `https://YOUR_DOMAIN/admin` — login; edit only your own bio
-- `https://api.YOUR_DOMAIN/me` — 401 without cookie (expected)
+- `https://openbio.page/` is the documentation
+- `https://YOUR_DOMAIN/` is the home directory
+- `https://YOUR_DOMAIN/<slug>` is a profile
+- `https://YOUR_DOMAIN/admin` is the login, and you can edit only your own bio
+- `https://api.YOUR_DOMAIN/me` returns 401 without a cookie, which is what you want
 
 ## 5. Local development
 
@@ -140,4 +135,4 @@ bun run docs:dev
 - Never point `VITE_ADMIN_API` at `*.workers.dev` in production
 - One `ADMIN_USERS` entry per person; slug must match their `content/bios/<slug>.json`
 - Rotate `SESSION_SECRET` if a cookie is leaked (invalidates all sessions)
-- Instance secrets belong on the **GitHub Fork**, not on a manually copied remote
+- Instance secrets belong on the GitHub fork, not on a repo you copied by hand

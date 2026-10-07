@@ -1,0 +1,27 @@
+{
+  "brand": "Ferraresi family",
+  "domain": "ferraresi.example",
+  "origin": "https://openbio.page/examples/ferraresi",
+  "githubRepo": "open-bio-page/open-bio-page",
+  "licensePath": "LICENSE.md",
+  "copyrightOwner": "Ferraresi family",
+  "adminTitle": "Ferraresi family: Admin",
+  "nameSuffix": " Ferraresi",
+  "home": {
+    "title": "The Ferraresi family",
+    "description": "One page each for Davide, Giulia, Sofia, Tommaso and Bea.",
+    "author": "The Ferraresi family",
+    "ogImageAlt": "Ferraresi family",
+    "collectionName": "Ferraresi family directory"
+  },
+  "og": {
+    "homeEyebrow": "FERRARESI.EXAMPLE",
+    "homeTitle": "Ferraresi family",
+    "homeTagline": "One page each for Davide, Giulia, Sofia, Tommaso and Bea."
+  },
+  "seo": {
+    "llmsTitle": "Ferraresi family",
+    "llmsBlurb": "One page each for Davide, Giulia, Sofia, Tommaso and Bea."
+  },
+  "privacyContactEmail": "hello@ferraresi.example"
+}

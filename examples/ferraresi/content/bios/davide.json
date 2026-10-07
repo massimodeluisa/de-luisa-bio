@@ -1,0 +1,53 @@
+{
+  "slug": "davide",
+  "name": "Davide Ferraresi",
+  "avatar": "/media/davide.webp",
+  "site": "https://ferraresi.example",
+  "layout": { "columns": 2 },
+  "theme": {
+    "primary": "#2F4F3E",
+    "secondary": "#A84A33",
+    "glyphColor": "#2F4F3E",
+    "font": "fraunces",
+    "cardRadius": 16,
+    "avatarRadius": 9999,
+    "avatarBorderWidth": 3,
+    "avatarBorderColor": "#FFFFFF"
+  },
+  "content": {
+    "en": {
+      "eyebrow": "Furniture maker",
+      "tagline": "Builds tables and shelves from reclaimed oak in a small workshop outside Bologna."
+    },
+    "it": {
+      "eyebrow": "Falegname",
+      "tagline": "Costruisce tavoli e scaffali con rovere di recupero in una piccola bottega fuori Bologna."
+    }
+  },
+  "links": [
+    {
+      "id": "workshop",
+      "label": { "en": "Workshop and commissions", "it": "Laboratorio e commissioni" },
+      "href": "https://bottega-ferraresi.example",
+      "icon": "mdi:hand-saw",
+      "primary": true,
+      "external": true
+    },
+    {
+      "id": "email",
+      "label": { "en": "Email", "it": "Email" },
+      "href": "mailto:davide@ferraresi.example",
+      "icon": "mdi:email-outline"
+    }
+  ],
+  "socials": [
+    {
+      "id": "instagram",
+      "label": { "en": "Instagram", "it": "Instagram" },
+      "href": "https://instagram.example/bottega.ferraresi",
+      "icon": "mdi:instagram",
+      "color": "#E4405F",
+      "external": true
+    }
+  ]
+}

@@ -1,0 +1,437 @@
+.VPHero .image-bg {
+  display: none;
+}
+
+.hero-preview {
+  position: relative;
+  display: block;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 18px;
+  background: var(--vp-c-bg-elv);
+  box-shadow: 0 24px 60px rgba(20, 21, 27, 0.16);
+}
+
+.dark .hero-preview {
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+.hero-preview:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 4px;
+}
+
+.hero-preview__viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 17px;
+}
+
+.hero-preview__frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 390px;
+  height: 520px;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: top left;
+  transition: opacity 300ms ease;
+  will-change: transform;
+}
+
+.hero-preview.has-cycled .hero-preview__frame {
+  transition-duration: 400ms;
+}
+
+.hero-preview__frame.is-ready {
+  opacity: 1;
+}
+
+.hero-preview__chip {
+  position: absolute;
+  top: -14px;
+  right: -10px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 999px;
+  background: var(--vp-c-bg-elv);
+  box-shadow: 0 4px 12px rgba(20, 21, 27, 0.12);
+  color: var(--vp-c-text-1);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.hero-preview__chip.is-active {
+  opacity: 1;
+}
+
+.hero-preview__chip svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.dark .hero-preview__chip {
+  border-color: rgba(246, 246, 244, 0.12);
+  background: #2A2C38;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-preview__frame,
+  .hero-preview__chip {
+    transition: none;
+  }
+}
+
+.VPHero .image-container .hero-preview {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  width: 312px;
+  height: 416px;
+  margin: 0;
+  transform: translate(-50%, -50%);
+}
+
+/**
+ * VitePress pulls the hero image into the nav (negative margin, square slot).
+ * The preview is 3 / 4, so it covered the wordmark on phones.
+ */
+@media (max-width: 959px) {
+  .VPNavBar.home {
+    background-color: var(--vp-nav-bg-color);
+  }
+
+  .VPNavBar .container > .title {
+    min-width: 0;
+    flex-shrink: 1;
+  }
+
+  .VPHero.has-image .main {
+    order: 1;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .VPHero.has-image .image {
+    order: 2;
+    margin: 28px auto 0;
+  }
+
+  .VPHero.has-image .image-container {
+    width: min(220px, 58vw);
+    height: auto;
+    aspect-ratio: 3 / 4;
+  }
+
+  .VPHero .image-container .hero-preview {
+    width: 218.4px;
+    height: 291.2px;
+  }
+
+  .VPHero.has-image .container {
+    max-width: 100%;
+  }
+
+  .VPHero.has-image .heading,
+  .VPHero.has-image .actions {
+    width: 100%;
+    max-width: calc(100vw - 48px);
+  }
+
+  .VPHero.has-image .heading .name,
+  .VPHero.has-image .heading .text,
+  .VPHero.has-image p.tagline {
+    width: auto !important;
+    max-width: calc(100vw - 48px) !important;
+    white-space: normal !important;
+  }
+
+  .VPHero.has-image .actions {
+    justify-content: center;
+  }
+
+  .VPLocalNav .container {
+    gap: 8px;
+  }
+
+  .VPLocalNav .VPLocalNavOutlineDropdown {
+    min-width: 0;
+    flex-shrink: 1;
+  }
+
+  .VPLocalNav .VPLocalNavOutlineDropdown .menu-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 399px) {
+  .VPHero.has-image .image-container {
+    width: min(196px, 68vw);
+  }
+}
+
+html:has(.VPHome) {
+  overflow-x: clip;
+}
+
+.home-live {
+  --home-live-nav: 0px;
+  position: relative;
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  margin: 28px 0 8px;
+}
+
+.home-live__intro {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+
+.home-live__slot {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+}
+
+.home-live .home-live__caption {
+  margin: 10px 0 0;
+  color: var(--vp-c-text-2);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.home-live__track {
+  grid-area: 1 / 1;
+  height: calc(100vh - var(--home-live-nav) + 560px);
+  min-width: 0;
+  pointer-events: none;
+}
+
+.home-live__sticky {
+  position: sticky;
+  top: var(--home-live-nav);
+  width: 100%;
+  height: calc(100vh - var(--home-live-nav));
+  overflow: visible;
+  pointer-events: none;
+}
+
+.home-live__stage {
+  --home-live-clip: 0;
+  --home-live-radius: 8;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 25;
+  box-sizing: border-box;
+  width: 100vw;
+  height: calc(100vh - var(--home-live-nav));
+  overflow: hidden;
+  margin-left: 0;
+  transform-origin: top left;
+  background: var(--vp-c-bg);
+  clip-path: inset(
+    0 0 calc(var(--home-live-clip) * 1px) 0 round calc(var(--home-live-radius) * 1px)
+  );
+  opacity: 0;
+  pointer-events: auto;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.home-live__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 450ms ease;
+}
+
+.home-live__slide.is-active {
+  z-index: 1;
+  opacity: 1;
+}
+
+.home-live__frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  pointer-events: none;
+}
+
+.home-live__open {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.home-live__controls {
+  position: absolute;
+  right: 0;
+  bottom: calc(var(--home-live-clip) * 1px);
+  left: 0;
+  z-index: 2;
+  padding: 18px 28px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(20, 21, 27, 0.8);
+  color: #ffffff;
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(14px) saturate(1.2);
+}
+
+.home-live__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.home-live__info {
+  min-width: 0;
+}
+
+.home-live .home-live__title {
+  margin: 0;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.home-live .home-live__text {
+  margin: 4px 0 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.home-live .home-live__link {
+  flex-shrink: 0;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.home-live .home-live__link:hover {
+  color: #ffffff;
+}
+
+@media (max-width: 639px) {
+  .home-live__controls {
+    padding: 14px 16px 12px;
+  }
+
+  .home-live .home-live__title {
+    font-size: 17px;
+  }
+}
+
+.home-live .home-live__link:focus-visible,
+.home-live__segment:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.home-live__segments {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.home-live__segment {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 11px 0 10px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.home-live__bar {
+  display: block;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.home-live__fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.home-live__segment.is-done .home-live__fill {
+  transform: scaleX(1);
+}
+
+.home-live.is-reduced .home-live__track,
+.home-live.is-reduced .home-live__sticky {
+  position: relative;
+  top: 0;
+  height: auto;
+  pointer-events: auto;
+}
+
+.home-live.is-reduced .home-live__stage {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  opacity: 1;
+  will-change: auto;
+}
+
+.home-live.is-reduced .home-live__slide {
+  overflow: hidden;
+  transition: none;
+}
+
+.home-live.is-reduced .home-live__frame {
+  width: 390px;
+  height: 520px;
+  transform: scale(var(--home-live-frame-scale));
+  transform-origin: top left;
+}
+
+.home-live.is-reduced .home-live__segment.is-active .home-live__fill {
+  transform: scaleX(1);
+}
+
+@media (min-width: 960px) {
+  .home-live {
+    --home-live-nav: var(--vp-nav-height);
+  }
+
+  .home-live__slot,
+  .home-live.is-reduced .home-live__stage {
+    aspect-ratio: 16 / 9;
+  }
+
+  .home-live.is-reduced .home-live__frame {
+    width: 1280px;
+    height: 720px;
+  }
+}

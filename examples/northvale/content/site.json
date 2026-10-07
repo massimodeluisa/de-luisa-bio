@@ -1,0 +1,26 @@
+{
+  "brand": "Northvale Structural Engineering",
+  "domain": "northvale-engineering.example",
+  "origin": "https://openbio.page/examples/northvale",
+  "githubRepo": "open-bio-page/open-bio-page",
+  "licensePath": "LICENSE.md",
+  "copyrightOwner": "Northvale Structural Engineering",
+  "adminTitle": "Northvale Structural Engineering: Admin",
+  "home": {
+    "title": "Northvale Structural Engineering: team directory",
+    "description": "Contact pages for the 20 engineers, technicians and managers at Northvale Structural Engineering in London.",
+    "author": "Northvale Structural Engineering",
+    "ogImageAlt": "Northvale Structural Engineering",
+    "collectionName": "Northvale Structural Engineering directory"
+  },
+  "og": {
+    "homeEyebrow": "NORTHVALE-ENGINEERING.EXAMPLE",
+    "homeTitle": "Northvale Structural Engineering",
+    "homeTagline": "Contact pages for the 20 engineers, technicians and managers at Northvale Structural Engineering in London."
+  },
+  "seo": {
+    "llmsTitle": "Northvale Structural Engineering",
+    "llmsBlurb": "Contact pages for the 20 engineers, technicians and managers at Northvale Structural Engineering in London."
+  },
+  "privacyContactEmail": "hello@northvale-engineering.example"
+}

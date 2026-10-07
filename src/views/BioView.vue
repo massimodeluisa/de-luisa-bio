@@ -7,6 +7,9 @@ import BioProfile from '@/components/BioProfile.vue'
 import { site, siteOrigin } from '@/content/site'
 import { useCurrentBio } from '@/composables/use-current-bio'
 import { track } from '@/composables/use-analytics'
+import { withBase } from '@/lib/base'
+import { bioThemeStyle } from '@/lib/bio-theme'
+import { ROBOTS_CONTENT } from '@/lib/demo'
 import { DEFAULT_FAVICON, FAVICON_RADIUS, letterGlyphDataUri } from '@/lib/letter-glyph'
 import { loadFont } from '@/lib/load-font'
 import { ICONS } from '@/generated/icons'
@@ -56,7 +59,7 @@ useSeoMeta({
   twitterDescription: () => seoDescription.value,
   twitterImage: () => ogImage.value,
   twitterImageAlt: () => imageAlt.value,
-  robots: 'index, follow, max-image-preview:large',
+  robots: ROBOTS_CONTENT,
 })
 
 const jsonLd = computed(() => {
@@ -100,7 +103,10 @@ useHead({
   htmlAttrs: { lang: () => locale.value },
   link: [
     { rel: 'canonical', href: () => canonical.value },
-    { rel: 'icon', href: () => (bio.value ? `/favicons/${bio.value.slug}.svg` : DEFAULT_FAVICON) },
+    {
+      rel: 'icon',
+      href: () => (bio.value ? withBase(`/favicons/${bio.value.slug}.svg`) : DEFAULT_FAVICON),
+    },
   ],
   script: [{ type: 'application/ld+json', innerHTML: () => JSON.stringify(jsonLd.value) }],
 })
@@ -195,8 +201,9 @@ onBeforeUnmount(() => {
 </script>
 
 <template lang="pug">
-main.social-page.relative.min-h-dvh.bg-site-background(
+main.social-page.bio-theme.relative.flex.min-h-dvh.flex-col.bg-site-background(
   v-if="bio && content"
+  :style="bioThemeStyle(bio.theme)"
   class="pt-[max(2.75rem,env(safe-area-inset-top))] pb-[max(2rem,env(safe-area-inset-bottom))]"
 )
   button.share-btn.fixed.right-5.z-20.flex.size-11.items-center.justify-center.rounded-full.text-site-heading.transition-transform(
@@ -260,7 +267,7 @@ main.flex.min-h-dvh.flex-col.items-center.justify-center.gap-3.bg-site-backgroun
 )
   h1.text-2xl.font-semibold.text-site-heading 404
   p.text-sm.text-site-muted No bio found for “{{ slug }}”.
-  a.text-sm.text-site-secondary.no-underline(href="/") ← {{ site.domain }}
+  a.text-sm.text-site-secondary.no-underline(:href="withBase('/')") ← {{ site.domain }}
 </template>
 
 <style scoped lang="scss">

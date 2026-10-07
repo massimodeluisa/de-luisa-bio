@@ -18,10 +18,12 @@
   --font-mono:
     'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
     'Courier New', monospace;
+}
 
-  --color-site-primary: #8894a9;
-  --color-site-primary-dark: #484647;
-  --color-site-secondary: #b68370;
+@theme inline {
+  --color-site-primary: var(--site-primary);
+  --color-site-primary-dark: var(--site-primary-dark);
+  --color-site-secondary: var(--site-secondary);
   --color-site-background: var(--site-background);
   --color-site-surface: var(--site-surface);
   --color-site-text: var(--site-text);

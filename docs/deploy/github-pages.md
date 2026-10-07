@@ -6,7 +6,7 @@ The upstream repository publishes this documentation at `https://openbio.page` f
 
 On a fork:
 
-1. Repo **Settings → Pages → Source = GitHub Actions**
+1. In the repo settings, open Pages and set Source to GitHub Actions
 2. Custom domain = value of `content/site.json` → `domain`
 3. Workflow: `.github/workflows/deploy-site.yml` (the directory in `dist/`, not these docs)
 4. Add `public/CNAME` with that domain. The template does not ship one, because `openbio.page` belongs to the docs site.
@@ -18,6 +18,9 @@ On a fork:
 | `VITE_POSTHOG_KEY` | Public PostHog key |
 | `VITE_POSTHOG_HOST` | e.g. `https://eu.i.posthog.com` |
 | `VITE_ADMIN_API` | `https://api.<your-domain>` |
+| `VITE_GTM_ID` | Optional Google Tag Manager container ID |
+
+`VITE_POSTHOG_*` are build-time values; see [Analytics and admin stats](/analytics).
 
 ## Secrets (Actions → Worker)
 
@@ -30,7 +33,9 @@ On a fork:
 | `POSTHOG_READ_KEY` | Admin stats |
 | `ADMIN_USERS` | JSON array of hashed users |
 
-Keep a local copy in `secrets.local` (gitignored) while rotating hosts — never commit it.
+`POSTHOG_HOST` and `POSTHOG_PROJECT_ID` are Worker `[vars]` in `worker/wrangler.toml`, and [Analytics and admin stats](/analytics) lists the value each one takes.
+
+Keep a local copy in `secrets.local` (gitignored) while you move hosts. Never commit it.
 
 ## Worker
 
@@ -43,4 +48,4 @@ bunx wrangler secret put ADMIN_USERS
 bunx wrangler deploy --config wrangler.toml
 ```
 
-Attach Custom Domain `api.<your-domain>` on the Worker.
+Attach the custom domain `api.<your-domain>` on the Worker.

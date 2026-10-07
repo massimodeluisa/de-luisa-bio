@@ -153,9 +153,9 @@ async function hogql(
 }
 
 async function getStats(env: Env, slug: string, days: number) {
-  const pathLike = `%/${slug}%`
+  const pathMatch = `(endsWith(properties.$pathname, '/${slug}') OR endsWith(properties.$pathname, '/${slug}/') OR endsWith(properties.$pathname, '/${slug}.html'))`
   const since = `now() - INTERVAL ${days} DAY`
-  const pageviewWhere = `event = '$pageview' AND properties.$current_url LIKE '${pathLike}' AND timestamp >= ${since}`
+  const pageviewWhere = `event = '$pageview' AND ${pathMatch} AND timestamp >= ${since}`
 
   const [summary, links, series, sources, countries] = await Promise.all([
     hogql(

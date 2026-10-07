@@ -1,0 +1,53 @@
+{
+  "slug": "giulia",
+  "name": "Giulia Ferraresi",
+  "avatar": "/media/giulia.webp",
+  "site": "https://ferraresi.example",
+  "layout": { "columns": 2 },
+  "theme": {
+    "primary": "#2F4F3E",
+    "secondary": "#A84A33",
+    "glyphColor": "#2F4F3E",
+    "font": "fraunces",
+    "cardRadius": 16,
+    "avatarRadius": 9999,
+    "avatarBorderWidth": 3,
+    "avatarBorderColor": "#FFFFFF"
+  },
+  "content": {
+    "en": {
+      "eyebrow": "Paediatric nurse",
+      "tagline": "Works nights at the children's hospital and bakes on her days off."
+    },
+    "it": {
+      "eyebrow": "Infermiera pediatrica",
+      "tagline": "Lavora di notte all'ospedale dei bambini e inforna dolci nei giorni liberi."
+    }
+  },
+  "links": [
+    {
+      "id": "recipes",
+      "label": { "en": "My recipe notebook", "it": "Il mio quaderno di ricette" },
+      "href": "https://giulia.ferraresi.example/recipes",
+      "icon": "mdi:notebook-outline",
+      "primary": true,
+      "external": true
+    },
+    {
+      "id": "email",
+      "label": { "en": "Email", "it": "Email" },
+      "href": "mailto:giulia@ferraresi.example",
+      "icon": "mdi:email-outline"
+    }
+  ],
+  "socials": [
+    {
+      "id": "instagram",
+      "label": { "en": "Instagram", "it": "Instagram" },
+      "href": "https://instagram.example/giulia.bakes",
+      "icon": "mdi:instagram",
+      "color": "#E4405F",
+      "external": true
+    }
+  ]
+}

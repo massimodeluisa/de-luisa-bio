@@ -1,3 +1,5 @@
+import { withBase } from '@/lib/base'
+
 export const AVATAR_WIDTHS = [250, 600, 2000] as const
 
 export interface IAvatarSources {
@@ -12,8 +14,8 @@ export function avatarSources(avatar: string | undefined): IAvatarSources | null
     return null
   }
   if (HAS_EXT.test(avatar)) {
-    return { src: avatar }
+    return { src: withBase(avatar) }
   }
-  const srcset = AVATAR_WIDTHS.map((w) => `${avatar}-${w}.webp ${w}w`).join(', ')
-  return { src: `${avatar}-600.webp`, srcset }
+  const srcset = AVATAR_WIDTHS.map((w) => `${withBase(`${avatar}-${w}.webp`)} ${w}w`).join(', ')
+  return { src: withBase(`${avatar}-600.webp`), srcset }
 }

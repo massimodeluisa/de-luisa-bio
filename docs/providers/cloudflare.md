@@ -1,6 +1,6 @@
 # Cloudflare Workers
 
-**Default production path** for Open Bio Page.
+This is the path the template is set up for.
 
 - Adapter: `server/adapters/cloudflare.ts`
 - Worker package: `worker/` (`wrangler.toml`, `src/index.ts` re-exports the core)
@@ -17,7 +17,7 @@ bunx wrangler secret put POSTHOG_READ_KEY
 bunx wrangler secret put ADMIN_USERS
 ```
 
-Add **Custom Domain** `api.<your-domain>` in the Worker dashboard.
+In the Worker dashboard, add a custom domain `api.<your-domain>`.
 
 ## CI
 
