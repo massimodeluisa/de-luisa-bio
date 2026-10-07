@@ -1,26 +1,27 @@
 {
-  "adminTitle": "Open Bio Page: Admin",
-  "brand": "Open Bio Page",
-  "copyrightOwner": "Open Bio Page",
-  "domain": "openbio.page",
-  "githubRepo": "open-bio-page/open-bio-page",
-  "home": {
-    "author": "Open Bio Page",
-    "collectionName": "Open Bio Page directory",
-    "description": "White-label, self-hosted link-in-bio. GitHub Fork, customize content/site.json, add profiles, publish.",
-    "ogImageAlt": "Open Bio Page",
-    "title": "Open Bio Page: Link-in-bio platform"
-  },
+  "brand": "De Luisa",
+  "domain": "deluisa.bio",
+  "origin": "https://deluisa.bio",
+  "githubRepo": "massimodeluisa/deluisa-bio",
   "licensePath": "LICENSE.md",
-  "og": {
-    "homeEyebrow": "OPENBIO.PAGE",
-    "homeTagline": "Your links. Your brand. Your host. Your stats. Free.",
-    "homeTitle": "Open Bio Page"
+  "copyrightOwner": "Massimo De Luisa",
+  "adminTitle": "De Luisa Bio: Admin",
+  "nameSuffix": " De Luisa",
+  "home": {
+    "title": "De Luisa Family: Official Links",
+    "description": "Official De Luisa family directory with profile pages, websites, contact links and published public social destinations.",
+    "author": "De Luisa family",
+    "ogImageAlt": "La famiglia De Luisa",
+    "collectionName": "De Luisa family directory"
   },
-  "origin": "https://openbio.page",
-  "privacyContactEmail": "hello@openbio.page",
+  "og": {
+    "homeEyebrow": "DELUISA.BIO",
+    "homeTitle": "De Luisa",
+    "homeTagline": "I nostri link, in un posto solo."
+  },
   "seo": {
-    "llmsBlurb": "White-label link-in-bio platform. One page per person, admin-scoped edits, static publish.",
-    "llmsTitle": "Open Bio Page"
-  }
+    "llmsTitle": "De Luisa",
+    "llmsBlurb": "The De Luisa family link-in-bio. One page per person with their links and social profiles."
+  },
+  "privacyContactEmail": "massimodeluisa@me.com"
 }

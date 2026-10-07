@@ -6,8 +6,8 @@ compatibility_date = "2026-06-01"
 # POSTHOG_READ_KEY) are set via `wrangler secret put` / GitHub Actions / .dev.vars
 # — never commit real values. See secrets.local.example.
 [vars]
-GITHUB_REPO = "your-org/open-bio-page"
+GITHUB_REPO = "massimodeluisa/deluisa-bio"
 GITHUB_BRANCH = "master"
 POSTHOG_HOST = "https://eu.posthog.com"
 POSTHOG_PROJECT_ID = ""
-ALLOWED_ORIGIN = "https://openbio.page"
+ALLOWED_ORIGIN = "https://deluisa.bio"

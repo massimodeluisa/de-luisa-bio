@@ -1,0 +1,57 @@
+{
+  "slug": "nicole",
+  "name": "Nicole De Luisa",
+  "avatar": "/media/nicole",
+  "theme": {
+    "primary": "#e0a3b8",
+    "secondary": "#b76e85",
+    "glyphColor": "#b76e85",
+    "font": "geist-sans",
+    "cardRadius": 14,
+    "avatarRadius": 9999,
+    "avatarBorderWidth": 1,
+    "avatarBorderColor": "#b76e85"
+  },
+  "content": {
+    "en": {
+      "eyebrow": "",
+      "tagline": ""
+    },
+    "it": {
+      "eyebrow": "",
+      "tagline": ""
+    },
+    "es": {
+      "eyebrow": "",
+      "tagline": ""
+    }
+  },
+  "links": [
+    {
+      "id": "email",
+      "label": { "en": "Email me", "it": "Scrivimi", "es": "Escríbeme" },
+      "href": "mailto:nicole.de.luisa@gmail.com",
+      "icon": "mdi:email-outline"
+    }
+  ],
+  "socials": [
+    {
+      "id": "instagram",
+      "label": { "en": "Instagram", "it": "Instagram", "es": "Instagram" },
+      "href": "https://www.instagram.com/nnddll95/",
+      "icon": "mdi:instagram",
+      "color": "#E4405F",
+      "external": true,
+      "iconSize": "2rem"
+    },
+    {
+      "id": "facebook",
+      "label": { "en": "Facebook", "it": "Facebook", "es": "Facebook" },
+      "href": "https://facebook.com/nicole.deluisa",
+      "icon": "mdi:facebook",
+      "color": "#1877F2",
+      "external": true,
+      "iconSize": "2rem"
+    }
+  ]
+}
