@@ -31,8 +31,15 @@ jobs:
           ADMIN_USERS: ${{ secrets.ADMIN_USERS }}
         run: |
           CFG="--config worker/wrangler.toml"
-          bunx wrangler deploy --x-autoconfig=false $CFG
-          printf '%s' "$SESSION_SECRET"     | bunx wrangler secret put SESSION_SECRET   $CFG
-          printf '%s' "$ADMIN_GITHUB_TOKEN" | bunx wrangler secret put GITHUB_TOKEN      $CFG
-          printf '%s' "$POSTHOG_READ_KEY"   | bunx wrangler secret put POSTHOG_READ_KEY  $CFG
-          printf '%s' "$ADMIN_USERS"        | bunx wrangler secret put ADMIN_USERS       $CFG
+          bunx wrangler deploy $CFG
+          put_secret() {
+            if [ -z "$2" ]; then
+              echo "skip $1 (unset on this repo)"
+              return 0
+            fi
+            printf '%s' "$2" | bunx wrangler secret put "$1" $CFG
+          }
+          put_secret SESSION_SECRET "$SESSION_SECRET"
+          put_secret GITHUB_TOKEN "$ADMIN_GITHUB_TOKEN"
+          put_secret POSTHOG_READ_KEY "$POSTHOG_READ_KEY"
+          put_secret ADMIN_USERS "$ADMIN_USERS"
