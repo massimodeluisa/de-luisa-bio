@@ -1,9 +1,9 @@
 export const en = {
   social: {
-    eyebrow: 'CTO & Product Engineer',
-    tagline: 'Platforms, mobile apps and AI-assisted workflows that stay simple under pressure.',
-    book: 'Book a 30-min call',
-    email: 'Email me',
+    eyebrow: 'Example profile',
+    tagline: 'Your links. Your brand. Your host.',
+    book: 'Book a call',
+    email: 'Email',
     cv: 'Download CV',
     siteCard: 'Explore the full site',
     shareTitle: 'Share this page',
@@ -25,7 +25,7 @@ export const en = {
     },
   },
   footer: {
-    copyright: '© 2026 Massimo De Luisa',
+    copyright: '© 2026 Open Bio',
     licenseAriaLabel: 'License (opens in new tab)',
   },
   export: {

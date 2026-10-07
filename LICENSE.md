@@ -32,14 +32,14 @@ SOFTWARE.
 
 ## Content — © All Rights Reserved
 
-The MIT grant above does **not** cover the bios' content, which is the personal
-work of the De Luisa family:
+The MIT grant above does **not** cover instance bios, media, or branding that you
+(or a GitHub Fork) publish under this template:
 
-- the bio copy, taglines and link data (`content/bios/**`),
-- avatars, photographs and brand assets (`public/**`),
-- the names, likenesses, copy, and visual branding of the De Luisa family.
+- bio copy, taglines and link data (`content/bios/**`, `instances/**/content/bios/**`),
+- avatars, photographs and brand assets (`public/media/**`, `instances/**/public/media/**`),
+- names, likenesses, and visual branding belonging to each instance operator.
 
-Copyright © 2026 Massimo De Luisa. All rights reserved. This content may not be
-copied, reproduced, modified, republished, or distributed, in whole or in part,
-without prior written permission. You are, of course, welcome to read it at
-[deluisa.bio](https://deluisa.bio).
+The De Luisa family snapshot under `instances/deluisa-bio/` remains
+© 2026 Massimo De Luisa — all rights reserved; see [deluisa.bio](https://deluisa.bio)
+after that instance is restored onto its own GitHub Fork. Demo content shipped in
+the Open Bio template (`content/bios/demo.json`) is provided as an example only.

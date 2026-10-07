@@ -1,6 +1,7 @@
 import type { PostHog } from 'posthog-js'
 
-const GTM_ID = 'GTM-MCT4XSDM'
+/** Optional — set `VITE_GTM_ID` on your instance. Empty on the Open Bio template. */
+const GTM_ID = (import.meta.env.VITE_GTM_ID as string | undefined)?.trim() || ''
 const POSTHOG_KEY = import.meta.env.VITE_POSTHOG_KEY as string | undefined
 const POSTHOG_HOST =
   (import.meta.env.VITE_POSTHOG_HOST as string | undefined) ?? 'https://eu.i.posthog.com'
@@ -18,7 +19,7 @@ function ensureDataLayer(): Record<string, unknown>[] {
 
 let gtmLoaded = false
 function loadGtm() {
-  if (gtmLoaded || typeof document === 'undefined') {
+  if (gtmLoaded || typeof document === 'undefined' || !GTM_ID) {
     return
   }
   gtmLoaded = true

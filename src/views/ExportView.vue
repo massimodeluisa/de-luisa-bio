@@ -5,6 +5,7 @@ import { useHead, useSeoMeta } from '@unhead/vue'
 
 import { useCurrentBio } from '@/composables/use-current-bio'
 import { track } from '@/composables/use-analytics'
+import { siteDomain } from '@/content/site'
 import { DEFAULT_FAVICON } from '@/lib/letter-glyph'
 import { FONT_STACK, loadFont } from '@/lib/load-font'
 import { useI18n } from '@/i18n'
@@ -426,7 +427,7 @@ main.flex.min-h-dvh.flex-col.items-center.justify-center.gap-3.bg-site-backgroun
 )
   h1.text-2xl.font-semibold.text-site-heading 404
   p.text-sm.text-site-muted No bio found for “{{ slug }}”.
-  a.text-sm.text-site-secondary.no-underline(href="/") ← deluisa.bio
+  a.text-sm.text-site-secondary.no-underline(href="/") ← {{ siteDomain }}
 </template>
 
 <style scoped lang="scss">

@@ -199,7 +199,7 @@ main.relative.w-full.bg-site-background.text-site-text
 
   article#about.machine-readable-only(data-machine-readable="true")
     div
-      p.font-mono.text-xs.font-semibold.uppercase.tracking-widest.text-site-secondary Family directory
+      p.font-mono.text-xs.font-semibold.uppercase.tracking-widest.text-site-secondary Link directory
       h2.mt-3.text-3xl.font-semibold.tracking-tight.text-site-heading(class="sm:text-4xl") About {{ site.domain }}
       p.mt-6
         | {{ site.domain }} is the shared link directory for {{ site.home.author }}. It gives each listed
@@ -209,9 +209,9 @@ main.relative.w-full.bg-site-background.text-site-text
         | visual cards and the text below are built from the same source records, so visitors,
         | search engines and non-JavaScript clients receive the same names and destinations.
       p
-        | The directory currently contains {{ profileCount }} profile pages: {{ peopleCount }} for
-        | individual family members and {{ organizationCount }} for Pasticceria De Luisa. Across
-        | those records there are {{ socialCount }} published social-profile destinations,
+        | The directory currently contains {{ profileCount }} profile pages
+        | ({{ peopleCount }} people, {{ organizationCount }} organizations). Across those records
+        | there are {{ socialCount }} published social-profile destinations,
         | {{ directLinkCount }} direct contact or resource links and {{ websiteCount }} website
         | destinations. These figures are calculated from the public profile data during the site
         | build; they are inventory counts, not audience or performance claims.
@@ -278,20 +278,10 @@ main.relative.w-full.bg-site-background.text-site-text
         | rather than a temporary browser state, making the profile suitable for messages,
         | contact cards and printed material.
       p
-        | Massimo De Luisa's entry is the most detailed current example. It identifies him as
-        | “CTO & Product Engineer” and describes his work as
-        | “Platforms, mobile apps and AI-assisted workflows that stay simple under pressure.”
-        | His profile publishes a website, a booking destination, email, a curriculum-vitae
-        | download and seven social accounts. That quotation comes directly from his English
-        | profile text; it is not an editorial endorsement or a rewritten biography.
-      p
-        | Pasticceria De Luisa has a business entry rather than a personal one. Its profile
-        | identifies the activity as an artisan bakery and pastry shop and publishes its official
-        | website, email, telephone number, Instagram and Facebook destinations. Arianna, Camilla
-        | and Laura also link to the Pasticceria website from their own directory pages. Andrea's
-        | entry links to deluisaandrea.it and public contact destinations, while Giovanni and
-        | Nicole currently use smaller sets of published links. The directory preserves those
-        | differences instead of filling empty fields with assumptions.
+        | Open Bio ships a single demo profile so you can see the layout before replacing
+        | `content/bios/` with your own people. Each entry is generated from repository JSON;
+        | empty fields stay empty instead of being filled with assumptions. After a GitHub Fork,
+        | swap the demo for your brand and republish.
 
     section#sources.scroll-mt-24.mt-16(aria-labelledby="sources-heading")
       h2#sources-heading.text-2xl.font-semibold.tracking-tight.text-site-heading Sources, structure and accuracy

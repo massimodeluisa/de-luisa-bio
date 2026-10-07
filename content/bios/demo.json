@@ -44,7 +44,7 @@
     {
       "id": "github",
       "label": { "en": "GitHub", "it": "GitHub" },
-      "href": "https://github.com/massimodeluisa/de-luisa-bio",
+      "href": "https://github.com/massimodeluisa/openbio",
       "icon": "mdi:github",
       "color": "#181717",
       "external": true,

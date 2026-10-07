@@ -88,4 +88,36 @@ const full = [
 ].join('\n')
 writeFileSync(join(DIST, 'llms-full.txt'), full)
 
-console.log(`[seo] wrote sitemap.xml (${urls.length} urls) + llms.txt + llms-full.txt`)
+const robots = `# ${site.brand} — robots.txt
+# LLM overview: ${ORIGIN}/llms.txt  ·  full: ${ORIGIN}/llms-full.txt
+
+User-agent: *
+Allow: /
+Disallow: /admin
+
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-User
+User-agent: Claude-SearchBot
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: Amazonbot
+User-agent: meta-externalagent
+User-agent: MistralAI-User
+User-agent: DuckAssistBot
+User-agent: CCBot
+Allow: /
+Disallow: /admin
+
+Sitemap: ${ORIGIN}/sitemap.xml
+
+# Content Signals — https://www.content-signals.org/
+Content-Signal: ai-train=yes, ai-input=yes, search=yes, owner=${site.domain}
+`
+writeFileSync(join(DIST, 'robots.txt'), robots)
+
+console.log(`[seo] wrote sitemap.xml (${urls.length} urls) + llms.txt + llms-full.txt + robots.txt`)
