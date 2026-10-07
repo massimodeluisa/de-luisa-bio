@@ -1,5 +1,5 @@
 {
-  "name": "openbio",
+  "name": "open-bio-page",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -11,9 +11,9 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "bun scripts/generate-icons.ts && vite-ssg build && bun scripts/generate-og.ts && bun scripts/generate-favicons.ts && bun scripts/generate-seo.ts",
-    "docs:dev": "vitepress dev docs",
+    "docs:dev": "vitepress dev docs --host 127.0.0.1 --port 5174",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs",
+    "docs:preview": "vitepress preview docs --host 127.0.0.1 --port 5174",
     "type-check": "vue-tsc --build",
     "lint": "run-s lint:*",
     "lint:oxlint": "oxlint . --fix",

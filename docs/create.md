@@ -1,12 +1,12 @@
 # Create your bio
 
-You do not need to be a maintainer of Open Bio to publish your own link-in-bio.
+You do not need to be a maintainer of Open Bio Page to publish your own link-in-bio.
 
 ## 1. GitHub Fork (required)
 
 Create your instance with **GitHub’s Fork button** — not a manual copy of the repo.
 
-1. Open the Open Bio repository on GitHub
+1. Open the Open Bio Page repository on GitHub
 2. Click **Fork** (top-right)
 3. Pick your account/org and repo name
 4. Clone **your fork** and work there

@@ -53,3 +53,5 @@ secrets.local
 secrets.local.*
 !secrets.local.example
 .docs-dist
+docs/.vitepress/dist
+docs/.vitepress/cache

@@ -1,6 +1,6 @@
 # Cloudflare Workers
 
-**Default production path** for Open Bio.
+**Default production path** for Open Bio Page.
 
 - Adapter: `server/adapters/cloudflare.ts`
 - Worker package: `worker/` (`wrangler.toml`, `src/index.ts` re-exports the core)
@@ -21,4 +21,4 @@ Add **Custom Domain** `api.<your-domain>` in the Worker dashboard.
 
 ## CI
 
-`.github/workflows/deploy-worker.yml` deploys on changes under `worker/` and `server/`.
+`.github/workflows/deploy-worker.yml` deploys on changes under `worker/` and `server/` for a fork. The upstream repository does not deploy a Worker.

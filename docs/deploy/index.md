@@ -1,6 +1,6 @@
 # Deploy overview
 
-Open Bio publishes as:
+Open Bio Page publishes as:
 
 1. **Static site** — `bun run build` → `dist/` (GitHub Pages, Netlify, Vercel static, S3+CDN, …)
 2. **Admin API** — one serverless adapter from `server/adapters/`
@@ -18,6 +18,6 @@ See [GitHub Pages + secrets](/deploy/github-pages).
 
 ## Instance recipe (De Luisa)
 
-Use **GitHub → Fork** on the Open Bio upstream, then restore brand content from `instances/deluisa-bio/`.
+Use **GitHub → Fork** on the Open Bio Page upstream, then restore brand content from `instances/deluisa-bio/`.
 
 See [GitHub Fork → instance](/deploy/fork-instance).

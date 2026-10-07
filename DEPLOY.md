@@ -1,9 +1,11 @@
-# Deploy & publish — Open Bio
+# Deploy & publish — Open Bio Page
 
 Publish a white-label instance after a **GitHub Fork** of this template. Replace domain names
 with the values from your `content/site.json`. Default template domain: `openbio.page`.
 
 For the De Luisa branded child: [GitHub Fork → instance](./docs/deploy/fork-instance.md).
+
+This repository publishes its documentation at `https://openbio.page` (`.github/workflows/pages.yml`, upstream only). A fork publishes the directory with `.github/workflows/deploy-site.yml`. Documentation stays on `openbio.page`. It is not copied into the instance site.
 
 ## Prerequisites
 
@@ -105,7 +107,7 @@ bun lint
 git push origin master
 ```
 
-Or re-run workflows manually: **Actions → Deploy site / Deploy worker → Run workflow**.
+Or re-run workflows manually: **Actions → Deploy docs / Deploy site / Deploy worker → Run workflow**. Upstream runs **Deploy docs**. A fork runs **Deploy site** and **Deploy worker**.
 
 If `Deploy site` hangs on `deploy-pages` / times out after ~10 minutes, do **not** cancel and
 re-push repeatedly — cancelling an in-flight Pages deploy can leave the environment stuck. Wait
@@ -114,9 +116,9 @@ for the run to finish (or cancel once), then **Re-run failed jobs**. The workflo
 
 Verify:
 
+- `https://openbio.page/` — documentation
 - `https://YOUR_DOMAIN/` — home directory
 - `https://YOUR_DOMAIN/<slug>` — profile
-- `https://YOUR_DOMAIN/docs/` — documentation
 - `https://YOUR_DOMAIN/admin` — login; edit only your own bio
 - `https://api.YOUR_DOMAIN/me` — 401 without cookie (expected)
 

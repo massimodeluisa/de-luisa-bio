@@ -6,7 +6,7 @@
 
 Use **GitHub → Fork** only:
 
-1. Open the upstream repo on GitHub (e.g. `massimodeluisa/openbio`)
+1. Open the upstream repo on GitHub (e.g. `open-bio-page/open-bio-page`)
 2. Click the **Fork** button (top-right)
 3. Choose owner / repo name (e.g. `massimodeluisa/de-luisa-bio`)
 4. Create the fork
@@ -45,9 +45,11 @@ ALLOWED_ORIGIN = "https://deluisa.bio"
 
 Point `public/CNAME` and `content/site.json` (`domain`, `origin`, `githubRepo`, brand copy) at `deluisa.bio`.
 
+If the Cloudflare Worker for that instance is already named `openbio-admin`, keep that `name` in `worker/wrangler.toml`. The template default is `open-bio-page-admin`. Renaming a live script creates a second Worker.
+
 ## Re-install secrets (on the fork)
 
-Upstream Open Bio should stay clean of instance secrets.
+Upstream Open Bio Page should stay clean of instance secrets.
 
 1. Keep values in local `secrets.local` (gitignored) from the dump you made before cleaning upstream
 2. Re-create **GitHub Actions Secrets / Variables** on the **forked** repo
@@ -56,7 +58,7 @@ Upstream Open Bio should stay clean of instance secrets.
 
 ## Publish checklist
 
-- [ ] Repo shows **Forked from** the Open Bio upstream on GitHub
+- [ ] Repo shows **Forked from** the Open Bio Page upstream on GitHub
 - [ ] `bun run build` locally
 - [ ] Pages custom domain `deluisa.bio`
 - [ ] Admin API custom domain `api.deluisa.bio` (same-site cookie)
@@ -68,7 +70,7 @@ Upstream Open Bio should stay clean of instance secrets.
 Because this is a real GitHub Fork:
 
 ```bash
-git remote add upstream https://github.com/massimodeluisa/openbio.git   # if missing
+git remote add upstream https://github.com/open-bio-page/open-bio-page.git   # if missing
 git fetch upstream
 git merge upstream/master   # or rebase — resolve content conflicts carefully
 ```

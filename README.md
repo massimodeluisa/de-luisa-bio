@@ -1,9 +1,9 @@
-# Open Bio
+# Open Bio Page
 
 White-label **link-in-bio** platform — one page per person, content in the repo as JSON, edited
 through a scoped admin, with per-person SEO, OpenGraph images and favicons.
 
-This repository is the **Open Bio** template (`openbio.page`). Ship your own brand by
+This repository is the **Open Bio Page** template (`openbio.page`). Ship your own brand by
 **GitHub Fork** (the Fork button — not a manual copy), then edit `content/site.json` plus
 `content/bios/`.
 
@@ -49,7 +49,7 @@ cp .env.example .env.local
 cp worker/.dev.vars.example worker/.dev.vars
 cp secrets.local.example secrets.local   # local dump only; never commit
 bun dev                  # site :5173 + admin API :8787
-bun run docs:dev         # VitePress docs
+bun run docs:dev         # VitePress docs at http://127.0.0.1:5174/
 ```
 
 ### Build / type-check / lint
@@ -78,8 +78,9 @@ Family content lives under `instances/deluisa-bio/` as a restore snapshot. Creat
 
 ## Deploy
 
-- **`.github/workflows/ci.yml`** — type-check, lint, build on PRs / pushes
-- **`.github/workflows/deploy-site.yml`** — `dist/` (+ docs) → GitHub Pages on `master`
-- **`.github/workflows/deploy-worker.yml`** — Cloudflare Worker (default admin adapter)
+- **`.github/workflows/ci.yml`** — type-check, lint, site build, docs build
+- **`.github/workflows/pages.yml`** — docs → GitHub Pages at `openbio.page` (upstream only)
+- **`.github/workflows/deploy-site.yml`** — a fork's `dist/` → GitHub Pages
+- **`.github/workflows/deploy-worker.yml`** — Cloudflare Worker on a fork
 
 Full DNS / Pages / custom-domain steps: **[DEPLOY.md](./DEPLOY.md)**.

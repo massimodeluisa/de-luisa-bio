@@ -1,25 +1,25 @@
 {
-  "brand": "Open Bio",
+  "brand": "Open Bio Page",
   "domain": "openbio.page",
   "origin": "https://openbio.page",
-  "githubRepo": "massimodeluisa/openbio",
+  "githubRepo": "open-bio-page/open-bio-page",
   "licensePath": "LICENSE.md",
-  "copyrightOwner": "Open Bio",
-  "adminTitle": "Open Bio — Admin",
+  "copyrightOwner": "Open Bio Page",
+  "adminTitle": "Open Bio Page — Admin",
   "home": {
-    "title": "Open Bio — Link-in-bio platform",
+    "title": "Open Bio Page — Link-in-bio platform",
     "description": "White-label, self-hosted link-in-bio. GitHub Fork, customize content/site.json, add profiles, publish.",
-    "author": "Open Bio",
-    "ogImageAlt": "Open Bio",
-    "collectionName": "Open Bio directory"
+    "author": "Open Bio Page",
+    "ogImageAlt": "Open Bio Page",
+    "collectionName": "Open Bio Page directory"
   },
   "og": {
     "homeEyebrow": "OPENBIO.PAGE",
-    "homeTitle": "Open Bio",
+    "homeTitle": "Open Bio Page",
     "homeTagline": "Your links. Your brand. Your host."
   },
   "seo": {
-    "llmsTitle": "Open Bio",
+    "llmsTitle": "Open Bio Page",
     "llmsBlurb": "White-label link-in-bio platform. One page per person, admin-scoped edits, static publish."
   },
   "privacyContactEmail": "hello@openbio.page"

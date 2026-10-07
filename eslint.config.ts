@@ -15,6 +15,8 @@ export default defineConfigWithVueTs(
     '**/dist-ssr/**',
     '**/coverage/**',
     '**/.docs-dist/**',
+    '**/.vitepress/cache/**',
+    '**/.vitepress/dist/**',
     '**/.vite-ssg-temp/**',
   ]),
 

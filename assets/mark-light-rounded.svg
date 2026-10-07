@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-label="Open Bio Page">
+  <title>Open Bio Page · light rounded mark</title>
+  <rect width="1024" height="1024" rx="192" fill="#F4F0E6"/>
+  <circle cx="340" cy="512" r="120" fill="#C46A4A"/>
+  <g fill="#1C1B1A">
+    <rect x="536" y="372" width="328" height="72" rx="36"/>
+    <rect x="536" y="476" width="248" height="72" rx="36"/>
+  </g>
+  <rect x="536" y="580" width="184" height="72" rx="36" fill="#5E6E86"/>
+</svg>

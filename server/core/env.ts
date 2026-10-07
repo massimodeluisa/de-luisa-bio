@@ -22,7 +22,7 @@ export function envFromRecord(source: Record<string, string | undefined>): Env {
     ADMIN_USERS: get('ADMIN_USERS', '[]'),
     SESSION_SECRET: get('SESSION_SECRET'),
     GITHUB_TOKEN: get('GITHUB_TOKEN'),
-    GITHUB_REPO: get('GITHUB_REPO', 'your-org/openbio'),
+    GITHUB_REPO: get('GITHUB_REPO', 'your-org/open-bio-page'),
     GITHUB_BRANCH: get('GITHUB_BRANCH', 'master'),
     POSTHOG_HOST: get('POSTHOG_HOST', 'https://eu.posthog.com'),
     POSTHOG_PROJECT_ID: get('POSTHOG_PROJECT_ID'),

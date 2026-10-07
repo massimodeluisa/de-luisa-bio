@@ -25,7 +25,7 @@ export const en = {
     },
   },
   footer: {
-    copyright: '© 2026 Open Bio',
+    copyright: '© 2026 Open Bio Page',
     licenseAriaLabel: 'License (opens in new tab)',
   },
   export: {

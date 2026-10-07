@@ -24,7 +24,7 @@ export interface Env {
   storage?: IStorage
 }
 
-const COOKIE = 'openbio_session'
+const COOKIE = 'open_bio_page_session'
 const SESSION_TTL = 60 * 60 * 8
 const SLUG_RE = /^[a-z0-9-]+$/
 
@@ -81,7 +81,7 @@ function ghHeaders(env: Env): Record<string, string> {
   return {
     Authorization: `Bearer ${env.GITHUB_TOKEN}`,
     Accept: 'application/vnd.github+json',
-    'User-Agent': 'openbio-admin',
+    'User-Agent': 'open-bio-page-admin',
     'X-GitHub-Api-Version': '2022-11-28',
   }
 }

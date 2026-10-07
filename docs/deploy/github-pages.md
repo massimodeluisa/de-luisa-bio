@@ -2,9 +2,14 @@
 
 ## Pages
 
+The upstream repository publishes this documentation at `https://openbio.page` from `.github/workflows/pages.yml`. That workflow does not run on forks.
+
+On a fork:
+
 1. Repo **Settings → Pages → Source = GitHub Actions**
 2. Custom domain = value of `content/site.json` → `domain`
-3. Workflow: `.github/workflows/deploy-site.yml`
+3. Workflow: `.github/workflows/deploy-site.yml` (the directory in `dist/`, not these docs)
+4. Add `public/CNAME` with that domain. The template does not ship one, because `openbio.page` belongs to the docs site.
 
 ## Variables (Actions)
 

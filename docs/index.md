@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: Open Bio
+  name: Open Bio Page
   text: Your links. Your brand. Your host.
   tagline: White-label link-in-bio — GitHub Fork the repo, edit JSON, publish a static site with a scoped admin API.
   actions:

@@ -4,13 +4,13 @@ White-label control plane. Loaded by `src/content/site.ts`.
 
 ```json
 {
-  "brand": "Open Bio",
+  "brand": "Open Bio Page",
   "domain": "openbio.page",
   "origin": "https://openbio.page",
-  "githubRepo": "your-org/openbio",
+  "githubRepo": "your-org/open-bio-page",
   "licensePath": "LICENSE.md",
-  "copyrightOwner": "Open Bio",
-  "adminTitle": "Open Bio — Admin",
+  "copyrightOwner": "Open Bio Page",
+  "adminTitle": "Open Bio Page — Admin",
   "home": { "title": "...", "description": "...", "author": "...", "ogImageAlt": "...", "collectionName": "..." },
   "og": { "homeEyebrow": "...", "homeTitle": "...", "homeTagline": "..." },
   "seo": { "llmsTitle": "...", "llmsBlurb": "..." },

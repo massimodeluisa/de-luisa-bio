@@ -9,6 +9,7 @@ on:
 
 jobs:
   deploy:
+    if: github.repository != 'open-bio-page/open-bio-page'
     runs-on: ubuntu-latest
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

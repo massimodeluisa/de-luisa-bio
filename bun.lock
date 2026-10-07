@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "de-luisa-bio",
+      "name": "open-bio-page",
       "dependencies": {
         "@tailwindcss/vite": "^4.3.1",
         "@unhead/vue": "^2.1.2",

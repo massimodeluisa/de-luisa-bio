@@ -5,6 +5,8 @@ on:
     branches: [master]
   workflow_dispatch:
 
+# Upstream publishes the docs site from pages.yml. Forks publish their directory.
+
 # Allow GITHUB_TOKEN to deploy to Pages.
 permissions:
   contents: read
@@ -14,11 +16,12 @@ permissions:
 # Do not cancel an in-flight Pages deploy — cancel-in-progress:true can leave
 # GitHub Pages stuck in deployment_in_progress until deploy-pages times out.
 concurrency:
-  group: pages
+  group: pages-site
   cancel-in-progress: false
 
 jobs:
   build:
+    if: github.repository != 'open-bio-page/open-bio-page'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -30,18 +33,13 @@ jobs:
       - run: bun install --frozen-lockfile
 
       # Only PUBLIC values reach the client build.
+      # Docs stay on https://openbio.page. Do not nest them into the instance site.
       - name: Build (vite-ssg + OG + favicons)
         run: bun run build
         env:
           VITE_POSTHOG_KEY: ${{ vars.VITE_POSTHOG_KEY }}
           VITE_POSTHOG_HOST: ${{ vars.VITE_POSTHOG_HOST }}
           VITE_ADMIN_API: ${{ vars.VITE_ADMIN_API }}
-
-      - name: Build docs (VitePress → dist/docs)
-        run: |
-          bun run docs:build
-          mkdir -p dist/docs
-          cp -R .docs-dist/. dist/docs/
 
       # SPA fallback so a hard refresh on /<slug> boots the app.
       - run: cp dist/index.html dist/404.html

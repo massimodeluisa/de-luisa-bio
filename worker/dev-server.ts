@@ -47,7 +47,7 @@ const env = {
   ADMIN_USERS: vars.ADMIN_USERS ?? '[]',
   SESSION_SECRET: vars.SESSION_SECRET ?? 'dev-secret',
   GITHUB_TOKEN: vars.GITHUB_TOKEN ?? '',
-  GITHUB_REPO: vars.GITHUB_REPO ?? 'your-org/openbio',
+  GITHUB_REPO: vars.GITHUB_REPO ?? 'your-org/open-bio-page',
   GITHUB_BRANCH: vars.GITHUB_BRANCH ?? 'master',
   POSTHOG_HOST: vars.POSTHOG_HOST ?? 'https://eu.posthog.com',
   POSTHOG_PROJECT_ID: vars.POSTHOG_PROJECT_ID ?? '',

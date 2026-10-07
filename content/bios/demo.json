@@ -1,6 +1,6 @@
 {
   "slug": "demo",
-  "name": "Open Bio Demo",
+  "name": "Open Bio Page Demo",
   "avatar": "",
   "site": "https://openbio.page",
   "siteCard": {
@@ -11,30 +11,30 @@
   },
   "layout": { "columns": 2 },
   "theme": {
-    "primary": "#1a1a1a",
-    "secondary": "#3d7a5c",
-    "glyphColor": "#3d7a5c",
+    "primary": "#1C1B1A",
+    "secondary": "#C46A4A",
+    "glyphColor": "#C46A4A",
     "font": "geist-sans",
     "cardRadius": 14,
     "avatarRadius": 9999,
     "avatarBorderWidth": 1,
-    "avatarBorderColor": "#3d7a5c"
+    "avatarBorderColor": "#C46A4A"
   },
   "content": {
     "en": {
       "eyebrow": "Example profile",
-      "tagline": "GitHub Fork Open Bio, edit content/site.json, add your people under content/bios/, and publish."
+      "tagline": "GitHub Fork Open Bio Page, edit content/site.json, add your people under content/bios/, and publish."
     },
     "it": {
       "eyebrow": "Profilo di esempio",
-      "tagline": "Usa GitHub Fork su Open Bio, modifica content/site.json, aggiungi i profili in content/bios/ e pubblica."
+      "tagline": "Usa GitHub Fork su Open Bio Page, modifica content/site.json, aggiungi i profili in content/bios/ e pubblica."
     }
   },
   "links": [
     {
       "id": "docs",
       "label": { "en": "Read the docs", "it": "Leggi la docs" },
-      "href": "https://openbio.page/docs/",
+      "href": "https://openbio.page/guide.html",
       "icon": "mdi:file-document-outline",
       "primary": true,
       "external": true
@@ -44,7 +44,7 @@
     {
       "id": "github",
       "label": { "en": "GitHub", "it": "GitHub" },
-      "href": "https://github.com/massimodeluisa/openbio",
+      "href": "https://github.com/open-bio-page/open-bio-page",
       "icon": "mdi:github",
       "color": "#181717",
       "external": true,

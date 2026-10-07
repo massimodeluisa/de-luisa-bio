@@ -1,6 +1,6 @@
 import type { PostHog } from 'posthog-js'
 
-/** Optional — set `VITE_GTM_ID` on your instance. Empty on the Open Bio template. */
+/** Optional — set `VITE_GTM_ID` on your instance. Empty on the Open Bio Page template. */
 const GTM_ID = (import.meta.env.VITE_GTM_ID as string | undefined)?.trim() || ''
 const POSTHOG_KEY = import.meta.env.VITE_POSTHOG_KEY as string | undefined
 const POSTHOG_HOST =

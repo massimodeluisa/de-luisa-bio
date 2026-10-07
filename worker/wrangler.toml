@@ -1,4 +1,4 @@
-name = "openbio-admin"
+name = "open-bio-page-admin"
 main = "src/index.ts"
 compatibility_date = "2026-06-01"
 
@@ -6,7 +6,7 @@ compatibility_date = "2026-06-01"
 # POSTHOG_READ_KEY) are set via `wrangler secret put` / GitHub Actions / .dev.vars
 # — never commit real values. See secrets.local.example.
 [vars]
-GITHUB_REPO = "your-org/openbio"
+GITHUB_REPO = "your-org/open-bio-page"
 GITHUB_BRANCH = "master"
 POSTHOG_HOST = "https://eu.posthog.com"
 POSTHOG_PROJECT_ID = ""

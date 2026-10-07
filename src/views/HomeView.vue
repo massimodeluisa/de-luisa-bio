@@ -278,7 +278,7 @@ main.relative.w-full.bg-site-background.text-site-text
         | rather than a temporary browser state, making the profile suitable for messages,
         | contact cards and printed material.
       p
-        | Open Bio ships a single demo profile so you can see the layout before replacing
+        | Open Bio Page ships a single demo profile so you can see the layout before replacing
         | `content/bios/` with your own people. Each entry is generated from repository JSON;
         | empty fields stay empty instead of being filled with assumptions. After a GitHub Fork,
         | swap the demo for your brand and republish.

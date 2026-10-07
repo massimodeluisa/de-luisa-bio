@@ -42,4 +42,4 @@ The MIT grant above does **not** cover instance bios, media, or branding that yo
 The De Luisa family snapshot under `instances/deluisa-bio/` remains
 © 2026 Massimo De Luisa — all rights reserved; see [deluisa.bio](https://deluisa.bio)
 after that instance is restored onto its own GitHub Fork. Demo content shipped in
-the Open Bio template (`content/bios/demo.json`) is provided as an example only.
+the Open Bio Page template (`content/bios/demo.json`) is provided as an example only.

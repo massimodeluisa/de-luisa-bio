@@ -1,6 +1,6 @@
 # De Luisa Bio instance snapshot
 
-Content and media for restoring [deluisa.bio](https://deluisa.bio) **after** you create the instance repo with **GitHub → Fork** on the Open Bio upstream.
+Content and media for restoring [deluisa.bio](https://deluisa.bio) **after** you create the instance repo with **GitHub → Fork** on the Open Bio Page upstream.
 
 This folder is **not** a manual fork. Do not copy the whole project into a new empty repo — use GitHub’s Fork button, then restore this snapshot on the fork.
 

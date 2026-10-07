@@ -1,4 +1,4 @@
-# Open Bio — robots.txt (template). Build also regenerates dist/robots.txt from site.json.
+# Open Bio Page — robots.txt (template). Build also regenerates dist/robots.txt from site.json.
 # LLM overview: https://openbio.page/llms.txt  ·  full: https://openbio.page/llms-full.txt
 
 User-agent: *

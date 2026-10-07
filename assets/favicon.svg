@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Open Bio Page">
+  <title>Open Bio Page</title>
+  <rect width="64" height="64" rx="12" fill="#1C1B1A"/>
+  <circle cx="22" cy="32" r="8" fill="#C46A4A"/>
+  <g fill="#F4F0E6">
+    <rect x="36" y="22" width="18" height="5" rx="2.5"/>
+    <rect x="36" y="30" width="14" height="5" rx="2.5"/>
+  </g>
+  <rect x="36" y="38" width="10" height="5" rx="2.5" fill="#8A96A8"/>
+</svg>

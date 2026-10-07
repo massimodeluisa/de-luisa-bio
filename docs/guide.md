@@ -1,6 +1,6 @@
 # Install and usage
 
-Open Bio is a Vue 3 + Vite SSG app with a small serverless admin API.
+Open Bio Page is a Vue 3 + Vite SSG app with a small serverless admin API.
 
 ## Requirements
 
@@ -28,7 +28,7 @@ bun dev
 
 ```bash
 bun run build      # type-check + SSG + OG + favicons + SEO
-bun run docs:build # VitePress → .docs-dist
+bun run docs:build # VitePress → docs/.vitepress/dist
 bun lint
 ```
 
